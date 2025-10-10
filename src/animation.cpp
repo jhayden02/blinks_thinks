@@ -44,7 +44,7 @@ anim_raylib::anim_raylib()
     m_alpha(1.0f)
 {}
 
-bool anim_raylib::isFinished()
+bool anim_raylib::is_finished()
 {
     return (m_state == 4);
 }
@@ -231,7 +231,7 @@ anim_self_credit::anim_self_credit()
     m_bg_color({ 30, 30, 30, 255})
 {}
 
-bool anim_self_credit::isFinished()
+bool anim_self_credit::is_finished()
 {
     return (m_state == state::FINISHED);
 }

@@ -46,7 +46,7 @@ intro_raylib::intro_raylib()
 void intro_raylib::update() {
     level::update(); 
 
-    if (m_animation->isFinished()) {
+    if (m_animation->is_finished()) {
         m_game.set_next_level(new intro_self_credit());
     }
     else if (IsKeyPressed(KEY_ENTER)) {
@@ -66,7 +66,7 @@ void intro_self_credit::update()
 {
     level::update();
 
-    if (m_animation->isFinished() || IsKeyPressed(KEY_ENTER)) {
+    if (m_animation->is_finished() || IsKeyPressed(KEY_ENTER)) {
         m_game.set_next_level(new level_title());
     }
 }

@@ -34,7 +34,7 @@ namespace engine
     {
         public:
             anim_raylib();
-            bool isFinished();
+            bool is_finished();
             void update() override;
             void draw() override;
 
@@ -61,7 +61,7 @@ namespace engine
     {
         public:
             anim_self_credit();
-            bool isFinished();
+            bool is_finished();
             void draw() override;
             void update() override;
 
