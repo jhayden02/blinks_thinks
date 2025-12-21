@@ -25,6 +25,7 @@
 using engine::game;
 using engine::button_trait;
 using engine::grows_when_hovered;
+using engine::grabbable;
 
 grows_when_hovered::grows_when_hovered(int frame_duration, float target_scale)
 {
@@ -61,4 +62,34 @@ void grows_when_hovered::update(button& btn)
     }
 
     btn.set_scale(m_current_scale);
+}
+
+grabbable::grabbable()
+{
+    this->m_is_grabbed = false;
+    this->m_grab_offset = {0.0f, 0.0f};
+}
+
+void grabbable::update(button& btn)
+{
+    if (btn.is_hovered() && IsMouseButtonPressed(0)) {
+        m_is_grabbed = true;
+        Vector2 mouse_pos = GetMousePosition();
+        Vector2 button_pos = btn.get_position();
+        m_grab_offset = {mouse_pos.x - button_pos.x, mouse_pos.y - button_pos.y};
+
+        game::get_instance().set_button_in_hand(&btn);
+        btn.set_layer(100);
+    }
+
+    if (m_is_grabbed && IsMouseButtonDown(0)) {
+        Vector2 mouse_pos = GetMousePosition();
+        btn.set_position({mouse_pos.x - m_grab_offset.x, mouse_pos.y - m_grab_offset.y});
+    }
+
+    if (!IsMouseButtonDown(0) && m_is_grabbed) {
+        m_is_grabbed = false;
+        game::get_instance().set_button_in_hand(nullptr);
+        btn.set_layer(0);
+    }
 }

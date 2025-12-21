@@ -26,6 +26,7 @@
 using engine::game;
 using engine::entity;
 using engine::grows_when_hovered;
+using engine::grabbable;
 
 // Standard library.
 #include <iterator>
@@ -858,8 +859,6 @@ void level_six::update()
 // ------------------------------------------------------------------------------------------ //
 level_seven::level_seven()
 {
-    this->m_button_in_hand = nullptr;
-
     //
     // Main UI elements (level title, directions).
     //
@@ -933,11 +932,12 @@ level_seven::level_seven()
             80,
             *colors_it++,
             *positions_it++
-        ); 
+        );
     }
 
 	for (button* btn : get_buttons()) {
 		btn->add_trait(new grows_when_hovered());
+		btn->add_trait(new grabbable());
 	}
 }
 
@@ -945,31 +945,19 @@ void level_seven::update()
 {
     level::update();
 
-    for (button* btn : get_buttons()) {
-        if (btn->is_pressed()) {
-            // point 'm_btnInHand' to the btn that was just pressed, setting it back to
-            // 'nullptr' if the mouse is released.
-            m_button_in_hand = btn;
-        }
-    }
+    button* button_in_hand = m_game.get_button_in_hand();
 
-    const bool button_is_being_held = (IsMouseButtonDown(0) && m_button_in_hand != nullptr);
-
-    if (button_is_being_held) {
-
-        m_button_in_hand->set_position(GetMousePosition());
-
+    if (button_in_hand != nullptr) {
         for (button* btn : get_buttons()) {
             const bool two_buttons_collided = (
-                btn != m_button_in_hand &&
-                CheckCollisionRecs(m_button_in_hand->get_rectangle(), btn->get_rectangle())
+                btn != button_in_hand &&
+                CheckCollisionRecs(button_in_hand->get_rectangle(), btn->get_rectangle())
             );
 
             if (two_buttons_collided) {
-
                 const bool seven_and_nine_collided = (
-                    (m_button_in_hand == m_button_seven && btn == m_button_nine) ||
-                    (m_button_in_hand == m_button_nine && btn == m_button_seven)
+                    (button_in_hand == m_button_seven && btn == m_button_nine) ||
+                    (button_in_hand == m_button_nine && btn == m_button_seven)
                 );
 
                 if (seven_and_nine_collided) {
@@ -980,9 +968,6 @@ void level_seven::update()
                 }
             }
         }
-    }
-    else {
-        m_button_in_hand = nullptr;
     }
 }
 
@@ -1154,8 +1139,6 @@ void level_eight::update()
 // ------------------------------------------------------------------------------------------ //
 level_nine::level_nine()
 {
-    this->m_button_in_hand = nullptr;
-
     //
     // Main UI elements (level title, directions, submit box).
     //
@@ -1229,8 +1212,9 @@ level_nine::level_nine()
             80,
             *colors_it++,
             *positions_it++
-        ); 
+        );
 		btn->add_trait(new grows_when_hovered());
+		btn->add_trait(new grabbable());
         m_correct_button_layout.push_back(btn);
     }
     
@@ -1245,22 +1229,6 @@ level_nine::level_nine()
 void level_nine::update()
 {
     level::update();
-
-    // The number-dragging can be this simple because all buttons are numbers except the 'Submit' button.
-    for (button* btn : get_buttons()) {
-        if (btn->is_pressed() && btn != m_submit_button) { 
-            m_button_in_hand = btn; 
-        }
-    }
-
-    const bool button_is_being_held = (IsMouseButtonDown(0) && m_button_in_hand != nullptr);
-
-    if (button_is_being_held) {
-        m_button_in_hand->set_position(GetMousePosition());
-    }
-    else {
-        m_button_in_hand = nullptr;
-    }
 
     //
     // On submission, add every button inside of the submission box to a vector, then organize
@@ -1313,9 +1281,6 @@ void level_nine::update()
 // ------------------------------------------------------------------------------------------ //
 level_ten::level_ten()
 {
-    this->m_label_in_hand = nullptr;
-    this->m_button_in_hand = nullptr;
-
     //
     // Main UI elements (level title, directions, submit box).
     //
@@ -1336,16 +1301,17 @@ level_ten::level_ten()
     )
     ->add_anim_rotate(0.0f, 4.0f, 1.5f);
 
+    Vector2 submit_box_position = {m_game.get_cw(), m_game.get_ch() - 25};
     this->m_submit_box = add_entity(
-        new label(
-            BLACK,
+        new button(
+            new text("", 80, BLACK, BLACK, submit_box_position),
             WHITE,
             {250, 150},
-            9,
-            {m_game.get_cw(), m_game.get_ch() - 25},
+            submit_box_position,
             -10
         )
     );
+    m_submit_box->add_trait(new grabbable());
 
     this->m_submit_button = add_ui_button("Submit");
 
@@ -1421,6 +1387,7 @@ level_ten::level_ten()
         }
         else {
             btn->add_trait(new grows_when_hovered());
+            btn->add_trait(new grabbable());
         }
 
         ++colors_it;
@@ -1439,28 +1406,8 @@ level_ten::level_ten()
 
 void level_ten::update()
 {
-    level::update(); 
+    level::update();
 
-    // The number-dragging can be this simple because all buttons are numbers except the 'Submit' button.
-    if (m_holdable_number->is_pressed()) { 
-        m_button_in_hand = m_holdable_number; 
-    }
-    else if (m_submit_box->is_pressed()) {
-        m_label_in_hand = m_submit_box;
-    }
-
-    const bool button_is_being_held = (IsMouseButtonDown(0) && m_button_in_hand != nullptr);
-    const bool label_is_being_held = (IsMouseButtonDown(0) && m_label_in_hand != nullptr);
-
-    if (button_is_being_held) {
-        m_button_in_hand->set_position(GetMousePosition());
-    }
-    else if (label_is_being_held) {
-        m_label_in_hand->set_position(GetMousePosition());
-    }
-    else {
-        m_button_in_hand = nullptr;
-    }
     //
     // On submission, add every button inside of the submission box to a vector, then organize
     // their text object's text strings in the same order that they exist spatially. Save this
@@ -1472,7 +1419,7 @@ void level_ten::update()
         numbers_in_box.reserve(m_choice_count);
 
         for (button* btn : get_buttons()) {
-            if (btn == m_submit_button) { continue; }
+            if (btn == m_submit_button || btn == m_submit_box) { continue; }
             if (CheckCollisionRecs(btn->get_rectangle(), m_submit_box->get_rectangle())) {
                 vector<button*>::iterator it = numbers_in_box.begin();
                 while (it != numbers_in_box.end() && (*it)->get_position().x <= btn->get_position().x) {

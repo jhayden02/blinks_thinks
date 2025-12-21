@@ -52,16 +52,6 @@ label::label(
 // ------------------------------------------------------------------------------------------ //
 //                                          Methods.                                          //
 // ------------------------------------------------------------------------------------------ //
-bool label::is_hovered()
-{
-    return CheckCollisionPointRec(GetMousePosition(), m_rectangle);
-}
-
-bool label::is_pressed()
-{
-    return is_hovered() && IsMouseButtonPressed(0);
-}
-
 void label::update()
 { 
     entity::update();

@@ -43,6 +43,8 @@ game::game()
     std::random_device random_generator_seed;
     m_random_generator.seed(random_generator_seed());
 
+    this->m_button_in_hand = nullptr;
+
     // Window, Screen, and FPS.
     InitWindow(m_w, m_h, m_game_name);
     SetTargetFPS(m_frame_rate); 

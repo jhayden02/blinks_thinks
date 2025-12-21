@@ -38,12 +38,6 @@ namespace engine
             void update() override;
             void draw() override;
 
-            bool is_hovered();           // Checks if 'mousePoint' (defined in 'include/main.hpp')
-                                        // is within the bounds of 'm_rect'.
-
-            bool is_pressed();           // Checks if 'is_hovered()', as well as 'mousePressed'
-                                        // (also defined in 'include/main.hpp') are both true.
-
             // Getters and setters.
             void set_scale(float scale) { m_scale = scale; }
 

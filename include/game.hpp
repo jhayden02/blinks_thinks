@@ -148,7 +148,10 @@ namespace engine
             static constexpr size_t get_frame_rate() { return m_frame_rate; }
 
             level* get_current_level() { return m_current_level; }
-            void set_next_level(level* next_level) { m_next_level = next_level; }            
+            void set_next_level(level* next_level) { m_next_level = next_level; }
+
+            button* get_button_in_hand() { return m_button_in_hand; }
+            void set_button_in_hand(button* btn) { m_button_in_hand = btn; }            
 
         private:
             game();
@@ -167,7 +170,10 @@ namespace engine
 
             // The current level being updated, drawn, and interacted with.
             level* m_current_level;
-            level* m_next_level; 
+            level* m_next_level;
+
+            // The button currently being grabbed by the user.
+            button* m_button_in_hand;
 
             // The random number engine for the game instance.
             std::default_random_engine m_random_generator;

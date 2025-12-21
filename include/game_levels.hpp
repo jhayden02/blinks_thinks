@@ -181,8 +181,7 @@ class level_seven : public engine::level
         level_seven();
         void update() override;
 
-    private: 
-        button* m_button_in_hand;
+    private:
         button* m_button_seven;
         button* m_button_nine;
         static constexpr int m_choice_count = 5;
@@ -211,7 +210,6 @@ class level_nine : public engine::level
         void update() override;
 
     private:
-        button* m_button_in_hand;
         label* m_submit_box;
         button* m_submit_button;
         static constexpr int m_choice_count = 5;
@@ -225,9 +223,7 @@ class level_ten : public engine::level
         void update() override;
 
     private:
-        label* m_label_in_hand;
-        label* m_submit_box;
-        button* m_button_in_hand;
+        button* m_submit_box;
         button* m_holdable_number;
         button* m_submit_button;
         static constexpr int m_choice_count = 5;
