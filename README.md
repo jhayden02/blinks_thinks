@@ -5,17 +5,14 @@
 - [Play Online](#play-online)
 - [Mission Statement](#mission-statement)
 - [Contribution](#contribution)
-- [Dependencies](#dependencies)
-- [Build](#build-instructions)
-- [Play Natively](#play-natively)
-- [Cleanup](#cleanup)
+- [Building](#building)
 - [License](#license)
 
 ## Description
 Blink's Thinks is a self-hosting point-and-click puzzle game.
 
-It runs on a simple C++ engine that uses raylib + raylib modules at it's core.  It is currently
-compilable for Linux (clang++) and web (Emscripten). The project uses GitHub Pages to host the
+It runs on a simple C++ engine that uses raylib + raylib modules at its core. It is currently
+compilable for Windows, Linux, and web (Emscripten). The project uses GitHub Pages to host the
 web-compiled game in a separate branch, 'gh-pages'. GitHub Workflows re-compiles the game to
 this branch on each push.
 
@@ -35,95 +32,12 @@ Since this project is such a personal thing to me, I'm not interested in accepti
 requests of feature contributions, such as level design or music. If you have an idea you would
 like to see added, I'd be happy to hear your idea over email. Bugfixes are always open to submit.
 
-## Dependencies
-If you would like to build the game locally, you will need these hard dependencies:
-- make
-- clang++
-- emscripten
-- raylib (installed, not just the submodule)
+## Building
 
-Along with this soft dependency:
-- python (for locally hosting an http server)
+See [BUILDING.md](BUILDING.md) for complete build instructions.
 
-The raylib submodule is used to compile the web library, and later the web game. Your system
-installed version is used to compile the native game. This simplifies the build immensely, as
-no logic needs to be included in the Makefile for various native Linux build platforms.
-
-Fedora
-```bash
-# First, install all of the dependencies available via dnf.
-sudo dnf install make clang++ raylib-devel
-
-# Optionally, install python if you'd like to locally host a http server.
-sudo dnf install python
-
-# Then, install and configure emscripten. 
-git clone https://github.com/emscripten-core/emsdk.git
-cd emsdk
-git pull
-./emsdk install latest
-./emsdk activate latest
-source ./emsdk_env.sh
-
-# Now go back to wherever to wish to clone and build 'blinks-thinks'.
-cd ../
-```
-
-## Build Instructions
-To begin, clone the project and go to the root of the repository:
-
-```bash
-git clone https://github.com/BlinkDynamo/blinks-thinks.git blinks-thinks
-cd blinks-thinks/
-```
-
-Update the raylib submodule. You will need this alongside your system-installed version of raylib.
-```bash
-git submodule update --init --recursive
-```
-
-You can now build either for web, or native Linux. A simple 'make' builds both:
-```bash
-# Native build.
-make native
-
-# Web build.
-make web
-
-# Native and web build.
-make
-``` 
-## Play Natively
-If the project built successfully, you now have various options to play the game: 
-
-For native build:
-```bash
-# To play the release version (no assertions).
-./build/native/release/blinks_thinks
-
-# To play the debug version (assertions).
-./build/native/debug/blinks_thinks
-```
-
-For web build:
-```bash
-# NOTE: The web build will always be a release build (no assertions).
-
-# Start the http server.
-make serve
-
-# Navigate to the locally hosted page that Emscripten compiled.
-firefox localhost:8080/blinks-thinks.html
-```
-
-## Cleanup
-Should you want to clean the build files.
-```bash
-make clean
-```
-
-# License
-Blink's Thinks is licensed under the GNU General Public License v3.0. You should have recieved
+## License
+Blink's Thinks is licensed under the GNU General Public License v3.0. You should have received
 a copy of the license along with this program. If not, see <https://www.gnu.org/licenses>.
 
 This project uses raylib, along with a small snippet of raylib example code for the intro

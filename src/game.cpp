@@ -47,6 +47,7 @@ game::game()
 
     // Window, Screen, and FPS.
     InitWindow(m_w, m_h, m_game_name);
+    SetWindowSize(m_w, m_h); // This fixes some Wayland bugs related to window size.
     SetTargetFPS(m_frame_rate); 
 
     // Remove the ESC key as a close command.

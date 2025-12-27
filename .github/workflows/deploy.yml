@@ -19,12 +19,12 @@ jobs:
           version: 3.1.60
 
       - name: Build Web
-        run: make -j$(nproc) web
-        
+        run: make web
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: ./build/web/out
+          publish_dir: ./build/web/release
           force_orphan: true
