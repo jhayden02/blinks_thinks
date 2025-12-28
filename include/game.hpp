@@ -178,6 +178,10 @@ namespace engine
             // The random number engine for the game instance.
             std::default_random_engine m_random_generator;
 
+            // Background blur effect.
+            RenderTexture2D m_background_target;
+            Shader m_blur_shader;
+
             // RNG specific constants.
             inline static const vector<Color> m_bright_colors = {GOLD, ORANGE, PINK, RED, LIME, SKYBLUE, PURPLE, VIOLET};
     };

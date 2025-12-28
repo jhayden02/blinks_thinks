@@ -38,7 +38,7 @@ level::level()
     m_game(game::get_instance())
 {
     // Create a base simple background for all 'level' objects for now.
-    add_entity(new background(GRAY, { 200, 200, 200, 255 }, 50)); 
+    add_entity(new background({ 145, 145, 145, 255 }, { 180, 180, 180, 255 }, 50)); 
 }
 
 level::~level()
@@ -63,8 +63,17 @@ void level::update()
 
 void level::draw()
 {
-    // draw each 'entity' object in 'entities'.
     for (const auto& ent : m_entities) {
+        ent->draw();
+    }
+}
+
+void level::draw_layers(int min_layer, int max_layer)
+{
+    for (const auto& ent : m_entities) {
+        int layer = ent->get_layer();
+        if (layer < min_layer) continue;
+        if (layer > max_layer) break;
         ent->draw();
     }
 }
@@ -83,7 +92,7 @@ text* level::add_simple_text(string text_str, float font_size, Color text_color,
 button* level::add_ui_button(string text_str)
 {
     constexpr Vector2 position = { game::get_cw(), game::get_ch() + 100 };
-    constexpr int layer = 0;
+    constexpr int layer = 1;
 
     text* const text_obj = new text(text_str, 40, WHITE, { 0, 0, 0, 0 }, position, layer);
 
@@ -107,7 +116,7 @@ button* level::add_ui_button(string text_str)
 button* level::add_text_button(string text_str, int font_size, Color text_color, Vector2 position)
 {
     constexpr Color shadow_color = { 15, 15, 15, 200 };
-    constexpr int layer = 0;
+    constexpr int layer = 1;
 
     text* const text_obj = new text(text_str, font_size, text_color, shadow_color, position, layer);
 

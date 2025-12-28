@@ -59,8 +59,10 @@ namespace engine
 
             virtual void draw();                // Will call the 'draw()' method of each member
                                                 // of 'm_entities'. It's unlikely any overloading
-                                                // is needed that can not already be handled in 
+                                                // is needed that can not already be handled in
                                                 // 'update()', but the option is there.
+
+            void draw_layers(int min_layer, int max_layer);
           
             // Getters and setters.
             vector<button*> get_buttons() { return m_buttons; }

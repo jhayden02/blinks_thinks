@@ -1166,7 +1166,7 @@ level_nine::level_nine()
             {250, 150},
             9,
             {m_game.get_cw(), m_game.get_ch() - 25},
-            -10
+            0
         )
     );
 
@@ -1308,7 +1308,7 @@ level_ten::level_ten()
             WHITE,
             {250, 150},
             submit_box_position,
-            -10
+            0
         )
     );
     m_submit_box->add_trait(new grabbable());

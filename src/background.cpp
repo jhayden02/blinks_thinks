@@ -44,7 +44,7 @@ background::background(
 
 void background::update()
 {
-    set_scroll_offset(get_scroll_offset() + GetFrameTime() * 60.0f);
+    set_scroll_offset(get_scroll_offset() + GetFrameTime() * 30.0f);
 }
 
 void background::draw()
