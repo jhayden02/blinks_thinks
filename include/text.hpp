@@ -37,9 +37,10 @@ namespace engine
                 string text_str,
                 float font_size,
                 Color text_color,
-                Color shadow_color,
                 Vector2 position = {0, 0},
-                int layer = 0); 
+                int layer = 0,
+                Color outline_color = BLACK,
+                float outline_size = 2.0f); 
 
             void update() override;
             void draw() override;
@@ -56,6 +57,12 @@ namespace engine
 
             Color get_text_color() { return m_text_color; }
             void set_text_color(Color text_color) { m_text_color = text_color; }
+
+            Color get_outline_color() { return m_outline_color; }
+            void set_outline_color(Color outline_color) { m_outline_color = outline_color; }
+
+            float get_outline_size() { return m_outline_size; }
+            void set_outline_size(float outline_size) { m_outline_size = outline_size; }
 
             Vector2 get_text_dim() { return m_text_dim; }
             void set_text_dim(Vector2 text_dim) { m_text_dim = text_dim; }
@@ -76,9 +83,8 @@ namespace engine
             float m_scaled_font_size;       // The size that the text is after scaling is applied.
                                             
             Color m_text_color;             // The color that the text will be displayed.
-                                            
-            Color m_shadow_color;           // The color that the duplicated, offset text behind
-                                            // the main text will be.
+
+            Color m_outline_color;          // The color of the outline drawn around the text.
                                             
             int m_letter_spacing;           // The pixels of spacing in between letters.
                                             
@@ -89,8 +95,7 @@ namespace engine
                                             // Calculated after font size, letter spacing, and
                                             // scaling have all been applied.
 
-            const Vector2 m_shadow_offset;  // The horizontal and vertical offset that the
-                                            // duplicated text (shadow) will be drawn at.
+            float m_outline_size;           // The thickness of the outline in pixels.
 
             // Rotation algorithm: m_rotation = sin(GetTime() * m_rotation_speed) * m_rotation_depth
 

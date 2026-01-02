@@ -105,7 +105,7 @@ void button::update()
     if (is_hovered()) {
         float brightenFactor = 2.0f;
 
-        // If the background is visible, brighten the background and darken the text object.
+        // If the background is visible, brighten the background and the text color.
         if (m_default_bg_color.a != 0) {
             m_current_bg_color = { 
                 static_cast<unsigned char>(fmin(m_default_bg_color.r * brightenFactor, 255)),
@@ -114,9 +114,9 @@ void button::update()
                 m_default_bg_color.a
             };
             m_current_text_color = { 
-                static_cast<unsigned char>(fmin(m_default_text_color.r / brightenFactor, 0)),
-                static_cast<unsigned char>(fmin(m_default_text_color.g / brightenFactor, 0)),
-                static_cast<unsigned char>(fmin(m_default_text_color.b / brightenFactor, 0)),
+                static_cast<unsigned char>(fmin(m_default_text_color.r * brightenFactor, 255)),
+                static_cast<unsigned char>(fmin(m_default_text_color.g * brightenFactor, 255)),
+                static_cast<unsigned char>(fmin(m_default_text_color.b * brightenFactor, 255)),
                 m_default_text_color.a
             };
         }

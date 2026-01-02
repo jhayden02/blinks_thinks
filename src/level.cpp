@@ -68,12 +68,11 @@ void level::draw()
     }
 }
 
-// Create a simple text with a background shadow.
+// Create a simple text with a black outline.
 text* level::add_simple_text(string text_str, float font_size, Color text_color, Vector2 position,
                                  int layer)
 {
-    constexpr Color shadow_color = { 15, 15, 15, 200 };
-    text* const text_obj = new text(text_str, font_size, text_color, shadow_color, position, layer);
+    text* const text_obj = new text(text_str, font_size, text_color, position, layer);
     add_entity(text_obj);
     return text_obj;
 }
@@ -84,7 +83,7 @@ button* level::add_ui_button(string text_str)
     constexpr Vector2 position = { game::get_cw(), game::get_ch() + 100 };
     constexpr int layer = 1;
 
-    text* const text_obj = new text(text_str, 40, WHITE, { 0, 0, 0, 0 }, position, layer);
+    text* const text_obj = new text(text_str, 40, WHITE, position, layer, BLACK, 2.0f);
 
     button* const btn = new button(
         text_obj,
@@ -105,10 +104,9 @@ button* level::add_ui_button(string text_str)
 // Make clickable text by creating an invisible button in the shape and size of the text.
 button* level::add_text_button(string text_str, int font_size, Color text_color, Vector2 position)
 {
-    constexpr Color shadow_color = { 15, 15, 15, 200 };
     constexpr int layer = 1;
 
-    text* const text_obj = new text(text_str, font_size, text_color, shadow_color, position, layer);
+    text* const text_obj = new text(text_str, font_size, text_color, position, layer);
 
     button* const btn = new button(
         text_obj,

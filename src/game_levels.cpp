@@ -104,9 +104,10 @@ level_title::level_title()
             version_and_build_display_str,
             20,
             RAYWHITE,
-            {0, 0, 0, 0},
             {game::get_w() - version_and_build_display_spacing, 20},
-            1000
+            1000,
+            {0, 0, 0, 0},
+            0.0f
         )
     );
 
@@ -1305,7 +1306,7 @@ level_ten::level_ten()
     Vector2 submit_box_position = {m_game.get_cw(), m_game.get_ch() - 25};
     this->m_submit_box = add_entity(
         new button(
-            new text("", 80, BLACK, BLACK, submit_box_position),
+            new text("", 80, BLACK, submit_box_position, 0, {0, 0, 0, 0}, 0.0f),
             WHITE,
             {250, 150},
             submit_box_position,

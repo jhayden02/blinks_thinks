@@ -30,9 +30,10 @@ text::text(
     string text_str,
     float font_size,
     Color text_color,
-    Color shadow_color,
     Vector2 position,
-    int layer)
+    int layer,
+    Color outline_color,
+    float outline_size)
 
     :
     entity(position, layer),
@@ -44,16 +45,15 @@ text::text(
     m_scaled_font_size(m_base_font_size * m_scale),
 
     m_text_color(text_color),
-    m_shadow_color(shadow_color),
-    
+    m_outline_color(outline_color),
+
     // Updated every frame in update().
     m_letter_spacing(m_base_font_size / 10.0f),
     m_text_dim(MeasureTextEx(GetFontDefault(), m_text_str.c_str(), m_base_font_size, m_letter_spacing)),
     m_origin({ m_text_dim.x / 2.0f, m_text_dim.y / 2.0f }),
 
-    // Constants.
-    m_shadow_offset({ 5.0f, 5.0f }),
-    
+    m_outline_size(outline_size),
+
     // Set to 0, with the prospect of being set at a later time.
     m_rotation(0.0f),
     m_rotation_speed(0.0f),
@@ -75,20 +75,29 @@ void text::update()
 
 void text::draw()
 {
-    // Shadow. Only draw the shadow if it's not fully transparent.
-    if (m_shadow_color.a != 0) {
-        DrawTextPro(
-            GetFontDefault(), 
-            m_text_str.c_str(), 
-            { m_position.x + m_shadow_offset.x, m_position.y + m_shadow_offset.y }, 
-            m_origin,
-            m_rotation,
-            m_scaled_font_size,
-            m_letter_spacing,
-            m_shadow_color);
+    // Draw outline by rendering text in 8 directions around the center.
+    // Only draw the outline if it has a visible alpha and non-zero size.
+    if (m_outline_color.a != 0 && m_outline_size > 0.0f) {
+        for (int i = 0; i < 8; ++i) {
+            float angle = i * (PI * 2.0f) / 8.0f;
+            Vector2 offset = {
+                cosf(angle) * m_outline_size,
+                sinf(angle) * m_outline_size
+            };
+            DrawTextPro(
+                GetFontDefault(),
+                m_text_str.c_str(),
+                { m_position.x + offset.x, m_position.y + offset.y },
+                m_origin,
+                m_rotation,
+                m_scaled_font_size,
+                m_letter_spacing,
+                m_outline_color
+            );
+        }
     }
 
-    // text.
+    // Draw main text on top.
     DrawTextPro(
         GetFontDefault(),
         m_text_str.c_str(),
@@ -97,5 +106,6 @@ void text::draw()
         m_rotation,
         m_scaled_font_size,
         m_letter_spacing,
-        m_text_color);
+        m_text_color
+    );
 }
