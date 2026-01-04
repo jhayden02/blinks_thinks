@@ -7,7 +7,7 @@
         <title>Blink's Think's</title>
         
         <meta name="title" content="Blink's Thinks">
-        <meta name="description" content="A point and click choice game built using raylib.">
+        <meta name="description" content="A self-hosting point-and-click puzzle game.">
         <meta name="keywords" content="raylib, programming, puzzle, C, C++, games, videogames">
         <meta name="viewport" content="width=device-width">
         
@@ -39,27 +39,47 @@
                 border-radius: 12px;
                 box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
                 transform: translateY(-15vh);
+                image-rendering: pixelated;
+                image-rendering: crisp-edges;
             }
         </style>
         
     </head>
-    
+
     <body>
         <canvas class=emscripten id=canvas oncontextmenu=event.preventDefault() tabindex=-1></canvas>
         <p id="output" />
         <script>
             var mouse_in_canvas_flag = true;
-            
+
             function setupMouseEvents(canvas) {
                 canvas.addEventListener("mouseleave", () => {
                     mouse_in_canvas_flag = false;
                 });
-                
+
                 canvas.addEventListener("mouseenter", () => {
                     mouse_in_canvas_flag = true;
                 });
             }
-            
+
+            function setupCanvas() {
+                var canvas = document.getElementById('canvas');
+                var dpr = window.devicePixelRatio || 1;
+
+                var gameWidth = 900;
+                var gameHeight = 600;
+
+                canvas.width = gameWidth * dpr;
+                canvas.height = gameHeight * dpr;
+
+                canvas.style.width = gameWidth + 'px';
+                canvas.style.height = gameHeight + 'px';
+
+                setupMouseEvents(canvas);
+            }
+
+            setupCanvas();
+
             var Module = {
                 print: (function() {
                     var element = document.getElementById('output');
