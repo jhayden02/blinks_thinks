@@ -21,8 +21,6 @@
 // Source.
 #include "game.hpp"
 
-using engine::game;
-
 // Standard library.
 #include <cmath>
 #include <algorithm>
@@ -37,32 +35,124 @@ namespace web
 }
 #endif
 
+using engine::game;
+
 game::game()
 {
-    // Class initialization.
     std::random_device random_generator_seed;
     m_random_generator.seed(random_generator_seed());
 
     this->m_button_in_hand = nullptr;
 
-    // Window, Screen, and FPS.
     InitWindow(m_w, m_h, m_game_name);
-
-    // This fixes some Wayland bugs related to window size.
-    SetWindowSize(m_w, m_h); 
-
-    SetTargetFPS(m_frame_rate); 
-
-    // Remove the ESC key as a close command.
+    SetWindowSize(m_w, m_h);
+    SetTargetFPS(m_frame_rate);
     SetExitKey(KEY_NULL);
-
-    // Set the tracelog level.
     SetTraceLogLevel(LOG_DEBUG);
+
+    // Initialize managers after window creation.
+    audio = new audio_manager();
+    shaders = new shader_manager();
 }
 
 game::~game()
 {
+    delete shaders;
+    delete audio;
     CloseWindow();
+}
+
+game::shader_manager::shader_manager()
+{
+    m_target_a = LoadRenderTexture(game::get_w(), game::get_h());
+    m_target_b = LoadRenderTexture(game::get_w(), game::get_h());
+
+    m_shaders.emplace("blur", LoadShader(0, "res/shaders/blur.frag"));
+    m_shaders.emplace("vignette", LoadShader(0, "res/shaders/vignette.frag"));
+
+    int resolution_loc = GetShaderLocation(m_shaders.at("vignette"), "resolution");
+    float resolution[2] = {static_cast<float>(game::get_w()), static_cast<float>(game::get_h())};
+    SetShaderValue(m_shaders.at("vignette"), resolution_loc, resolution, SHADER_UNIFORM_VEC2);
+
+    m_in_texture_mode = false;
+}
+
+game::shader_manager::~shader_manager()
+{
+    UnloadRenderTexture(m_target_a);
+    UnloadRenderTexture(m_target_b);
+
+    for (const auto& [name, shader] : m_shaders) {
+        UnloadShader(shader);
+    }
+}
+
+void game::shader_manager::begin()
+{
+    BeginTextureMode(m_target_a);
+    m_in_texture_mode = true;
+}
+
+void game::shader_manager::append(string shader_name)
+{
+    m_shader_queue.push_back(shader_name);
+}
+
+void game::shader_manager::process()
+{
+    if (m_in_texture_mode) {
+        EndTextureMode();
+        m_in_texture_mode = false;
+    }
+
+    if (m_shader_queue.empty()) {
+        DrawTextureRec(
+            m_target_a.texture,
+            Rectangle{
+                0.0f,
+                0.0f,
+                static_cast<float>(m_target_a.texture.width),
+                static_cast<float>(-m_target_a.texture.height)
+            },
+            Vector2{0.0f, 0.0f},
+            WHITE
+        );
+        return;
+    }
+
+    RenderTexture2D* source = &m_target_a;
+    RenderTexture2D* dest = &m_target_b;
+
+    for (size_t i = 0; i < m_shader_queue.size(); ++i) {
+        bool is_last = (i == m_shader_queue.size() - 1);
+
+        if (!is_last) {
+            BeginTextureMode(*dest);
+        }
+
+        BeginShaderMode(m_shaders.at(m_shader_queue[i]));
+
+        DrawTextureRec(
+            source->texture,
+            Rectangle{
+                0.0f,
+                0.0f,
+                static_cast<float>(source->texture.width),
+                static_cast<float>(-source->texture.height)
+            },
+            Vector2{0.0f, 0.0f},
+            WHITE
+        );
+
+        EndShaderMode();
+
+        if (!is_last) {
+            EndTextureMode();
+            std::swap(source, dest);
+        }
+    }
+
+    m_shader_queue.clear();
 }
 
 game::audio_manager::audio_manager()
@@ -96,12 +186,10 @@ game::audio_manager::audio_manager()
 
 game::audio_manager::~audio_manager()
 {
-    // Unload all the music tracks.
     for (const auto& [name, music] : m_music_tracks) {
         UnloadMusicStream(music);
     }
 
-    // Unload all the sounds.
     for (const auto& [name, sound] : m_sound_effects) {
         UnloadSound(sound);
     }
@@ -204,7 +292,7 @@ void game::run()
     while (!WindowShouldClose())
     {
         // ---------------------------------------------------------------------------------- //
-        //                                      update.                                       //
+        //                                      Update.                                       //
         // ---------------------------------------------------------------------------------- //
         if (m_next_level != nullptr) {
             if (m_current_level != nullptr) {
@@ -217,10 +305,10 @@ void game::run()
             m_current_level->update();
         }
 
-        audio.update();
+        audio->update();
 
         // ---------------------------------------------------------------------------------- //
-        //                                       draw.                                        //
+        //                                       Draw.                                        //
         // ---------------------------------------------------------------------------------- //
         BeginDrawing();
         ClearBackground(RAYWHITE);

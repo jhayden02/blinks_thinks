@@ -25,34 +25,29 @@
 
 namespace engine
 {
-    class background : public entity
-    {
-        public:
-            background(
-                Color dark_color,
-                Color light_color,
-                int square_size);
-            ~background();
 
-            void update() override;
-            void draw() override;
+class background : public entity
+{
+    public:
+    background(
+        Color dark_color,
+        Color light_color,
+        int square_size
+    );
+    ~background();
 
-            // Getters and setters.
-            static float get_scroll_offset() { return m_scroll_offset; }
-            static void set_scroll_offset(float scroll_offset) { m_scroll_offset = scroll_offset; }
+    void update() override;
+    void draw() override;
 
-        private:
-            // Arguments.
-            Color m_dark_color;
-            Color m_light_color;
-            int m_square_size;
+    static float get_scroll_offset() { return m_scroll_offset; }
+    static void set_scroll_offset(float scroll_offset) { m_scroll_offset = scroll_offset; }
 
-            static float m_scroll_offset;
+    private:
+    Color m_dark_color;
+    Color m_light_color;
+    int m_square_size;
 
-            // Shader processing.
-            RenderTexture2D m_render_target;
-            RenderTexture2D m_blur_target;
-            Shader m_blur_shader;
-            Shader m_vignette_shader;
-    };
-}
+    static float m_scroll_offset;
+};
+
+} // NAMESPACE ENGINE.

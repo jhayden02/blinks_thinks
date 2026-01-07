@@ -41,7 +41,7 @@ using std::to_string;
 intro_raylib::intro_raylib()
 {
     this->m_animation = add_entity(new anim_raylib());
-    m_game.audio.set_next_music("title_theme"); 
+    m_game.audio->set_next_music("title_theme"); 
 }
 
 void intro_raylib::update()
@@ -111,7 +111,7 @@ level_title::level_title()
         )
     );
 
-    m_game.audio.set_next_music("title_theme");
+    m_game.audio->set_next_music("title_theme");
 }
 
 void level_title::update()
@@ -139,7 +139,7 @@ level_lose::level_lose()
     ->add_anim_rotate(0.0f, 5.0f, 2.5f);
 
     // Pitch the music down.
-    m_game.audio.shift_pitch(0.8f);
+    m_game.audio->shift_pitch(0.8f);
 }
 
 void level_lose::update()
@@ -156,7 +156,7 @@ void level_lose::update()
 // ------------------------------------------------------------------------------------------ //
 level_win::level_win()
 {
-    m_game.audio.set_next_music("win_theme", false);  
+    m_game.audio->set_next_music("win_theme", false);  
 
     this->m_title_screen_button = add_ui_button("Title");
     add_simple_text(
@@ -194,8 +194,8 @@ intro_section_one::intro_section_one()
     );
 
     // Set the music track, and set the pitch make to normal if it's not.
-    m_game.audio.set_next_music("no_stopping_now");
-    m_game.audio.shift_pitch(1.0f);
+    m_game.audio->set_next_music("no_stopping_now");
+    m_game.audio->shift_pitch(1.0f);
 }
 
 void intro_section_one::update()
