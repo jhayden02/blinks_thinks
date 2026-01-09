@@ -1,225 +1,122 @@
-.PHONY: all native web clean serve
+.PHONY: all help linux windows web clean serve
+.NOTPARALLEL: linux windows web
 
-# ------------------------
-# Platform Detection
-# ------------------------
-UNAME_S := $(shell uname -s 2>/dev/null || echo Windows)
-
-# Determine native platform (for 'make native').
-ifeq ($(findstring MINGW,$(UNAME_S)),MINGW)
-    NATIVE_PLATFORM := windows
-else ifeq ($(findstring MSYS,$(UNAME_S)),MSYS)
-    NATIVE_PLATFORM := windows
-else ifeq ($(findstring Windows,$(UNAME_S)),Windows)
-    NATIVE_PLATFORM := windows
-else ifeq ($(UNAME_S),Linux)
-    NATIVE_PLATFORM := linux
-else
-    NATIVE_PLATFORM := unknown
+PLATFORM_TARGETS := all help linux windows web clean serve
+REQUESTED_PLATFORMS := $(filter $(PLATFORM_TARGETS),$(MAKECMDGOALS))
+ifneq ($(word 2,$(REQUESTED_PLATFORMS)),)
+$(error Cannot build multiple targets in one invocation. Build sequentially instead: `make clean && make -j$$(nproc) linux && make -j$$(nproc) web`)
 endif
 
-# PLATFORM is set internally by build targets, not by users.
-PLATFORM ?= $(NATIVE_PLATFORM)
-
-# ------------------------
-# Compiler Configuration
-# ------------------------
-STD       := -std=c++23
-WARNINGS  := -Wall -Wextra -Werror -Wshadow -Wnon-virtual-dtor -Wold-style-cast
-
-# Platform-specific compilers and includes.
-ifeq ($(PLATFORM),windows)
-    CXX := g++
-    CC  := gcc
-    INCLUDES := -I. -Iinclude
-else ifeq ($(PLATFORM),linux)
-    CXX := clang++
-    CC  := clang
-    INCLUDES := -I. -Iinclude
-else ifeq ($(PLATFORM),web)
-    CXX := em++
-    CC  := emcc
-    INCLUDES := -I. -Iinclude
-endif
-
-# ------------------------
-# Directory Configuration
-# ------------------------
 D_SRC := src
 
-# Platform-specific build directories.
-ifeq ($(PLATFORM),windows)
-    D_OBJ_DEBUG   := build/windows/debug
-    D_OBJ_RELEASE := build/windows/release
-else ifeq ($(PLATFORM),linux)
-    D_OBJ_DEBUG   := build/linux/debug
-    D_OBJ_RELEASE := build/linux/release
-endif
+STD := -std=c++23
+WARNINGS := -Wall -Wextra -Werror -Wshadow -Wnon-virtual-dtor -Wold-style-cast
+INCLUDES := -I. -Iinclude
+SOURCES := $(wildcard $(D_SRC)/*.cpp)
+EXE_NAME := blinks_thinks
 
-# Web directories (always defined).
-D_OBJ_WEB_DEBUG   := build/web/debug
-D_OBJ_WEB_RELEASE := build/web/release
-
-# ------------------------
-# Build Flags
-# ------------------------
-CXXFLAGS_DEBUG   := $(STD) $(WARNINGS) $(INCLUDES)
-CXXFLAGS_RELEASE := $(STD) $(WARNINGS) $(INCLUDES) -DNDEBUG -O3
-
-# Web flags (always defined).
-CXXFLAGS_WEB_DEBUG   := $(STD) $(WARNINGS) $(INCLUDES) -DPLATFORM_WEB
-CXXFLAGS_WEB_RELEASE := $(STD) $(WARNINGS) $(INCLUDES) -DPLATFORM_WEB -DNDEBUG -O3
-
-# ------------------------
-# Link Flags
-# ------------------------
-ifeq ($(PLATFORM),windows)
-    LINK_FLAGS := -Llib/windows -lraylib -lopengl32 -lgdi32 -lwinmm
-    EXECUTABLE_EXT := .exe
-else ifeq ($(PLATFORM),linux)
-    LINK_FLAGS := -Llib/linux -lraylib -lm -ldl -lpthread -lGL
-    EXECUTABLE_EXT :=
-endif
-
-# ------------------------
-# Raylib Configuration
-# ------------------------
 RL_SRC := external/raylib/src
-RAYLIB_VERSION := $(shell git -C external/raylib describe --tags --abbrev=0 2>/dev/null || echo "5.0")
+RL_VERSION := $(shell git -C external/raylib describe --tags --abbrev=0 2>/dev/null || echo "5.0")
+RL_LIB_NAME := libraylib.a
 
-ifeq ($(PLATFORM),windows)
-    RL_LIB := lib/windows/libraylib.a
-else ifeq ($(PLATFORM),linux)
-    RL_LIB := lib/linux/libraylib.a
-else ifeq ($(PLATFORM),web)
-    RL_LIB := lib/web/libraylib.a
-endif
+LINUX_CXX := clang++
+LINUX_CXXFLAGS_DEBUG := $(STD) $(WARNINGS) $(INCLUDES)
+LINUX_CXXFLAGS_RELEASE := $(STD) $(WARNINGS) $(INCLUDES) -DNDEBUG -Os
+LINUX_LINK_FLAGS := -Llib/linux -lraylib -lm -ldl -lpthread -lGL
 
-# Web library (always defined).
-RL_LIB_WEB := lib/web/libraylib.a
+WINDOWS_CXX := g++
+WINDOWS_CXXFLAGS_DEBUG := $(STD) $(WARNINGS) $(INCLUDES)
+WINDOWS_CXXFLAGS_RELEASE := $(STD) $(WARNINGS) $(INCLUDES) -DNDEBUG -Os
+WINDOWS_LINK_FLAGS := -Llib/windows -lraylib -lopengl32 -lgdi32 -lwinmm
 
-# Web link configuration (always defined).
+WEB_CXX := em++
+WEB_CXXFLAGS_DEBUG := $(STD) $(WARNINGS) $(INCLUDES) -DPLATFORM_WEB
+WEB_CXXFLAGS_RELEASE := $(STD) $(WARNINGS) $(INCLUDES) -DPLATFORM_WEB -DNDEBUG -Os
 WEB_PRELOAD_ASSETS := $(shell find res -type f 2>/dev/null | xargs -I{} echo --preload-file {})
-WEB_LINK_FLAGS := lib/web/libraylib.a \
+WEB_LINK_FLAGS := lib/web/$(RL_LIB_NAME) \
                   -s USE_GLFW=3 -s ASYNCIFY -s ALLOW_MEMORY_GROWTH=1 \
                   -s FORCE_FILESYSTEM=1 $(WEB_PRELOAD_ASSETS) \
                   --shell-file web/shell.html
 
-# ------------------------
-# Source Files
-# ------------------------
-SOURCES := $(wildcard $(D_SRC)/*.cpp)
+all: help
 
-# ------------------------
-# Build Targets
-# ------------------------
-all: native web
+help:
+	@echo "Available targets:"
+	@echo "  make linux   - Build for Linux (debug and release)"
+	@echo "  make windows - Build for Windows (debug and release)"
+	@echo "  make web     - Build for Web (debug and release)"
+	@echo "  make clean   - Remove the 'build/' directory"
+	@echo "  make serve   - Serve web release build on port 8080"
 
-.NOTPARALLEL: all native web
+linux: lib/linux/$(RL_LIB_NAME) build/linux/debug/$(EXE_NAME) build/linux/release/$(EXE_NAME) 
 
-native: $(RL_LIB) $(D_OBJ_DEBUG)/blinks_thinks$(EXECUTABLE_EXT) $(D_OBJ_RELEASE)/blinks_thinks$(EXECUTABLE_EXT)
+windows: lib/windows/$(RL_LIB_NAME) build/windows/debug/$(EXE_NAME).exe build/windows/release/$(EXE_NAME).exe
 
-web: $(RL_LIB_WEB) $(D_OBJ_WEB_DEBUG)/index.html $(D_OBJ_WEB_RELEASE)/index.html
+web: lib/web/$(RL_LIB_NAME) build/web/debug/index.html build/web/release/index.html 
 
-# ------------------------ # Native Build Rules (Windows/Linux) # ------------------------
-ifneq ($(PLATFORM),web)
+build/linux/debug/%.o: $(D_SRC)/%.cpp | build/linux/debug
+	$(LINUX_CXX) $(LINUX_CXXFLAGS_DEBUG) -c $< -o $@
 
-$(D_OBJ_DEBUG)/%.o: $(D_SRC)/%.cpp | $(D_OBJ_DEBUG)
-	$(CXX) $(CXXFLAGS_DEBUG) -c $< -o $@
+build/linux/debug/$(EXE_NAME): $(patsubst $(D_SRC)/%.cpp,build/linux/debug/%.o,$(SOURCES))
+	$(LINUX_CXX) $(filter %.o,$^) $(LINUX_LINK_FLAGS) -o $@
 
-$(D_OBJ_DEBUG)/blinks_thinks$(EXECUTABLE_EXT): $(patsubst $(D_SRC)/%.cpp,$(D_OBJ_DEBUG)/%.o,$(SOURCES)) | $(D_OBJ_DEBUG)
-	$(CXX) $^ $(LINK_FLAGS) -o $@
+build/linux/release/%.o: $(D_SRC)/%.cpp | build/linux/release
+	$(LINUX_CXX) $(LINUX_CXXFLAGS_RELEASE) -c $< -o $@
 
-$(D_OBJ_RELEASE)/%.o: $(D_SRC)/%.cpp | $(D_OBJ_RELEASE)
-	$(CXX) $(CXXFLAGS_RELEASE) -c $< -o $@
+build/linux/release/$(EXE_NAME): $(patsubst $(D_SRC)/%.cpp,build/linux/release/%.o,$(SOURCES))
+	$(LINUX_CXX) $(filter %.o,$^) $(LINUX_LINK_FLAGS) -o $@
 
-$(D_OBJ_RELEASE)/blinks_thinks$(EXECUTABLE_EXT): $(patsubst $(D_SRC)/%.cpp,$(D_OBJ_RELEASE)/%.o,$(SOURCES)) | $(D_OBJ_RELEASE)
-	$(CXX) $^ $(LINK_FLAGS) -o $@
+build/windows/debug/%.o: $(D_SRC)/%.cpp | build/windows/debug
+	$(WINDOWS_CXX) $(WINDOWS_CXXFLAGS_DEBUG) -c $< -o $@
 
-endif
+build/windows/debug/$(EXE_NAME).exe: $(patsubst $(D_SRC)/%.cpp,build/windows/debug/%.o,$(SOURCES))
+	$(WINDOWS_CXX) $(filter %.o,$^) $(WINDOWS_LINK_FLAGS) -o $@
 
-# ------------------------
-# Web Build Rules (always available)
-# ------------------------
-$(D_OBJ_WEB_DEBUG)/%.o: $(D_SRC)/%.cpp | $(D_OBJ_WEB_DEBUG)
-	em++ $(CXXFLAGS_WEB_DEBUG) -c $< -o $@
+build/windows/release/%.o: $(D_SRC)/%.cpp | build/windows/release
+	$(WINDOWS_CXX) $(WINDOWS_CXXFLAGS_RELEASE) -c $< -o $@
 
-$(D_OBJ_WEB_DEBUG)/index.html: $(patsubst $(D_SRC)/%.cpp,$(D_OBJ_WEB_DEBUG)/%.o,$(SOURCES)) $(RL_LIB_WEB) | $(D_OBJ_WEB_DEBUG)
-	em++ $(patsubst $(D_SRC)/%.cpp,$(D_OBJ_WEB_DEBUG)/%.o,$(SOURCES)) $(WEB_LINK_FLAGS) -o $@
+build/windows/release/$(EXE_NAME).exe: $(patsubst $(D_SRC)/%.cpp,build/windows/release/%.o,$(SOURCES))
+	$(WINDOWS_CXX) $(filter %.o,$^) $(WINDOWS_LINK_FLAGS) -o $@
 
-$(D_OBJ_WEB_RELEASE)/%.o: $(D_SRC)/%.cpp | $(D_OBJ_WEB_RELEASE)
-	em++ $(CXXFLAGS_WEB_RELEASE) -c $< -o $@
+build/web/debug/%.o: $(D_SRC)/%.cpp | build/web/debug
+	$(WEB_CXX) $(WEB_CXXFLAGS_DEBUG) -c $< -o $@
 
-$(D_OBJ_WEB_RELEASE)/index.html: $(patsubst $(D_SRC)/%.cpp,$(D_OBJ_WEB_RELEASE)/%.o,$(SOURCES)) $(RL_LIB_WEB) | $(D_OBJ_WEB_RELEASE)
-	em++ $(patsubst $(D_SRC)/%.cpp,$(D_OBJ_WEB_RELEASE)/%.o,$(SOURCES)) $(WEB_LINK_FLAGS) -o $@
+build/web/debug/index.html: $(patsubst $(D_SRC)/%.cpp,build/web/debug/%.o,$(SOURCES))
+	$(WEB_CXX) $^ $(WEB_LINK_FLAGS) -o $@
 
-# ------------------------
-# Raylib Library Build
-# ------------------------
-lib: $(RL_LIB)
+build/web/release/%.o: $(D_SRC)/%.cpp | build/web/release
+	$(WEB_CXX) $(WEB_CXXFLAGS_RELEASE) -c $< -o $@
 
-ifeq ($(PLATFORM),windows)
-# Windows: Build from source using raylib's Makefile.
-$(RL_LIB): | lib/windows
-	@echo "Building raylib $(RAYLIB_VERSION) for Windows..."
-	@rm -f $(RL_SRC)/*.o $(RL_SRC)/libraylib.a
-	@$(MAKE) -C $(RL_SRC) PLATFORM=PLATFORM_DESKTOP CC=gcc RAYLIB_LIBTYPE=STATIC >/dev/null 2>&1
-	@cp $(RL_SRC)/libraylib.a $@
+build/web/release/index.html: $(patsubst $(D_SRC)/%.cpp,build/web/release/%.o,$(SOURCES))
+	$(WEB_CXX) $^ $(WEB_LINK_FLAGS) -o $@
 
-else ifeq ($(PLATFORM),linux)
-# Linux: Build from source using raylib's Makefile with Wayland support.
-$(RL_LIB): | lib/linux
-	@echo "Building raylib $(RAYLIB_VERSION) for Linux..."
-	@rm -f $(RL_SRC)/*.o $(RL_SRC)/libraylib.a
-	@$(MAKE) -C $(RL_SRC) PLATFORM=PLATFORM_DESKTOP GLFW_LINUX_ENABLE_WAYLAND=TRUE GLFW_LINUX_ENABLE_X11=TRUE RAYLIB_LIBTYPE=STATIC >/dev/null 2>&1
-	@cp $(RL_SRC)/libraylib.a $@
+lib/linux/$(RL_LIB_NAME): | lib/linux
+	@echo "Building raylib $(RL_VERSION) for Linux..."
+	@rm -f $(RL_SRC)/*.o
+	@$(MAKE) -j$(shell nproc) -C $(RL_SRC) PLATFORM=PLATFORM_DESKTOP \
+		GLFW_LINUX_ENABLE_WAYLAND=TRUE GLFW_LINUX_ENABLE_X11=TRUE \
+		RAYLIB_LIBTYPE=STATIC >/dev/null 2>&1
+	@mv $(RL_SRC)/$(RL_LIB_NAME) $@
 
-else ifeq ($(PLATFORM),web)
-# Web: Build from source using raylib's Makefile.
-$(RL_LIB): | lib/web
-	@echo "Building raylib $(RAYLIB_VERSION) for Web..."
-	@rm -f $(RL_SRC)/*.o $(RL_SRC)/libraylib.a
-	@$(MAKE) -C $(RL_SRC) PLATFORM=PLATFORM_WEB CC=emcc AR=emar RAYLIB_LIBTYPE=STATIC >/dev/null 2>&1
-	@cp $(RL_SRC)/libraylib.a $@
+lib/windows/$(RL_LIB_NAME): | lib/windows
+	@echo "Building raylib $(RL_VERSION) for Windows..."
+	@rm -f $(RL_SRC)/*.o
+	@$(MAKE) -j$(shell nproc) -C $(RL_SRC) PLATFORM=PLATFORM_DESKTOP CC=gcc \
+		RAYLIB_LIBTYPE=STATIC >/dev/null 2>&1
+	@mv $(RL_SRC)/$(RL_LIB_NAME) $@
 
-endif
+lib/web/$(RL_LIB_NAME): | lib/web
+	@echo "Building raylib $(RL_VERSION) for Web..."
+	@rm -f $(RL_SRC)/*.o
+	@$(MAKE) -j$(shell nproc) -C $(RL_SRC) PLATFORM=PLATFORM_WEB CC=emcc AR=emar \
+		RAYLIB_LIBTYPE=STATIC >/dev/null 2>&1
+	@mv $(RL_SRC)/$(RL_LIB_NAME) $@
 
-# Web library build (always available).
-$(RL_LIB_WEB): | lib/web
-	@echo "Building raylib $(RAYLIB_VERSION) for Web..."
-	@rm -f $(RL_SRC)/*.o $(RL_SRC)/libraylib.a
-	@$(MAKE) -C $(RL_SRC) PLATFORM=PLATFORM_WEB CC=emcc AR=emar RAYLIB_LIBTYPE=STATIC >/dev/null 2>&1
-	@cp $(RL_SRC)/libraylib.a $@
-
-# ------------------------
-# Directory Creation
-# ------------------------
-$(D_OBJ_DEBUG):
+build/linux/debug build/linux/release build/windows/debug build/windows/release build/web/debug build/web/release lib/linux lib/windows lib/web:
 	mkdir -p $@
 
-$(D_OBJ_RELEASE):
-	mkdir -p $@
-
-$(D_OBJ_WEB_DEBUG):
-	mkdir -p $@
-
-$(D_OBJ_WEB_RELEASE):
-	mkdir -p $@
-
-lib/windows:
-	mkdir -p $@
-
-lib/linux:
-	mkdir -p $@
-
-lib/web:
-	mkdir -p $@
-
-# ------------------------
-# Utility Targets
-# ------------------------
 clean:
-	rm -rf build lib
+	rm -rf build
 
-serve: $(D_OBJ_WEB_RELEASE)/index.html
+serve: build/web/release/index.html
 	cd build/web/release && python -m http.server 8080

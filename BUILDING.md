@@ -45,9 +45,7 @@ Open w64devkit as administrator and navigate to the project root (blinks-thinks)
 
 Native build:
 ```bash
-make native release  # Release build.
-make native debug    # Debug build.
-# make native        # Build both.
+make windows  # Build both debug and release.
 ```
 
 This creates:
@@ -58,10 +56,8 @@ If this is the first build, raylib will be compiled from source and added to `li
 
 Web build:
 ```bash
-make web release     # Release build.
-make web debug       # Debug build.
-# make web           # Build both.
-make serve           # Serve the HTML locally on port 8080.
+make web    # Build both debug and release.
+make serve  # Serve the HTML locally on port 8080.
 ```
 If this is the first web build, raylib will be compile the web library and add it to `lib/web/`.
 
@@ -115,9 +111,7 @@ Build the project:
 
 Native build:
 ```bash
-make native release  # Release build.
-make native debug    # Debug build.
-# make native        # Build both.
+make linux  # Build both debug and release.
 ```
 
 This creates:
@@ -128,10 +122,8 @@ If this is the first build, raylib will be compiled from source and added to `li
 
 Web build:
 ```bash
-make web release     # Release build.
-make web debug       # Debug build.
-# make web           # Build both.
-make serve           # Serve the HTML locally on port 8080.
+make web    # Build both debug and release.
+make serve  # Serve the HTML locally on port 8080.
 ```
 If this is the first web build, raylib will be compile the web library and add it to `lib/web/`.
 
