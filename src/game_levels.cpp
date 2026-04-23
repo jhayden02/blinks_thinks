@@ -885,13 +885,17 @@ level_seven::level_seven()
     //
     // Button creation.
     //
-    vector<Vector2> button_positions = {
-        {m_game.get_cw() + 122, m_game.get_ch() - 250},
+
+	// Get a shuffled vector of all valid button positions, then insert the level number
+	// position at the beginning.
+    vector<Vector2> button_positions = { 
         {m_game.get_cw() - 275, m_game.get_ch()},
         {m_game.get_cw() - 175, m_game.get_ch() + 175},
         {m_game.get_cw() + 175, m_game.get_ch() + 175},
         {m_game.get_cw() + 275, m_game.get_ch()}
     };
+	shuffle(button_positions.begin(), button_positions.end(), m_game.get_random_generator());
+	button_positions.insert(button_positions.begin(), {m_game.get_cw() + 122, m_game.get_ch() - 250});
 
     // Get a sequence of 4 random numbers, then insert the level number (9), then (7) at the beginning.
     vector<int> button_values = m_game.get_random_sequence(m_choice_count - 2, 1, 8, {7});

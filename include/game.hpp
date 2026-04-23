@@ -80,6 +80,8 @@ class game
         Color get_random_color();
         vector<Color> get_random_color_sequence(size_t count);
 
+		std::default_random_engine get_random_generator() { return m_random_generator; }
+
         bool mouse_in_canvas();
 
         static bool float_equals(float a, float b, float epsilon = 0.0001f)
