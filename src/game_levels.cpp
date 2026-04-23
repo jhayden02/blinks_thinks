@@ -1047,14 +1047,18 @@ level_eight::level_eight()
     //
     // Button creation.
     //
+
+	// Get a shuffled vector of all valid button positions, then insert the level number
+	// position at the beginning.
     vector<Vector2> button_positions = {
-        {m_game.get_cw() + 122, m_game.get_ch() - 250},
         {m_game.get_cw() - 275, m_game.get_ch()},
         {m_game.get_cw() - 175, m_game.get_ch() + 175},
         {m_game.get_cw() + 175, m_game.get_ch() + 175},
         {m_game.get_cw() + 275, m_game.get_ch()},
         {m_game.get_cw(), m_game.get_ch() + 50}
     };
+	shuffle(button_positions.begin(), button_positions.end(), m_game.get_random_generator());
+    button_positions.insert(button_positions.begin(), {m_game.get_cw() + 122, m_game.get_ch() - 250});
 
     int correct_value = fib_seq.back();
  
