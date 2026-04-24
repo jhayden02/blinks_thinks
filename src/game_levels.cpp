@@ -218,7 +218,7 @@ level_one::level_one()
         "level",
         80,
         ORANGE,
-        {m_game.get_cw() - 4, m_game.get_ch() - 250},
+        {m_game.get_cw() - 30, m_game.get_ch() - 250},
         0
     );
 
@@ -272,7 +272,7 @@ level_two::level_two()
         "level",
         80,
         ORANGE,
-        {m_game.get_cw() - 4, m_game.get_ch() - 250},
+        {m_game.get_cw() - 30, m_game.get_ch() - 250},
         0
     );
 
@@ -326,7 +326,7 @@ level_three::level_three()
         "level",
         80,
         ORANGE,
-        {m_game.get_cw() - 4, m_game.get_ch() - 250},
+        {m_game.get_cw() - 30, m_game.get_ch() - 250},
         0
     );
 
@@ -460,7 +460,7 @@ level_five::level_five(string duration)
         "level",
         80,
         ORANGE,
-        {m_game.get_cw() - 4, m_game.get_ch() - 250},
+        {m_game.get_cw() - 30, m_game.get_ch() - 250},
         0
     );
 
@@ -645,7 +645,7 @@ level_six::level_six()
         "level",
         80,
         ORANGE,
-        {m_game.get_cw() - 4, m_game.get_ch() - 250},
+        {m_game.get_cw() - 30, m_game.get_ch() - 250},
         0
     );
 
@@ -712,7 +712,7 @@ level_seven::level_seven()
         "level",
         80,
         ORANGE,
-        {m_game.get_cw() - 4, m_game.get_ch() - 250},
+        {m_game.get_cw() - 30, m_game.get_ch() - 250},
         0
     );
 
@@ -796,7 +796,7 @@ level_eight::level_eight()
         "level",
         80,
         ORANGE,
-        {m_game.get_cw() - 4, m_game.get_ch() - 250},
+        {m_game.get_cw() - 30, m_game.get_ch() - 250},
         0
     );
 
@@ -883,7 +883,7 @@ level_nine::level_nine()
         "level",
         80,
         ORANGE,
-        {m_game.get_cw() - 4, m_game.get_ch() - 250},
+        {m_game.get_cw() - 30, m_game.get_ch() - 250},
         0
     );
 
@@ -989,7 +989,7 @@ level_ten::level_ten()
         "level",
         80,
         ORANGE,
-        {m_game.get_cw() - 4, m_game.get_ch() - 250},
+        {m_game.get_cw() - 30, m_game.get_ch() - 250},
         0
     );
 

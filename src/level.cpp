@@ -127,7 +127,7 @@ button* level::add_text_button(string text_str, int font_size, Color text_color,
 
 button* level::add_level_num_button(int num)
 {
-    Vector2 const position = {m_game.get_cw() + 122.0f, m_game.get_ch() - 250.0f};
+    Vector2 const position = {m_game.get_cw() + 118.0f, m_game.get_ch() - 250.0f};
     return add_text_button(std::to_string(num), 80, ORANGE, position);
 }
 
