@@ -793,15 +793,11 @@ vector<int> level_eight::get_fib_seq(int num_one, int num_two)
 
 level_eight::level_eight()
 {
-    //
-    // Main UI elements (level title, directions, Fibbonacci sequence hint).
-    //
     add_simple_text(
-        "level  ",
+        "level",
         80,
         ORANGE,
-        {m_game.get_cw() - 4,
-        m_game.get_ch() - 250},
+        {m_game.get_cw() - 4, m_game.get_ch() - 250},
         0
     );
 
@@ -809,23 +805,20 @@ level_eight::level_eight()
         "What number comes next?",
         40,
         RAYWHITE,
-        {m_game.get_cw(),
-        m_game.get_ch() - 150},
+        {m_game.get_cw(), m_game.get_ch() - 150},
         0
     )
     ->add_trait(new rotation_sin(4.0f, 1.5f));
 
-    // Get a completed fibbonacci sequence from a random first and second number.
-    int fib_seq_num_one = m_game.get_random_value(1, 4);
-    int fib_seq_num_two = m_game.get_random_value(5, 9);
-    vector<int> fib_seq = get_fib_seq(fib_seq_num_one, fib_seq_num_two);
+    int const fib_seq_num_one = m_game.get_random_value(1, 4);
+    int const fib_seq_num_two = m_game.get_random_value(5, 9);
+    vector<int> const fib_seq = get_fib_seq(fib_seq_num_one, fib_seq_num_two);
 
-    string fib_seq_question_str = ""; 
-
-    for (vector<int>::iterator it = fib_seq.begin(); it != fib_seq.end() - 1; ++it) {
+    string fib_seq_question_str;
+    for (auto it = fib_seq.begin(); it != fib_seq.end() - 1; ++it) {
         fib_seq_question_str += to_string(*it);
         fib_seq_question_str += ", ";
-    }   
+    }
     fib_seq_question_str += "?";
 
     add_simple_text(
@@ -837,89 +830,33 @@ level_eight::level_eight()
     )
     ->add_trait(new rotation_sin(4.0f, 1.5f));
 
-    //
-    // Button creation.
-    //
-
-	// Get a shuffled vector of all valid button positions, then insert the level number
-	// position at the beginning.
-    vector<Vector2> button_positions = {
-        {m_game.get_cw() - 275, m_game.get_ch()},
-        {m_game.get_cw() - 175, m_game.get_ch() + 175},
-        {m_game.get_cw() + 175, m_game.get_ch() + 175},
-        {m_game.get_cw() + 275, m_game.get_ch()},
-        {m_game.get_cw(), m_game.get_ch() + 50}
-    };
-	shuffle(button_positions.begin(), button_positions.end(), m_game.get_random_generator());
-    button_positions.insert(button_positions.begin(), {m_game.get_cw() + 122, m_game.get_ch() - 250});
-
-    int correct_value = fib_seq.back();
- 
     // All possible Fibbonacci sequences derived from 1-4 and 5-9 have a 2-digit 5th number.
-    // This is why we can hard code this range of incorrect value, but correct digit-length
-    // wrong numbers.
-    const int min_choice = 10;
-    const int max_choice = 99;
+    // This is why we can hard code this range of incorrect, but correct-digit-length values.
+    int const min_incorrect = 10;
+    int const max_incorrect = 99;
+    int const correct_value = fib_seq.back();
 
-    vector<int> button_values = m_game.get_random_sequence(
+    vector<button*> grouped = add_grouped_buttons(
         m_choice_count - 2,
-        min_choice,
-        max_choice,
+        min_incorrect,
+        max_incorrect,
         {correct_value}
     );
-    button_values.insert(button_values.begin(), correct_value);
-    button_values.insert(button_values.begin(), 8);
 
-    vector<Color> button_colors = m_game.get_random_color_sequence(m_choice_count - 1);
-    button_colors.insert(button_colors.begin(), ORANGE);
-    
-    // Ensure all the vectors are constructed to the same proper size.
-    GAME_ASSERT(
-        (button_positions.size() == m_choice_count) &&
-        (button_values.size() == m_choice_count) &&
-        (button_colors.size() == m_choice_count),
-        "Not all button construction vectors are of the class-defined size (m_choice_count)."
-    );
+    grouped.push_back(add_level_num_button(8));
 
-    // Get 3 iterators for each of these vectors, and *it++ them throughout the loop.
-    vector<Vector2>::iterator positions_it = button_positions.begin();
-    vector<int>::iterator values_it = button_values.begin();
-    vector<Color>::iterator colors_it = button_colors.begin();
-
-    size_t buttons_created = 0;
-
-    // Level number button.
-    add_text_button(
-        to_string(*values_it++),
-        80,
-        *colors_it++,
-        *positions_it++
-    );
-    ++buttons_created;
-
-    // Correct answer.
     m_correct_button = add_text_button(
-        to_string(*values_it++),
+        to_string(correct_value),
         80,
-        *colors_it++,
-        *positions_it++
-    ); 
-    ++buttons_created;
+        m_game.get_random_color(),
+        {0, 0}
+    );
+    add_to_group(m_correct_button);
+    grouped.push_back(m_correct_button);
 
-    // All other incorrect choices.
-    while (buttons_created != m_choice_count) {
-        add_text_button(
-            to_string(*values_it++),
-            80,
-            *colors_it++,
-            *positions_it++
-        ); 
-        ++buttons_created;
+    for (button* btn : grouped) {
+        btn->add_trait(new grows_when_hovered());
     }
-
-	for (button* btn : get_buttons()) {
-		btn->add_trait(new grows_when_hovered());
-	}
 }
 
 void level_eight::update()
