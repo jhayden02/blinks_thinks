@@ -213,10 +213,10 @@ void intro_section_one::update()
 // ------------------------------------------------------------------------------------------ //
 //                                          level 1.                                          //
 // ------------------------------------------------------------------------------------------ //
-level_one::level_one() 
+level_one::level_one()
 {
     add_simple_text(
-        "level  ",
+        "level",
         80,
         ORANGE,
         {m_game.get_cw() - 4, m_game.get_ch() - 250},
@@ -232,60 +232,20 @@ level_one::level_one()
     )
     ->add_trait(new rotation_sin(4.0f, 1.5f));
 
-    //
-    // Button creation.
-    //
-    vector<button*> choices(m_choice_count);
+    m_choices = add_grouped_buttons(m_choice_count - 1, m_min_choice, m_max_choice, {1});
+    m_choices.push_back(add_level_num_button(1));
 
-    vector<Vector2> button_positions = {
-        {m_game.get_cw() + 122, m_game.get_ch() - 250},
-        {m_game.get_cw() - 275, m_game.get_ch()},
-        {m_game.get_cw() - 175, m_game.get_ch() + 175},
-        {m_game.get_cw() + 175, m_game.get_ch() + 175},
-        {m_game.get_cw() + 275, m_game.get_ch()}
-    };
-
-    // Get a sequence of 4 random numbers, then insert the level number (1) at the beginning.
-    vector<int> button_values = m_game.get_random_sequence(4, m_min_choice, m_max_choice, {1});
-    button_values.insert(button_values.begin(), 1);
-
-    // Get a sequence of 4 random colors, then insert the level number's color (GOLD) at the beginning.
-    vector<Color> button_colors = m_game.get_random_color_sequence(4);
-    button_colors.insert(button_colors.begin(), ORANGE);
-    
-    // Ensure all the vectors are constructed to the same proper size.
-    GAME_ASSERT(
-        (button_positions.size() == m_choice_count) &&
-        (button_values.size() == m_choice_count) &&
-        (button_colors.size() == m_choice_count),
-        "Not all button construction vectors are of the class-defined size (m_choice_count)."
-    );
-
-    // Get 3 iterators for each of these vectors, and *it++ them throughout the loop.
-    vector<Vector2>::iterator positions_it = button_positions.begin();
-    vector<int>::iterator values_it = button_values.begin();
-    vector<Color>::iterator colors_it = button_colors.begin();
-   
-    // Construct a vector of buttons from which we will choose a correct answer. 
-    vector<button*> choosable_buttons(m_choice_count);
-
-    for (size_t loop_count = 0; loop_count != m_choice_count; ++loop_count) {
-        button* btn = add_text_button(
-            to_string(*values_it++),
-            80,
-            *colors_it++,
-            *positions_it++
-        ); 
-		btn->add_trait(new grows_when_hovered());
-		choosable_buttons[loop_count] = btn;
+    for (button* btn : m_choices) {
+        btn->add_trait(new grows_when_hovered());
     }
 
-    // Set 'm_correct_button' to the choice with the smallest value.
-    m_correct_button = *std::max_element(choosable_buttons.begin(), choosable_buttons.end(),
+    m_correct_button = *std::max_element(
+        m_choices.begin(),
+        m_choices.end(),
         [](button* a, button* b) {
-            return (stoi(a->get_text()) < stoi(b->get_text()));
+            return stoi(a->get_text()) < stoi(b->get_text());
         }
-    ); 
+    );
 }
 
 void level_one::update()
