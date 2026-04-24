@@ -709,11 +709,8 @@ void level_six::update()
 // ------------------------------------------------------------------------------------------ //
 level_seven::level_seven()
 {
-    //
-    // Main UI elements (level title, directions).
-    //
     add_simple_text(
-        "level  ",
+        "level",
         80,
         ORANGE,
         {m_game.get_cw() - 4, m_game.get_ch() - 250},
@@ -729,70 +726,19 @@ level_seven::level_seven()
     )
     ->add_trait(new rotation_sin(4.0f, 1.5f));
 
-    //
-    // Button creation.
-    //
+    vector<button*> grouped = add_grouped_buttons(m_choice_count - 2, 1, 8, {7, 9});
 
-	// Get a shuffled vector of all valid button positions, then insert the level number
-	// position at the beginning.
-    vector<Vector2> button_positions = { 
-        {m_game.get_cw() - 275, m_game.get_ch()},
-        {m_game.get_cw() - 175, m_game.get_ch() + 175},
-        {m_game.get_cw() + 175, m_game.get_ch() + 175},
-        {m_game.get_cw() + 275, m_game.get_ch()}
-    };
-	shuffle(button_positions.begin(), button_positions.end(), m_game.get_random_generator());
-	button_positions.insert(button_positions.begin(), {m_game.get_cw() + 122, m_game.get_ch() - 250});
+    m_button_seven = add_level_num_button(7);
+    grouped.push_back(m_button_seven);
 
-    // Get a sequence of 4 random numbers, then insert the level number (9), then (7) at the beginning.
-    vector<int> button_values = m_game.get_random_sequence(m_choice_count - 2, 1, 8, {7});
-    button_values.insert(button_values.begin(), 9);
-    button_values.insert(button_values.begin(), 7);
+    m_button_nine = add_text_button("9", 80, m_game.get_random_color(), {0, 0});
+    add_to_group(m_button_nine);
+    grouped.push_back(m_button_nine);
 
-    // Get a sequence of 4 random colors, then insert the level number's color (GOLD) at the beginning.
-    vector<Color> button_colors = m_game.get_random_color_sequence(m_choice_count - 1);
-    button_colors.insert(button_colors.begin(), ORANGE);
-    
-    // Ensure all the vectors are constructed to the same proper size.
-    GAME_ASSERT(
-        (button_positions.size() == m_choice_count) &&
-        (button_values.size() == m_choice_count) &&
-        (button_colors.size() == m_choice_count),
-        "Not all button construction vectors are of the class-defined size (m_choice_count)."
-    );
-
-    // Get 3 iterators for each of these vectors, and *it++ them throughout the loop.
-    vector<Vector2>::iterator positions_it = button_positions.begin();
-    vector<int>::iterator values_it = button_values.begin();
-    vector<Color>::iterator colors_it = button_colors.begin();
-    
-    m_button_seven = add_text_button(
-        to_string(*values_it++),
-        80,
-        *colors_it++,
-        *positions_it++
-    );
-
-    m_button_nine = add_text_button(
-        to_string(*values_it++),
-        80,
-        *colors_it++,
-        *positions_it++
-    );
-
-    for (size_t loop_count = 2; loop_count != m_choice_count; ++loop_count) {
-        add_text_button(
-            to_string(*values_it++),
-            80,
-            *colors_it++,
-            *positions_it++
-        );
+    for (button* btn : grouped) {
+        btn->add_trait(new grows_when_hovered());
+        btn->add_trait(new grabbable());
     }
-
-	for (button* btn : get_buttons()) {
-		btn->add_trait(new grows_when_hovered());
-		btn->add_trait(new grabbable());
-	}
 }
 
 void level_seven::update()
