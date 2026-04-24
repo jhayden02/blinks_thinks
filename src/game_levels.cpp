@@ -880,11 +880,8 @@ void level_eight::update()
 // ------------------------------------------------------------------------------------------ //
 level_nine::level_nine()
 {
-    //
-    // Main UI elements (level title, directions, submit box).
-    //
     add_simple_text(
-        "level  ",
+        "level",
         80,
         ORANGE,
         {m_game.get_cw() - 4, m_game.get_ch() - 250},
@@ -913,54 +910,21 @@ level_nine::level_nine()
 
     this->m_submit_button = add_ui_button("Submit");
 
-    //
-    // Button creation.
-    //
     m_correct_button_layout.reserve(m_choice_count);
 
-    vector<Vector2> button_positions = {
-        {m_game.get_cw() + 122, m_game.get_ch() - 250},
-        {m_game.get_cw() - 275, m_game.get_ch()},
-        {m_game.get_cw() - 175, m_game.get_ch() + 175},
-        {m_game.get_cw() + 175, m_game.get_ch() + 175},
-        {m_game.get_cw() + 275, m_game.get_ch()}
-    };
+    vector<button*> grouped = add_grouped_buttons(m_choice_count - 1, 1, 8, {9});
+    grouped.push_back(add_level_num_button(9));
 
-    // Get a sequence of 4 random numbers, then insert the level number (9) at the beginning.
-    vector<int> button_values = m_game.get_random_sequence(4, 1, 8, {9});
-    button_values.insert(button_values.begin(), 9);
-
-    // Get a sequence of 4 random colors, then insert the level number's color (GOLD) at the beginning.
-    vector<Color> button_colors = m_game.get_random_color_sequence(4);
-    button_colors.insert(button_colors.begin(), ORANGE);
-    
-    // Ensure all the vectors are constructed to the same proper size.
-    GAME_ASSERT(
-        (button_positions.size() == m_choice_count) &&
-        (button_values.size() == m_choice_count) &&
-        (button_colors.size() == m_choice_count),
-        "Not all button construction vectors are of the class-defined size (m_choice_count)."
-    );
-
-    // Get 3 iterators for each of these vectors, and *it++ them throughout the loop.
-    vector<Vector2>::iterator positions_it = button_positions.begin();
-    vector<int>::iterator values_it = button_values.begin();
-    vector<Color>::iterator colors_it = button_colors.begin();
-
-    while (m_correct_button_layout.size() < m_choice_count) {
-        button* btn = add_text_button(
-            to_string(*values_it++),
-            80,
-            *colors_it++,
-            *positions_it++
-        );
-		btn->add_trait(new grows_when_hovered());
-		btn->add_trait(new grabbable());
+    for (button* btn : grouped) {
+        btn->add_trait(new grows_when_hovered());
+        btn->add_trait(new grabbable());
         m_correct_button_layout.push_back(btn);
     }
-    
-    // Sort based on button string values, left to right, greatest to least.
-    sort(m_correct_button_layout.begin(), m_correct_button_layout.end(),
+
+    // Sort greatest-to-least so the correct answer reads left-to-right when assembled.
+    sort(
+        m_correct_button_layout.begin(),
+        m_correct_button_layout.end(),
         [](button* a, button* b) {
             return stoi(a->get_text()) > stoi(b->get_text());
         }
@@ -1022,11 +986,8 @@ void level_nine::update()
 // ------------------------------------------------------------------------------------------ //
 level_ten::level_ten()
 {
-    //
-    // Main UI elements (level title, directions, submit box).
-    //
     add_simple_text(
-        "level  ",
+        "level",
         80,
         ORANGE,
         {m_game.get_cw() - 4, m_game.get_ch() - 250},
@@ -1055,93 +1016,54 @@ level_ten::level_ten()
 
     this->m_submit_button = add_ui_button("Submit");
 
-    //
-    // Button creation.
-    //
-    m_correct_button_layout.reserve(m_choice_count);
+    button* const level_num_btn = add_level_num_button(10);
 
-    vector<Vector2> button_positions = {
-        {m_game.get_cw() + 122, m_game.get_ch() - 250},
-        {m_game.get_cw() - 275, m_game.get_ch()},
-        {m_game.get_cw() - 175, m_game.get_ch() + 175},
-        {m_game.get_cw() + 175, m_game.get_ch() + 175},
-        {m_game.get_cw() + 275, m_game.get_ch()}
-    };
+    vector<button*> grouped = add_grouped_buttons(m_choice_count - 1, 1, 99, {10});
 
-    // Get a sequence of 4 random numbers, sort them greatest to least, then insert the level
-    // number (10) at the beginning.
-    vector<int> button_values = m_game.get_random_sequence(4, 1, 99, {10});
-    sort(button_values.begin(), button_values.end(),
-        [](int a, int b) {
-            return a < b;
+    sort(
+        grouped.begin(),
+        grouped.end(),
+        [](button* a, button* b) {
+            return stoi(a->get_text()) < stoi(b->get_text());
         }
     );
-    button_values.insert(button_values.begin(), 10);
 
-    // Get a sequence of 4 random colors, then insert the level number's color (GOLD) at the beginning.
-    vector<Color> button_colors = m_game.get_random_color_sequence(4);
-    button_colors.insert(button_colors.begin(), ORANGE);
-    
-    // Ensure all the vectors are constructed to the same proper size.
-    GAME_ASSERT(
-        (button_positions.size() == m_choice_count) &&
-        (button_values.size() == m_choice_count) &&
-        (button_colors.size() == m_choice_count),
-        "Not all button construction vectors are of the class-defined size (m_choice_count)."
-    );
+    // The correct submission places the largest number on the left, second-largest on the
+    // right, forming the biggest possible compound number.
+    m_correct_button_layout.reserve(2);
+    m_correct_button_layout.push_back(grouped.back());
+    m_correct_button_layout.push_back(grouped[grouped.size() - 2]);
 
-    // Get 3 iterators for each of these vectors, and *it++ them throughout the loop.
-    vector<Vector2>::iterator positions_it = button_positions.begin();
-    vector<int>::iterator values_it = button_values.begin();
-    vector<Color>::iterator colors_it = button_colors.begin(); 
-
-    while (m_correct_button_layout.size() < m_choice_count) {
-        button* btn = add_text_button(
-            to_string(*values_it++),
-            80,
-            *colors_it,
-            *positions_it
-        );  
-        m_correct_button_layout.push_back(btn); 
-
-        // Place an ice cube over every number except for the greatest to show that they are
-        // not holdable.
-        if (values_it != button_values.end()) {
-            Vector2 ice_cube_size;
-            int ice_cube_padding = 32;
-            ice_cube_size.x = btn->get_scaled_rec().width + ice_cube_padding;
-            ice_cube_size.y = btn->get_scaled_rec().height + ice_cube_padding;
-
-            Vector2 ice_cube_position = *positions_it;
-            ice_cube_position.x += 4;   // Accomodate for the shadow offset of the text.
-            add_entity(
-                new label(
-                    {255, 255, 255, 75},
-                    {75, 150, 255, 75},
-                    ice_cube_size,
-                    4,
-                    ice_cube_position,
-                    1
-                )
-            );
-        }
-        else {
-            btn->add_trait(new grows_when_hovered());
-            btn->add_trait(new grabbable());
-        }
-
-        ++colors_it;
-        ++positions_it;
-    } 
-
-    // Erase everything except for the last two numbers, swap them so that they together create
-    // the largest compound number, then make the larger of the two (the first) the holdable one.
-    m_correct_button_layout.erase(
-        m_correct_button_layout.begin(),
-        m_correct_button_layout.begin() + m_choice_count - 2
-    );
-    std::swap(m_correct_button_layout.at(0), m_correct_button_layout.at(1));
     m_holdable_number = m_correct_button_layout.front();
+    m_holdable_number->add_trait(new grows_when_hovered());
+    m_holdable_number->add_trait(new grabbable());
+
+    // Freeze every non-holdable button (level-num and all smaller grouped values) with an
+    // ice-cube overlay to show that they cannot be moved.
+    vector<button*> iced = grouped;
+    iced.push_back(level_num_btn);
+    for (button* btn : iced) {
+        if (btn == m_holdable_number) {
+            continue;
+        }
+        int const ice_cube_padding = 32;
+        Vector2 const ice_cube_size = {
+            btn->get_scaled_rec().width + ice_cube_padding,
+            btn->get_scaled_rec().height + ice_cube_padding
+        };
+        Vector2 ice_cube_position = btn->get_position();
+        ice_cube_position.x += 4;   // Accomodate for the shadow offset of the text.
+        add_entity(
+            new label(
+                {255, 255, 255, 75},
+                {75, 150, 255, 75},
+                ice_cube_size,
+                4,
+                ice_cube_position,
+                1
+            )
+        );
+    }
 }
 
 void level_ten::update()
