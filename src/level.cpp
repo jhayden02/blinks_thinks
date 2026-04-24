@@ -35,7 +35,8 @@ level::level()
     :
     m_game(game::get_instance()),
     m_entities{},
-    m_buttons{}
+    m_buttons{},
+    m_grouped_buttons{}
 {
     add_entity(
         new background(
@@ -53,6 +54,7 @@ level::~level()
     }
     m_entities.clear();
     m_buttons.clear();
+    m_grouped_buttons.clear();
 }
 
 void level::update()
@@ -115,4 +117,91 @@ button* level::add_text_button(string text_str, int font_size, Color text_color,
     btn->set_sfx_press(m_game.audio->get_sound_effect("grab"));
     add_entity(btn);
     return btn;
+}
+
+button* level::add_level_num_button(int num)
+{
+    Vector2 const position = {m_game.get_cw() + 122.0f, m_game.get_ch() - 250.0f};
+    return add_text_button(std::to_string(num), 80, ORANGE, position);
+}
+
+vector<button*> level::add_grouped_buttons(
+    size_t count,
+    int min_value,
+    int max_value,
+    const vector<int>& excluded_values
+) {
+    GAME_ASSERT(count > 0, "add_grouped_buttons called with count == 0.");
+    GAME_ASSERT(
+        min_value <= max_value,
+        "add_grouped_buttons called with min_value > max_value."
+    );
+    GAME_ASSERT(
+        static_cast<size_t>(max_value - min_value + 1) > excluded_values.size(),
+        "add_grouped_buttons: excluded_values covers or exceeds the entire value range."
+    );
+    GAME_ASSERT(
+        static_cast<size_t>(max_value - min_value + 1) - excluded_values.size() >= count,
+        "add_grouped_buttons: not enough unique values in range to satisfy count."
+    );
+
+    vector<int> const values = m_game.get_random_sequence(
+        count, min_value, max_value, excluded_values
+    );
+    vector<Color> const colors = m_game.get_random_color_sequence(count);
+
+    vector<button*> created;
+    created.reserve(count);
+
+    for (size_t i = 0; i < count; ++i) {
+        button* const btn = add_text_button(std::to_string(values[i]), 80, colors[i], {0, 0});
+        m_grouped_buttons.push_back(btn);
+        created.push_back(btn);
+    }
+
+    rearrange_group();
+    return created;
+}
+
+void level::add_to_group(button* btn)
+{
+    GAME_ASSERT(btn != nullptr, "add_to_group called with nullptr.");
+    m_grouped_buttons.push_back(btn);
+    rearrange_group();
+}
+
+void level::rearrange_group()
+{
+    size_t const n = m_grouped_buttons.size();
+    if (n == 0) {
+        return;
+    }
+
+    Vector2 const center = {m_game.get_cw(), m_game.get_ch()};
+
+    if (n == 1) {
+        m_grouped_buttons[0]->set_position(center);
+        return;
+    }
+
+    float const rotation_offset = group_rotation_offset(n);
+    for (size_t i = 0; i < n; ++i) {
+        float const base_angle = 2.0f * PI * static_cast<float>(i) / static_cast<float>(n);
+        float const angle = base_angle + rotation_offset;
+        Vector2 const position = {
+            center.x + m_group_ring_radius * cosf(angle),
+            center.y + m_group_ring_radius * sinf(angle)
+        };
+        m_grouped_buttons[i]->set_position(position);
+    }
+}
+
+float level::group_rotation_offset(size_t n)
+{
+    switch (n) {
+        case 2:  return 0.0f;
+        case 3:  return -PI / 2.0f;
+        case 4:  return -PI / 4.0f;
+        default: return -PI / 2.0f;
+    }
 }
