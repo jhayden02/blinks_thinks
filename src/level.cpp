@@ -31,6 +31,8 @@ using engine::text;
 using engine::button;
 using engine::overlay;
 
+const Vector2 level::m_grouped_buttons_center = {game::get_cw(), game::get_ch() + 75.0f};
+
 level::level()
     :
     m_game(game::get_instance()),
@@ -72,9 +74,13 @@ void level::draw()
 }
 
 // Create a simple text with a black outline.
-text* level::add_simple_text(string text_str, float font_size, Color text_color,
-                             Vector2 position, int layer)
-{
+text* level::add_simple_text(
+	string text_str,
+	float font_size,
+	Color text_color,
+    Vector2 position,
+	int layer
+) {
     text* const text_obj = new text(text_str, font_size, text_color, position, layer);
     add_entity(text_obj);
     return text_obj;
@@ -144,6 +150,10 @@ vector<button*> level::add_grouped_buttons(
         static_cast<size_t>(max_value - min_value + 1) - excluded_values.size() >= count,
         "add_grouped_buttons: not enough unique values in range to satisfy count."
     );
+    GAME_ASSERT(
+        m_grouped_buttons.size() + count <= m_grouped_buttons_max,
+        "add_grouped_buttons: adding count would exceed m_grouped_buttons_max."
+    );
 
     vector<int> const values = m_game.get_random_sequence(
         count, min_value, max_value, excluded_values
@@ -166,6 +176,10 @@ vector<button*> level::add_grouped_buttons(
 void level::add_to_group(button* btn)
 {
     GAME_ASSERT(btn != nullptr, "add_to_group called with nullptr.");
+    GAME_ASSERT(
+        m_grouped_buttons.size() + 1 <= m_grouped_buttons_max,
+        "add_to_group: adding a button would exceed m_grouped_buttons_max."
+    );
     m_grouped_buttons.push_back(btn);
     rearrange_group();
 }
@@ -176,32 +190,21 @@ void level::rearrange_group()
     if (n == 0) {
         return;
     }
+    GAME_ASSERT(
+        n <= m_grouped_buttons_max,
+        "rearrange_group: m_grouped_buttons size exceeds m_grouped_buttons_max."
+    );
 
-    Vector2 const center = {m_game.get_cw(), m_game.get_ch()};
+    // A single row of N buttons centered horizontally on m_grouped_buttons_center.
+    float const first_col_x
+        = m_grouped_buttons_center.x
+        - (static_cast<float>(n - 1) * m_grouped_buttons_col_spacing / 2.0f);
 
-    if (n == 1) {
-        m_grouped_buttons[0]->set_position(center);
-        return;
-    }
-
-    float const rotation_offset = group_rotation_offset(n);
     for (size_t i = 0; i < n; ++i) {
-        float const base_angle = 2.0f * PI * static_cast<float>(i) / static_cast<float>(n);
-        float const angle = base_angle + rotation_offset;
         Vector2 const position = {
-            center.x + m_group_ring_radius * cosf(angle),
-            center.y + m_group_ring_radius * sinf(angle)
+            first_col_x + static_cast<float>(i) * m_grouped_buttons_col_spacing,
+            m_grouped_buttons_center.y
         };
         m_grouped_buttons[i]->set_position(position);
-    }
-}
-
-float level::group_rotation_offset(size_t n)
-{
-    switch (n) {
-        case 2:  return 0.0f;
-        case 3:  return -PI / 2.0f;
-        case 4:  return -PI / 4.0f;
-        default: return -PI / 2.0f;
     }
 }

@@ -110,20 +110,23 @@ class level
 
         vector<button*> m_buttons;
 
-        // Buttons whose positions are auto-managed. Members are arranged in a regular
-        // polygon around the canvas center; membership changes trigger rearrangement.
+        // Buttons whose positions are auto-managed. Members are arranged in a single
+        // horizontal row centered on m_grouped_buttons_center; membership changes trigger
+        // rearrangement.
         vector<button*> m_grouped_buttons;
 
-        // Ring radius used by rearrange_group to lay out buttons around the center.
-        static constexpr float m_group_ring_radius = 275.0f;
+        // The anchor point around which m_grouped_buttons are laid out.
+        static const Vector2 m_grouped_buttons_center;
+
+        // Horizontal spacing between adjacent buttons in the row.
+        static inline const float m_grouped_buttons_col_spacing = 150.0f;
+
+        // The maximum number of buttons the row can hold.
+        static inline const size_t m_grouped_buttons_max = 4;
 
         // Recomputes the position of every button in m_grouped_buttons based on its
         // current size. Snap-instant; no animation.
         void rearrange_group();
-
-        // Returns the rotation offset (radians) used when laying out N buttons in a
-        // polygon so the shape reads naturally for each N.
-        static float group_rotation_offset(size_t n);
 };
 
 } // NAMESPACE ENGINE.
