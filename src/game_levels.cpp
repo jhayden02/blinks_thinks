@@ -30,7 +30,6 @@ using engine::grows_when_hovered;
 using engine::grabbable;
 
 // Standard library.
-#include <iterator>
 #include <algorithm>
 #include <limits.h>
 
@@ -781,12 +780,12 @@ vector<int> level_eight::get_fib_seq(int num_one, int num_two)
     for (size_t i = 0; i != m_fib_seq_len; ++i) {
         sequence[i] = num_one;
         GAME_ASSERT(
-        num_one + num_two < INT_MAX,
-        "INT_MAX was exceeded when trying to calculate a member of a fibbonacci sequence of the requested size."
+            num_one + num_two < INT_MAX,
+            "INT_MAX was exceeded when computing a member of the fibbonacci sequence."
         );
-       num_three = num_one + num_two;
-       num_one = num_two;
-       num_two = num_three;
+        num_three = num_one + num_two;
+        num_one = num_two;
+        num_two = num_three;
     }
     return sequence;
 }
