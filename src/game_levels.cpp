@@ -900,14 +900,17 @@ level_nine::level_nine()
         new label(
             BLACK,
             WHITE,
-            {250, 150},
-            9,
-            {m_game.get_cw(), m_game.get_ch() - 25},
+            {300, 100},
+            2,
+            {m_game.get_cw(), m_game.get_ch() - 50},
             0
         )
     );
 
     this->m_submit_button = add_ui_button("Submit");
+	m_submit_button->set_position(
+		{m_submit_button->get_position().x, m_submit_button->get_position().y + 100}
+	);
 
     m_correct_button_layout.reserve(m_choice_count);
 
@@ -1002,18 +1005,21 @@ level_ten::level_ten()
     )
     ->add_trait(new rotation_sin(4.0f, 1.5f));
 
-    Vector2 const submit_box_position = {m_game.get_cw(), m_game.get_ch() - 25};
+    Vector2 const submit_box_position = {m_game.get_cw(), m_game.get_ch() - 50};
     this->m_submit_box = add_entity(
         new button(
             new text("", 80, BLACK, submit_box_position, 0, {0, 0, 0, 0}, 0.0f),
             WHITE,
-            {submit_box_position.x - 125.0f, submit_box_position.y - 75.0f, 250.0f, 150.0f},
+            {submit_box_position.x - 150.0f, submit_box_position.y - 50.0f, 300.0f, 100.0f},
             0
         )
     );
     m_submit_box->add_trait(new grabbable());
 
     this->m_submit_button = add_ui_button("Submit");
+	m_submit_button->set_position(
+		{m_submit_button->get_position().x, m_submit_button->get_position().y + 100}
+	);
 
     button* const level_num_btn = add_level_num_button(10);
 
