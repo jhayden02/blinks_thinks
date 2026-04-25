@@ -379,10 +379,10 @@ level_four::level_four()
     // Main UI elements (level title, directions).
     //
     add_simple_text(
-        "level 4",
+        "level",
         80,
         ORANGE,
-        {m_game.get_cw(),
+        {m_game.get_cw() - 30,
         m_game.get_ch() - 250},
         0
     );
@@ -397,32 +397,11 @@ level_four::level_four()
     )
     ->add_trait(new rotation_sin(4.0f, 1.5f));
 
-    add_text_button(
-        "2 seconds",
-        60,
-        m_game.get_random_color(),
-        {m_game.get_cw(),
-        m_game.get_ch() - 50}
-    );
+    m_choices = add_grouped_buttons(m_choice_count - 1, m_min_choice, m_max_choice, {});
+    m_choices.push_back(add_level_num_button(4));
 
-    add_text_button(
-        "5 seconds",
-        60,
-        m_game.get_random_color(),
-        {m_game.get_cw(),
-        m_game.get_ch() + 50}
-    );
-
-    add_text_button(
-        "10 seconds",
-        60,
-        m_game.get_random_color(),
-        {m_game.get_cw(),
-        m_game.get_ch() + 150}
-    );
-
-    for (button* btn : get_buttons()) {
-        btn->add_trait(new grows_when_hovered());
+    for (size_t i = 0; i < m_choices.size(); ++i) {
+        m_choices[i]->add_trait(new grows_when_hovered());
     }
 }
 
@@ -433,7 +412,6 @@ void level_four::update()
     for (button* btn : get_buttons()) {
         if (btn->is_pressed()) {
             string chosen_time = btn->get_text();
-            chosen_time.erase(chosen_time.find(" seconds"), chosen_time.length());
             m_game.set_next_level(new level_five(chosen_time));
         }
     }

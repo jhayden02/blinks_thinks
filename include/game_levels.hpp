@@ -150,6 +150,10 @@ class level_four : public engine::level
     public:
         level_four(); 
         void update() override;
+
+    private:
+        static constexpr int m_choice_count = 5, m_min_choice = 5, m_max_choice = 10;
+        vector<button*> m_choices;
 };
 
 class level_five : public engine::level
