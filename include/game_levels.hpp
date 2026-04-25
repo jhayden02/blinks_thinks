@@ -233,5 +233,8 @@ class level_ten : public engine::level
         button* m_holdable_number;
         button* m_submit_button;
         static constexpr int m_choice_count = 5;
+        static constexpr int m_min_choice = 1;
+        static constexpr int m_max_choice = 9;
+        static constexpr int m_max_submit_box_numbers = 2;
         vector<button*> m_correct_button_layout;
 };

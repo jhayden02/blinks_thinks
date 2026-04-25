@@ -988,7 +988,7 @@ level_ten::level_ten()
         new button(
             new text("", 80, BLACK, submit_box_position, 0, {0, 0, 0, 0}, 0.0f),
             WHITE,
-            {submit_box_position.x - 150.0f, submit_box_position.y - 50.0f, 300.0f, 100.0f},
+            {submit_box_position.x - 75.0f, submit_box_position.y - 50.0f, 150.0f, 100.0f},
             0
         )
     );
@@ -999,32 +999,34 @@ level_ten::level_ten()
 		{m_submit_button->get_position().x, m_submit_button->get_position().y + 100}
 	);
 
-    button* const level_num_btn = add_level_num_button(10);
-
-    vector<button*> grouped = add_grouped_buttons(m_choice_count - 1, 1, 99, {10});
+    vector<button*> grouped = add_grouped_buttons(m_choice_count - 1, m_min_choice, m_max_choice, {10});
+    grouped.push_back(add_level_num_button(10));
 
     sort(
         grouped.begin(),
         grouped.end(),
         [](button* a, button* b) {
-            return stoi(a->get_text()) < stoi(b->get_text());
+            return stoi(a->get_text()) > stoi(b->get_text());
         }
     );
 
-    // The correct submission places the largest number on the left, second-largest on the
-    // right, forming the biggest possible compound number.
-    m_correct_button_layout.reserve(2);
-    m_correct_button_layout.push_back(grouped.back());
-    m_correct_button_layout.push_back(grouped[grouped.size() - 2]);
-
-    m_holdable_number = m_correct_button_layout.front();
+    m_holdable_number = grouped[m_game.get_random_value(0, grouped.size() - 1)];
     m_holdable_number->add_trait(new grows_when_hovered());
     m_holdable_number->add_trait(new grabbable());
 
-    // Freeze every non-holdable button (level-num and all smaller grouped values) with an
-    // ice-cube overlay to show that they cannot be moved.
+    // The largest creatable number always includes the level number as the second piece.
+    // If the level number is holdable, you move it to the right of the second largest
+    // number. If it's not holdable, you move the holdable number to the left of it.
+    if (m_holdable_number->get_text() == "10") {
+        m_correct_button_layout.push_back(grouped[1]);
+        m_correct_button_layout.push_back(grouped[0]);
+    } else {
+        m_correct_button_layout.push_back(m_holdable_number);
+        m_correct_button_layout.push_back(grouped[0]);
+    }
+
+    // Freeze every non-holdable button with an ice-cube overlay to show that they cannot be moved.
     vector<button*> iced = grouped;
-    iced.push_back(level_num_btn);
     for (button* btn : iced) {
         if (btn == m_holdable_number) {
             continue;
@@ -1061,10 +1063,12 @@ void level_ten::update()
     if (m_submit_button->is_pressed()) {
 
         vector<button*> numbers_in_box; // For buttons that are inside of the submission box.
-        numbers_in_box.reserve(m_choice_count);
+        numbers_in_box.reserve(m_max_submit_box_numbers);
 
         for (button* btn : get_buttons()) {
-            if (btn == m_submit_button || btn == m_submit_box) { continue; }
+            if (btn == m_submit_button || btn == m_submit_box) {
+                continue;
+            }
             if (CheckCollisionRecs(btn->get_scaled_rec(), m_submit_box->get_scaled_rec())) {
                 vector<button*>::iterator it = numbers_in_box.begin();
                 while (it != numbers_in_box.end() && (*it)->get_position().x <= btn->get_position().x) {
@@ -1072,24 +1076,9 @@ void level_ten::update()
                 }
                 numbers_in_box.insert(it, btn);
             }
-        }
+        } 
 
-        // Assume true and override if proven false. 
-        bool answer_was_chosen = true;
-        vector<button*>::iterator choice_it = numbers_in_box.begin();
-        vector<button*>::iterator answer_it = m_correct_button_layout.begin();
-
-        if (numbers_in_box.size() != m_correct_button_layout.size()) { answer_was_chosen = false; }
-
-        while(choice_it != numbers_in_box.end() && answer_it != m_correct_button_layout.end()) {
-            if ((*choice_it)->get_text() != (*answer_it)->get_text()) {
-                answer_was_chosen = false;
-            }
-            ++choice_it;
-            ++answer_it;
-        }
-
-        if (answer_was_chosen) {
+        if (numbers_in_box == m_correct_button_layout) {
             m_game.set_next_level(new level_win());
         }
         else {
