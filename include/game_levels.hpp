@@ -219,6 +219,8 @@ class level_nine : public engine::level
         label* m_submit_box;
         button* m_submit_button;
         static constexpr int m_choice_count = 5;
+        static constexpr int m_min_choice = 1;
+        static constexpr int m_max_choice = 8;
         vector<button*> m_correct_button_layout;
 };
 

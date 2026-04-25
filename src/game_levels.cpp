@@ -892,7 +892,7 @@ level_nine::level_nine()
 
     m_correct_button_layout.reserve(m_choice_count);
 
-    vector<button*> grouped = add_grouped_buttons(m_choice_count - 1, 1, 8, {9});
+    vector<button*> grouped = add_grouped_buttons(m_choice_count - 1, m_min_choice, m_max_choice, {9});
     grouped.push_back(add_level_num_button(9));
 
     for (button* btn : grouped) {
