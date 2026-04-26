@@ -119,7 +119,7 @@ class level
         static const Vector2 m_grouped_buttons_center;
 
         // Horizontal spacing between adjacent buttons in the row.
-        static inline const float m_grouped_buttons_col_spacing = 150.0f;
+        static inline const float m_grouped_buttons_spacing = 150.0f;
 
         // The maximum number of buttons the row can hold.
         static inline const size_t m_grouped_buttons_max = 4;

@@ -112,8 +112,8 @@ button* level::add_text_button(string text_str, int font_size, Color text_color,
 {
     constexpr int layer = 1;
     text* const text_obj = new text(text_str, font_size, text_color, position, layer);
-    Rectangle const text_rec = text_obj->get_rec();
-    Rectangle const btn_rec = {
+    const Rectangle text_rec = text_obj->get_rec();
+    const Rectangle btn_rec = {
         position.x - text_rec.width / 2.0f,
         position.y - text_rec.height / 2.0f,
         text_rec.width,
@@ -127,7 +127,7 @@ button* level::add_text_button(string text_str, int font_size, Color text_color,
 
 button* level::add_level_num_button(int num)
 {
-    Vector2 const position = {m_game.get_cw() + 118.0f, m_game.get_ch() - 250.0f};
+    const Vector2 position = {m_game.get_cw() + 118.0f, m_game.get_ch() - 250.0f};
     return add_text_button(std::to_string(num), 80, ORANGE, position);
 }
 
@@ -155,10 +155,10 @@ vector<button*> level::add_grouped_buttons(
         "add_grouped_buttons: adding count would exceed m_grouped_buttons_max."
     );
 
-    vector<int> const values = m_game.get_random_sequence(
+    const vector<int> values = m_game.get_random_sequence(
         count, min_value, max_value, excluded_values
     );
-    vector<Color> const colors = m_game.get_random_color_sequence(count);
+    const vector<Color> colors = m_game.get_random_color_sequence(count);
 
     vector<button*> created;
     created.reserve(count);
@@ -186,7 +186,7 @@ void level::add_to_group(button* btn)
 
 void level::rearrange_group()
 {
-    size_t const n = m_grouped_buttons.size();
+    const size_t n = m_grouped_buttons.size();
     if (n == 0) {
         return;
     }
@@ -196,13 +196,12 @@ void level::rearrange_group()
     );
 
     // A single row of N buttons centered horizontally on m_grouped_buttons_center.
-    float const first_col_x
-        = m_grouped_buttons_center.x
-        - (static_cast<float>(n - 1) * m_grouped_buttons_col_spacing / 2.0f);
+    const float width = static_cast<float>(n - 1) * m_grouped_buttons_spacing;
+    const float start = m_grouped_buttons_center.x - width / 2.0f;
 
     for (size_t i = 0; i < n; ++i) {
-        Vector2 const position = {
-            first_col_x + static_cast<float>(i) * m_grouped_buttons_col_spacing,
+        const Vector2 position = {
+            start + static_cast<float>(i) * m_grouped_buttons_spacing,
             m_grouped_buttons_center.y
         };
         m_grouped_buttons[i]->set_position(position);
