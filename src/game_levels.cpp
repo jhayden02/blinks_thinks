@@ -875,7 +875,7 @@ level_nine::level_nine()
     ->add_trait(new rotation_sin(4.0f, 1.5f));
 
     this->m_submit_box = add_entity(
-        new label(
+        new box(
             BLACK,
             WHITE,
             {300, 100},
@@ -1039,7 +1039,7 @@ level_ten::level_ten()
         Vector2 ice_cube_position = btn->get_position();
         ice_cube_position.x += 4;   // Accomodate for the shadow offset of the text.
         add_entity(
-            new label(
+            new box(
                 {255, 255, 255, 75},
                 {75, 150, 255, 75},
                 ice_cube_size,

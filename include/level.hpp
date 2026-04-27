@@ -26,7 +26,7 @@
 #include "background.hpp"
 #include "overlay.hpp"
 #include "text.hpp"
-#include "label.hpp"
+#include "box.hpp"
 #include "button.hpp"
 
 using engine::text;

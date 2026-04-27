@@ -1,6 +1,6 @@
 /***********************************************************************************************
 *
-*   label.cpp - The library for creating, drawing, and interacting with a simple rectangle.
+*   box.cpp - The library for creating, drawing, and interacting with a simple rectangle.
 *
 *   Copyright (c) 2026 Josh Hayden (@jhayden02)
 *
@@ -19,14 +19,14 @@
 ***********************************************************************************************/
 
 // Source.
-#include "label.hpp"
+#include "box.hpp"
 
-using engine::label;
+using engine::box;
 
 // Standard library.
 #include <cmath>
 
-label::label(
+box::box(
     Color line_color,
     Color fill_color,
     Vector2 size,
@@ -52,7 +52,7 @@ label::label(
 // ------------------------------------------------------------------------------------------ //
 //                                          Methods.                                          //
 // ------------------------------------------------------------------------------------------ //
-void label::update()
+void box::update()
 { 
     entity::update();
 
@@ -65,7 +65,7 @@ void label::update()
     };
 }
 
-void label::draw()
+void box::draw()
 {
     // draw the filled portion.
     DrawRectangleRec(m_rectangle, m_fill_color);

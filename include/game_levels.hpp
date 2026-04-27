@@ -25,7 +25,7 @@
 #include "level.hpp"
 
 using engine::level;
-using engine::label;
+using engine::box;
 using engine::button;
 using engine::anim_raylib;
 using engine::anim_self_credit;
@@ -216,7 +216,7 @@ class level_nine : public engine::level
         void update() override;
 
     private:
-        label* m_submit_box;
+        box* m_submit_box;
         button* m_submit_button;
         static constexpr int m_choice_count = 5;
         static constexpr int m_min_choice = 1;

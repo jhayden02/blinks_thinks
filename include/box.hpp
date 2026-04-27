@@ -1,6 +1,6 @@
 /***********************************************************************************************
 *
-*   label.cpp - The library for creating, drawing, and interacting with a simple rectangle.
+*   box.hpp - The library for creating, drawing, and interacting with a simple rectangle.
 *
 *   Copyright (c) 2026 Josh Hayden (@jhayden02)
 *
@@ -26,10 +26,10 @@
 namespace engine
 {
 
-class label : public entity
+class box : public entity
 {
     public:
-        label(
+        box(
             Color line_color,
             Color fill_color,
             Vector2 size,
