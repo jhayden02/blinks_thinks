@@ -30,7 +30,7 @@ box::box(
     Color line_color,
     Color fill_color,
     Vector2 size,
-    int thickness,
+    float thickness,
     Vector2 position,
     int layer)
 
@@ -67,16 +67,11 @@ void box::update()
 
 void box::draw()
 {
-    // draw the filled portion.
+    // Draw the filled portion.
     DrawRectangleRec(m_rectangle, m_fill_color);
 
-    // draw the four lines of the rect if an above-zero thickness is specified.
+    // Draw the outline if an above-zero thickness is specified.
     if (m_thickness > 0) {
-        DrawRectangle(m_rectangle.x, m_rectangle.y, m_thickness, m_rectangle.height, m_line_color); // Left column.
-        DrawRectangle(m_rectangle.x + m_rectangle.width - m_thickness, m_rectangle.y,
-                      m_thickness, m_rectangle.height, m_line_color); // Right column.
-        DrawRectangle(m_rectangle.x, m_rectangle.y, m_rectangle.width, m_thickness, m_line_color); // Top row.
-        DrawRectangle(m_rectangle.x, m_rectangle.y + m_rectangle.height - m_thickness,
-                      m_rectangle.width, m_thickness, m_line_color); // Bottom row.
+        DrawRectangleLinesEx(m_rectangle, m_thickness, m_line_color);
     }
 }

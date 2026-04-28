@@ -33,7 +33,7 @@ class box : public entity
             Color line_color,
             Color fill_color,
             Vector2 size,
-            int thickness,
+            float thickness,
             Vector2 position = {0, 0},
             int layer = 0);
 
@@ -51,7 +51,7 @@ class box : public entity
 
         Vector2 m_size;
 
-        int m_thickness;
+        float m_thickness;
 
         Rectangle m_rectangle;
 
