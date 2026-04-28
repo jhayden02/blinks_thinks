@@ -728,7 +728,7 @@ void level_seven::update()
         for (button* btn : get_buttons()) {
             const bool two_buttons_collided = (
                 btn != button_in_hand &&
-                CheckCollisionRecs(button_in_hand->get_scaled_rec(), btn->get_scaled_rec())
+                CheckCollisionRecs(button_in_hand->get_rectangle(), btn->get_rectangle())
             );
 
             if (two_buttons_collided) {
@@ -926,7 +926,7 @@ void level_nine::update()
         numbers_in_box.reserve(m_choice_count);
 
         for (button* btn : get_buttons()) {
-            if (CheckCollisionRecs(btn->get_scaled_rec(), m_submit_box->get_rectangle())) {
+            if (CheckCollisionRecs(btn->get_rectangle(), m_submit_box->get_rectangle())) {
                 vector<button*>::iterator it = numbers_in_box.begin();
                 while (it != numbers_in_box.end() && (*it)->get_position().x <= btn->get_position().x) {
                     ++it;
@@ -1033,8 +1033,8 @@ level_ten::level_ten()
         }
         int const ice_cube_padding = 32;
         Vector2 const ice_cube_size = {
-            btn->get_scaled_rec().width + ice_cube_padding,
-            btn->get_scaled_rec().height + ice_cube_padding
+            btn->get_rectangle().width + ice_cube_padding,
+            btn->get_rectangle().height + ice_cube_padding
         };
         Vector2 ice_cube_position = btn->get_position();
         ice_cube_position.x += 4;   // Accomodate for the shadow offset of the text.
@@ -1069,7 +1069,7 @@ void level_ten::update()
             if (btn == m_submit_button || btn == m_submit_box) {
                 continue;
             }
-            if (CheckCollisionRecs(btn->get_scaled_rec(), m_submit_box->get_scaled_rec())) {
+            if (CheckCollisionRecs(btn->get_rectangle(), m_submit_box->get_rectangle())) {
                 vector<button*>::iterator it = numbers_in_box.begin();
                 while (it != numbers_in_box.end() && (*it)->get_position().x <= btn->get_position().x) {
                     ++it;

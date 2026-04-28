@@ -63,7 +63,7 @@ class button : public entity
 
         text* get_text_obj() { return m_text_obj; }
 
-        Rectangle get_scaled_rec() { return m_scaled_rec; }
+        Rectangle get_rectangle() { return m_scaled_rec; }
 
         void set_scale(float scale) { m_scale = scale; }
 
