@@ -63,9 +63,6 @@ class button : public entity
 
         text* get_text_obj() { return m_text_obj; }
 
-        Rectangle get_base_rec() { return m_rec; }
-        void set_base_rec(Rectangle rec) { m_rec = rec; }
-
         Rectangle get_scaled_rec() { return m_scaled_rec; }
 
         void set_scale(float scale) { m_scale = scale; }
@@ -73,12 +70,6 @@ class button : public entity
         float get_scale() { return m_scale; }
 
         void set_sfx_press(Sound sfx_press) { m_sfx_press = sfx_press; }
-
-        Color get_outline_color() { return m_outline_color; }
-        void set_outline_color(Color outline_color) { m_outline_color = outline_color; }
-
-        float get_outline_size() { return m_outline_size; }
-        void set_outline_size(float outline_size) { m_outline_size = outline_size; }
 
     private:
         // The pointer to the text object of the button. The button handles updating and
