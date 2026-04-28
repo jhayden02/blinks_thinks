@@ -41,6 +41,10 @@ class box : public entity
         void draw() override;
 
         void set_scale(float scale) { m_scale = scale; }
+        float get_scale() { return m_scale; }
+
+        void set_fill_color(Color fill_color) { m_fill_color = fill_color; }
+        Color get_fill_color() { return m_fill_color; }
 
         Rectangle get_rectangle() { return m_rectangle; }
 
