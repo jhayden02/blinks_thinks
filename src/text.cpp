@@ -39,11 +39,10 @@ text::text(
     m_font(GetFontDefault()),
     m_text_str(text_str),
     m_scale(1.0f),
-    m_base_font_size(font_size),
-    m_scaled_font_size(m_base_font_size * m_scale),
+    m_font_size(font_size),
     m_text_color(text_color),
     m_outline_color(outline_color),
-    m_letter_spacing(m_base_font_size / 10.0f),
+    m_letter_spacing(m_font_size / 10.0f),
     m_rec{},
     m_origin{},
     m_outline_size(outline_size),
@@ -52,8 +51,8 @@ text::text(
     Vector2 const text_dim = MeasureTextEx(
         m_font,
         m_text_str.c_str(),
-        m_scaled_font_size,
-        m_letter_spacing
+        m_font_size * m_scale,
+        m_letter_spacing * m_scale
     );
     m_rec = {
         m_position.x,
@@ -75,13 +74,11 @@ void text::update()
         trait->update(*this);
     }
 
-    m_scaled_font_size = m_base_font_size * m_scale;
-    m_letter_spacing = m_scaled_font_size / 10.0f;
     Vector2 const text_dim = MeasureTextEx(
         m_font,
         m_text_str.c_str(),
-        m_scaled_font_size,
-        m_letter_spacing
+        m_font_size * m_scale,
+        m_letter_spacing * m_scale
     );
     m_rec = {
         m_position.x,
@@ -112,8 +109,8 @@ void text::draw()
                 { m_position.x + offset.x, m_position.y + offset.y },
                 m_origin,
                 m_rotation,
-                m_scaled_font_size,
-                m_letter_spacing,
+                m_font_size * m_scale,
+                m_letter_spacing * m_scale,
                 m_outline_color
             );
         }
@@ -126,8 +123,8 @@ void text::draw()
         m_position,
         m_origin,
         m_rotation,
-        m_scaled_font_size,
-        m_letter_spacing,
+        m_font_size * m_scale,
+        m_letter_spacing * m_scale,
         m_text_color
     );
 }

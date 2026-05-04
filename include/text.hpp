@@ -69,8 +69,8 @@ class text : public entity
 
         Rectangle get_rec() { return m_rec; }
 
-        int get_font_size() { return m_base_font_size; }
-        void set_font_size(int font_size) { m_base_font_size = font_size; }
+        int get_font_size() { return m_font_size; }
+        void set_font_size(int font_size) { m_font_size = font_size; }
 
         void set_scale(float scale) { m_scale = scale; }
 
@@ -81,9 +81,7 @@ class text : public entity
 
         float m_scale;
 
-        float m_base_font_size;
-
-        float m_scaled_font_size;
+        float m_font_size;
 
         Color m_text_color;
 
