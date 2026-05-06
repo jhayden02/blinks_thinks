@@ -112,13 +112,7 @@ button* level::add_text_button(string text_str, int font_size, Color text_color,
 {
     constexpr int layer = 1;
     text* const text_obj = new text(text_str, font_size, text_color, position, layer);
-    const Rectangle text_rec = text_obj->get_rec();
-    const Rectangle btn_rec = {
-        position.x - text_rec.width / 2.0f,
-        position.y - text_rec.height / 2.0f,
-        text_rec.width,
-        text_rec.height
-    };
+    const Rectangle btn_rec = text_obj->get_rec(); 
     button* const btn = new button(text_obj, {0, 0, 0, 0}, btn_rec, layer, {0, 0, 0, 0}, 0);
     btn->set_sfx_press(m_game.audio->get_sound_effect("grab"));
     add_entity(btn);

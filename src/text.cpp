@@ -25,10 +25,7 @@
 #include <cmath>
 
 using engine::text;
-
-text::text(
-    string text_str,
-    float font_size,
+text::text( string text_str, float font_size,
     Color text_color,
     Vector2 position,
     int layer,
@@ -48,22 +45,7 @@ text::text(
     m_outline_size(outline_size),
     m_rotation(0.0f)
 {
-    Vector2 const text_dim = MeasureTextEx(
-        m_font,
-        m_text_str.c_str(),
-        m_font_size * m_scale,
-        m_letter_spacing * m_scale
-    );
-    m_rec = {
-        m_position.x,
-        m_position.y,
-        text_dim.x,
-        text_dim.y
-    };
-    m_origin = {
-        m_rec.width / 2.0f,
-        m_rec.height / 2.0f
-    };
+    this->update();
 }
 
 void text::update()
@@ -80,15 +62,20 @@ void text::update()
         m_font_size * m_scale,
         m_letter_spacing * m_scale
     );
+    // These tweaks are what i've found gives the most accurate text bounds for the default
+    // raylib bitmap font. Note that they are unlikely to be perfect at very large scale.
+    float const adjustment_pos = (m_font_size * m_scale) / 10.5f;
+    float const adjustment_dim = (m_font_size * m_scale) / 3.5f;
+    float const visible_height = text_dim.y - adjustment_dim;
     m_rec = {
-        m_position.x,
-        m_position.y,
+        m_position.x - text_dim.x / 2.0f,
+        m_position.y - visible_height / 2.0f,
         text_dim.x,
-        text_dim.y
+        visible_height
     };
     m_origin = {
-        m_rec.width / 2.0f,
-        m_rec.height / 2.0f
+        text_dim.x / 2.0f,
+        adjustment_pos + visible_height / 2.0f
     };
 }
 
