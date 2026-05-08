@@ -35,6 +35,16 @@ class button_trait
         virtual void update(button& btn) = 0;
 };
 
+class sfx_press : public button_trait
+{
+    public:
+        sfx_press(Sound *snd);
+        void update(button& btn) override;
+
+    private:
+        Sound *m_sound;
+};
+
 class grows_when_hovered : public button_trait
 {
     public:

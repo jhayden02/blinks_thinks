@@ -24,8 +24,21 @@
 
 using engine::game;
 using engine::button_trait;
+using engine::sfx_press;
 using engine::grows_when_hovered;
 using engine::grabbable;
+
+sfx_press::sfx_press(Sound *snd)
+{
+    this->m_sound = snd;
+}
+
+void sfx_press::update(button& btn)
+{
+    if (btn.is_pressed()) {
+        PlaySound(*m_sound);
+    }
+}
 
 grows_when_hovered::grows_when_hovered(int frame_duration, float target_scale)
 {

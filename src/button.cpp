@@ -91,10 +91,6 @@ void button::update()
         ? brighten_color(m_default_text_color)
         : m_default_text_color;
 
-    if (is_pressed() && m_sfx_press.has_value()) {
-        PlaySound(*m_sfx_press);
-    }
-
     m_text_obj->set_text_color(m_current_text_color);
     m_text_obj->set_scale(get_scale());
     m_text_obj->set_position(m_position);

@@ -27,10 +27,8 @@
 
 // Standard library.
 #include <vector>
-#include <optional>
 
 using std::vector;
-using std::optional;
 
 namespace engine
 {
@@ -63,8 +61,6 @@ class button : public box
 
         text* get_text_obj() { return m_text_obj; }
 
-        void set_sfx_press(Sound sfx_press) { m_sfx_press = sfx_press; }
-
     private:
         // The pointer to the text object of the button. The button handles updating and
         // drawing it's child text within it's own 'update()' and 'draw()' methods.
@@ -78,9 +74,6 @@ class button : public box
 
         // What color the button's background should be when not hovered.
         Color m_default_bg_color;
-
-        // The sound effect played when the button is pressed.
-        optional<Sound> m_sfx_press;
 
         // The storage container to hold all active traits attached to the button.
         vector<button_trait*> m_traits;

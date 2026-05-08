@@ -102,7 +102,7 @@ button* level::add_ui_button(string text_str)
         layer
     );
     btn->add_trait(new grows_when_hovered());
-    btn->set_sfx_press(m_game.audio->get_sound_effect("click"));
+    btn->add_trait(new sfx_press(m_game.audio->get_sound_effect("click")));
     add_entity(btn);
     return btn;
 }
@@ -114,7 +114,7 @@ button* level::add_text_button(string text_str, int font_size, Color text_color,
     text* const text_obj = new text(text_str, font_size, text_color, position, layer);
     const Rectangle btn_rec = text_obj->get_rec(); 
     button* const btn = new button(text_obj, {0, 0, 0, 0}, btn_rec, layer, {0, 0, 0, 0}, 0);
-    btn->set_sfx_press(m_game.audio->get_sound_effect("grab"));
+    btn->add_trait(new sfx_press(m_game.audio->get_sound_effect("grab")));
     add_entity(btn);
     return btn;
 }

@@ -38,7 +38,7 @@ class audio_manager
 
         void update();
 
-        Sound get_sound_effect(string sound_name) { return m_sound_effects.at(sound_name); }
+        Sound* get_sound_effect(string sound_name) { return &m_sound_effects.at(sound_name); }
         void set_next_music(string track_name, bool looping = true);
         void shift_pitch(float pitch);
 
