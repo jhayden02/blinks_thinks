@@ -39,7 +39,7 @@ class rotation_sin : public text_trait
 {
     public:
         rotation_sin(float speed, float depth);
-        void update(text& t) override;
+        void update(text& txt) override;
 
     private:
         float m_speed;
