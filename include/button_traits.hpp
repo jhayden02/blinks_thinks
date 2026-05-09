@@ -64,10 +64,12 @@ class grows_when_hovered : public button_trait
 class grabbable : public button_trait
 {
     public:
-        grabbable();
+        grabbable(Sound *sfx_hold = nullptr, Sound *sfx_release = nullptr);
         void update(button& btn) override;
 
     private:
+        Sound *m_sfx_hold;
+        Sound *m_sfx_release;
         bool m_is_grabbed;
         Vector2 m_grab_offset;
 };

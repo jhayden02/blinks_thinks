@@ -77,15 +77,17 @@ void grows_when_hovered::update(button& btn)
     btn.set_scale(m_current_scale);
 }
 
-grabbable::grabbable()
+grabbable::grabbable(Sound *sfx_hold, Sound *sfx_release)
 {
+    this->m_sfx_hold = sfx_hold;
+    this->m_sfx_release = sfx_release;
     this->m_is_grabbed = false;
     this->m_grab_offset = {0.0f, 0.0f};
 }
 
 void grabbable::update(button& btn)
 {
-    if (btn.is_hovered() && IsMouseButtonPressed(0)) {
+    if (btn.is_pressed()) {
         m_is_grabbed = true;
         Vector2 mouse_pos = GetMousePosition();
         Vector2 button_pos = btn.get_position();
@@ -98,11 +100,23 @@ void grabbable::update(button& btn)
     if (m_is_grabbed && IsMouseButtonDown(0)) {
         Vector2 mouse_pos = GetMousePosition();
         btn.set_position({mouse_pos.x - m_grab_offset.x, mouse_pos.y - m_grab_offset.y});
+
+        // Loop the hold sound by replaying when the previous play finishes.
+        if (m_sfx_hold != nullptr && !IsSoundPlaying(*m_sfx_hold)) {
+            PlaySound(*m_sfx_hold);
+        }
     }
 
     if (!IsMouseButtonDown(0) && m_is_grabbed) {
         m_is_grabbed = false;
         game::get_instance().set_button_in_hand(nullptr);
         btn.set_layer(0);
+
+        if (m_sfx_hold != nullptr) {
+            StopSound(*m_sfx_hold);
+        }
+        if (m_sfx_release != nullptr) {
+            PlaySound(*m_sfx_release);
+        }
     }
 }
