@@ -18,7 +18,7 @@
 
 // Source.
 #include "level_title.hpp"
-#include "intro_section_one.hpp"
+#include "intro_section_01.hpp"
 #include "game.hpp"
 
 using engine::game;
@@ -67,6 +67,6 @@ void level_title::update()
     scene::update();
 
     if (m_play_button->is_pressed()) {
-        m_game.set_next_scene(new intro_section_one());
+        m_game.set_next_scene(new intro_section_01());
     }
 }

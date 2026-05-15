@@ -17,8 +17,8 @@
 ***********************************************************************************************/
 
 // Source.
-#include "level_five.hpp"
-#include "level_six.hpp"
+#include "level_05.hpp"
+#include "level_06.hpp"
 #include "level_lose.hpp"
 #include "game.hpp"
 
@@ -26,7 +26,7 @@ using engine::rotation_sin;
 
 using std::to_string;
 
-level_five::level_five(string duration)
+level_05::level_05(string duration)
 {
     this->m_frames_counter = 0;
     this->m_duration = duration;
@@ -172,7 +172,7 @@ level_five::level_five(string duration)
     ->set_speed({-5, -1});
 }
 
-void level_five::update()
+void level_05::update()
 {
     scene::update();
 
@@ -190,7 +190,7 @@ void level_five::update()
             m_timer->get_text_obj()->set_text_str(m_duration);
         }
         else {
-            m_game.set_next_scene(new level_six());
+            m_game.set_next_scene(new level_06());
         }
     }
 

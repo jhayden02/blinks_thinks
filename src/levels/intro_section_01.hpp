@@ -23,10 +23,10 @@
 
 using engine::scene;
 
-class intro_section_one : public engine::scene
+class intro_section_01 : public engine::scene
 {
     public:
-        intro_section_one();
+        intro_section_01();
         void update() override;
 
     private:

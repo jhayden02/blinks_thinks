@@ -18,7 +18,7 @@
 
 // Source.
 #include "level_lose.hpp"
-#include "intro_section_one.hpp"
+#include "intro_section_01.hpp"
 #include "game.hpp"
 
 using engine::rotation_sin;
@@ -44,6 +44,6 @@ void level_lose::update()
     scene::update();
 
     if (m_restart_button->is_pressed()) {
-        m_game.set_next_scene(new intro_section_one());
+        m_game.set_next_scene(new intro_section_01());
     }
 }

@@ -24,10 +24,10 @@
 using engine::scene;
 using engine::button;
 
-class level_five : public engine::scene
+class level_05 : public engine::scene
 {
     public:
-        level_five(string duration);
+        level_05(string duration);
         void update() override;
 
     private:

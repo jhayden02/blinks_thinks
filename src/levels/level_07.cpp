@@ -17,8 +17,8 @@
 ***********************************************************************************************/
 
 // Source.
-#include "level_seven.hpp"
-#include "level_eight.hpp"
+#include "level_07.hpp"
+#include "level_08.hpp"
 #include "level_lose.hpp"
 #include "game.hpp"
 
@@ -26,7 +26,7 @@ using engine::rotation_sin;
 using engine::grows_when_hovered;
 using engine::grabbable;
 
-level_seven::level_seven()
+level_07::level_07()
 {
     add_simple_text(
         "level",
@@ -60,7 +60,7 @@ level_seven::level_seven()
     }
 }
 
-void level_seven::update()
+void level_07::update()
 {
     scene::update();
 
@@ -80,7 +80,7 @@ void level_seven::update()
                 );
 
                 if (seven_and_nine_collided) {
-                    m_game.set_next_scene(new level_eight());
+                    m_game.set_next_scene(new level_08());
                 }
                 else {
                     m_game.set_next_scene(new level_lose());

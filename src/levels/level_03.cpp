@@ -17,53 +17,60 @@
 ***********************************************************************************************/
 
 // Source.
-#include "level_four.hpp"
-#include "level_five.hpp"
+#include "level_03.hpp"
+#include "level_04.hpp"
+#include "level_lose.hpp"
 #include "game.hpp"
 
 using engine::rotation_sin;
 using engine::grows_when_hovered;
 
-level_four::level_four()
+level_03::level_03()
 {
-    //
-    // Main UI elements (level title, directions).
-    //
     add_simple_text(
         "level",
         80,
         ORANGE,
-        {m_game.get_cw() - 30,
-        m_game.get_ch() - 250},
+        {m_game.get_cw() - 30, m_game.get_ch() - 250},
         0
     );
 
     add_simple_text(
-        "How much time do you want for level 5?",
+        "What is the tallest number?",
         40,
         RAYWHITE,
-        {m_game.get_cw(),
-        m_game.get_ch() - 150},
+        {m_game.get_cw(), m_game.get_ch() - 150},
         0
     )
     ->add_trait(new rotation_sin(4.0f, 1.5f));
 
-    m_choices = add_grouped_buttons(m_choice_count - 1, m_min_choice, m_max_choice, {});
-    m_choices.push_back(add_level_num_button(4));
+    m_choices = add_grouped_buttons(m_choice_count - 1, m_min_choice, m_max_choice, {3});
+    m_choices.push_back(add_level_num_button(3));
 
+    int const correct_index = m_game.get_random_value(0, m_choice_count - 1);
     for (size_t i = 0; i < m_choices.size(); ++i) {
-        m_choices[i]->add_trait(new grows_when_hovered());
+        if (static_cast<int>(i) == correct_index) {
+            m_correct_button = m_choices[i];
+            m_correct_button->add_trait(new grows_when_hovered(20, 2.5f));
+        }
+        else {
+            m_choices[i]->add_trait(new grows_when_hovered());
+        }
     }
 }
 
-void level_four::update()
+void level_03::update()
 {
     scene::update();
 
-    for (button* btn : get_buttons()) {
-        if (btn->is_pressed()) {
-            string chosen_time = btn->get_text();
-            m_game.set_next_scene(new level_five(chosen_time));
+    if (m_correct_button->is_pressed()) {
+        m_game.set_next_scene(new level_04());
+    }
+    else {
+        for (button* btn : get_buttons()) {
+            if (btn->is_pressed()) {
+                m_game.set_next_scene(new level_lose());
+            }
         }
     }
 }

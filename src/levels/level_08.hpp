@@ -24,14 +24,18 @@
 using engine::scene;
 using engine::button;
 
-class level_seven : public engine::scene
+class level_08 : public engine::scene
 {
     public:
-        level_seven();
+        level_08();
         void update() override;
 
     private:
-        button* m_button_seven;
-        button* m_button_nine;
-        static constexpr int m_choice_count = 5;
+        static constexpr int m_choice_count = 6, m_fib_seq_len = 5;
+
+        // Will return a fibbonacci sequence of length 'length', started by 'num_one' + 'num_two',
+        // exiting if the returned length results in a number larger than an int can store.
+        vector<int> get_fib_seq(int num_one, int num_two);
+
+        button* m_correct_button;
 };

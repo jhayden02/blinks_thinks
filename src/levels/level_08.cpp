@@ -17,8 +17,8 @@
 ***********************************************************************************************/
 
 // Source.
-#include "level_eight.hpp"
-#include "level_nine.hpp"
+#include "level_08.hpp"
+#include "level_09.hpp"
 #include "level_lose.hpp"
 #include "game.hpp"
 
@@ -30,7 +30,7 @@ using engine::grows_when_hovered;
 
 using std::to_string;
 
-vector<int> level_eight::get_fib_seq(int num_one, int num_two)
+vector<int> level_08::get_fib_seq(int num_one, int num_two)
 {
     vector<int> sequence(m_fib_seq_len);
     int num_three;
@@ -47,7 +47,7 @@ vector<int> level_eight::get_fib_seq(int num_one, int num_two)
     return sequence;
 }
 
-level_eight::level_eight()
+level_08::level_08()
 {
     add_simple_text(
         "level",
@@ -115,12 +115,12 @@ level_eight::level_eight()
     }
 }
 
-void level_eight::update()
+void level_08::update()
 {
     scene::update();
 
     if (m_correct_button->is_pressed()) {
-        m_game.set_next_scene(new level_nine());
+        m_game.set_next_scene(new level_09());
     }
     else {
         for (button* btn : get_buttons()) {

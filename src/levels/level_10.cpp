@@ -17,7 +17,7 @@
 ***********************************************************************************************/
 
 // Source.
-#include "level_ten.hpp"
+#include "level_10.hpp"
 #include "level_win.hpp"
 #include "level_lose.hpp"
 #include "game.hpp"
@@ -30,7 +30,7 @@ using engine::grabbable;
 // Standard library.
 #include <algorithm>
 
-level_ten::level_ten()
+level_10::level_10()
 {
     add_simple_text(
         "level",
@@ -117,7 +117,7 @@ level_ten::level_ten()
     }
 }
 
-void level_ten::update()
+void level_10::update()
 {
     scene::update();
 

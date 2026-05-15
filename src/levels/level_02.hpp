@@ -24,10 +24,10 @@
 using engine::scene;
 using engine::button;
 
-class level_one : public engine::scene
+class level_02 : public engine::scene
 {
     public:
-        level_one();
+        level_02();
         void update() override;
 
     private:

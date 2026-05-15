@@ -17,8 +17,8 @@
 ***********************************************************************************************/
 
 // Source.
-#include "level_nine.hpp"
-#include "level_ten.hpp"
+#include "level_09.hpp"
+#include "level_10.hpp"
 #include "level_lose.hpp"
 #include "game.hpp"
 
@@ -29,7 +29,7 @@ using engine::grabbable;
 // Standard library.
 #include <algorithm>
 
-level_nine::level_nine()
+level_09::level_09()
 {
     add_simple_text(
         "level",
@@ -85,7 +85,7 @@ level_nine::level_nine()
     );
 }
 
-void level_nine::update()
+void level_09::update()
 {
     scene::update();
 
@@ -127,7 +127,7 @@ void level_nine::update()
         }
 
         if (answer_was_chosen) {
-            m_game.set_next_scene(new level_ten());
+            m_game.set_next_scene(new level_10());
         }
         else {
             m_game.set_next_scene(new level_lose());

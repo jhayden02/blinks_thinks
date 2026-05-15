@@ -24,19 +24,14 @@
 using engine::scene;
 using engine::button;
 
-class level_ten : public engine::scene
+class level_03 : public engine::scene
 {
     public:
-        level_ten();
+        level_03();
         void update() override;
 
     private:
-        button* m_submit_box;
-        button* m_holdable_number;
-        button* m_submit_button;
-        static constexpr int m_choice_count = 5;
-        static constexpr int m_min_choice = 1;
-        static constexpr int m_max_choice = 9;
-        static constexpr int m_max_submit_box_numbers = 2;
-        vector<button*> m_correct_button_layout;
+        static constexpr int m_choice_count = 5, m_min_choice = 1, m_max_choice = 25;
+        vector<button*> m_choices;
+        button* m_correct_button;
 };

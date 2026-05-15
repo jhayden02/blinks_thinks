@@ -17,15 +17,18 @@
 ***********************************************************************************************/
 
 // Source.
-#include "level_three.hpp"
-#include "level_four.hpp"
+#include "level_01.hpp"
+#include "level_02.hpp"
 #include "level_lose.hpp"
 #include "game.hpp"
 
 using engine::rotation_sin;
 using engine::grows_when_hovered;
 
-level_three::level_three()
+// Standard library.
+#include <algorithm>
+
+level_01::level_01()
 {
     add_simple_text(
         "level",
@@ -36,7 +39,7 @@ level_three::level_three()
     );
 
     add_simple_text(
-        "What is the tallest number?",
+        "What is the largest number?",
         40,
         RAYWHITE,
         {m_game.get_cw(), m_game.get_ch() - 150},
@@ -44,27 +47,28 @@ level_three::level_three()
     )
     ->add_trait(new rotation_sin(4.0f, 1.5f));
 
-    m_choices = add_grouped_buttons(m_choice_count - 1, m_min_choice, m_max_choice, {3});
-    m_choices.push_back(add_level_num_button(3));
+    m_choices = add_grouped_buttons(m_choice_count - 1, m_min_choice, m_max_choice, {1});
+    m_choices.push_back(add_level_num_button(1));
 
-    int const correct_index = m_game.get_random_value(0, m_choice_count - 1);
-    for (size_t i = 0; i < m_choices.size(); ++i) {
-        if (static_cast<int>(i) == correct_index) {
-            m_correct_button = m_choices[i];
-            m_correct_button->add_trait(new grows_when_hovered(20, 2.5f));
-        }
-        else {
-            m_choices[i]->add_trait(new grows_when_hovered());
-        }
+    for (button* btn : m_choices) {
+        btn->add_trait(new grows_when_hovered());
     }
+
+    m_correct_button = *std::max_element(
+        m_choices.begin(),
+        m_choices.end(),
+        [](button* a, button* b) {
+            return stoi(a->get_text()) < stoi(b->get_text());
+        }
+    );
 }
 
-void level_three::update()
+void level_01::update()
 {
     scene::update();
 
     if (m_correct_button->is_pressed()) {
-        m_game.set_next_scene(new level_four());
+        m_game.set_next_scene(new level_02());
     }
     else {
         for (button* btn : get_buttons()) {

@@ -24,18 +24,19 @@
 using engine::scene;
 using engine::button;
 
-class level_eight : public engine::scene
+class level_10 : public engine::scene
 {
     public:
-        level_eight();
+        level_10();
         void update() override;
 
     private:
-        static constexpr int m_choice_count = 6, m_fib_seq_len = 5;
-
-        // Will return a fibbonacci sequence of length 'length', started by 'num_one' + 'num_two',
-        // exiting if the returned length results in a number larger than an int can store.
-        vector<int> get_fib_seq(int num_one, int num_two);
-
-        button* m_correct_button;
+        button* m_submit_box;
+        button* m_holdable_number;
+        button* m_submit_button;
+        static constexpr int m_choice_count = 5;
+        static constexpr int m_min_choice = 1;
+        static constexpr int m_max_choice = 9;
+        static constexpr int m_max_submit_box_numbers = 2;
+        vector<button*> m_correct_button_layout;
 };

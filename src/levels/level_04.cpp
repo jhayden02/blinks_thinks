@@ -17,64 +17,53 @@
 ***********************************************************************************************/
 
 // Source.
-#include "level_two.hpp"
-#include "level_three.hpp"
-#include "level_lose.hpp"
+#include "level_04.hpp"
+#include "level_05.hpp"
 #include "game.hpp"
 
 using engine::rotation_sin;
 using engine::grows_when_hovered;
 
-// Standard library.
-#include <algorithm>
-
-level_two::level_two()
+level_04::level_04()
 {
+    //
+    // Main UI elements (level title, directions).
+    //
     add_simple_text(
         "level",
         80,
         ORANGE,
-        {m_game.get_cw() - 30, m_game.get_ch() - 250},
+        {m_game.get_cw() - 30,
+        m_game.get_ch() - 250},
         0
     );
 
     add_simple_text(
-        "What is the smallest number?",
+        "How much time do you want for level 5?",
         40,
         RAYWHITE,
-        {m_game.get_cw(), m_game.get_ch() - 150},
+        {m_game.get_cw(),
+        m_game.get_ch() - 150},
         0
     )
     ->add_trait(new rotation_sin(4.0f, 1.5f));
 
-    m_choices = add_grouped_buttons(m_choice_count - 1, m_min_choice, m_max_choice, {2});
-    m_choices.push_back(add_level_num_button(2));
+    m_choices = add_grouped_buttons(m_choice_count - 1, m_min_choice, m_max_choice, {});
+    m_choices.push_back(add_level_num_button(4));
 
-    for (button* btn : m_choices) {
-        btn->add_trait(new grows_when_hovered());
+    for (size_t i = 0; i < m_choices.size(); ++i) {
+        m_choices[i]->add_trait(new grows_when_hovered());
     }
-
-    m_correct_button = *std::min_element(
-        m_choices.begin(),
-        m_choices.end(),
-        [](button* a, button* b) {
-            return stoi(a->get_text()) < stoi(b->get_text());
-        }
-    );
 }
 
-void level_two::update()
+void level_04::update()
 {
     scene::update();
 
-    if (m_correct_button->is_pressed()) {
-        m_game.set_next_scene(new level_three());
-    }
-    else {
-        for (button* btn : get_buttons()) {
-            if (btn->is_pressed()) {
-                m_game.set_next_scene(new level_lose());
-            }
+    for (button* btn : get_buttons()) {
+        if (btn->is_pressed()) {
+            string chosen_time = btn->get_text();
+            m_game.set_next_scene(new level_05(chosen_time));
         }
     }
 }

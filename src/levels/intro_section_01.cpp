@@ -17,11 +17,11 @@
 ***********************************************************************************************/
 
 // Source.
-#include "intro_section_one.hpp"
-#include "level_one.hpp"
+#include "intro_section_01.hpp"
+#include "level_01.hpp"
 #include "game.hpp"
 
-intro_section_one::intro_section_one()
+intro_section_01::intro_section_01()
 {
     this->m_frames_counter = 0;
 
@@ -38,13 +38,13 @@ intro_section_one::intro_section_one()
     m_game.audio->shift_pitch(1.0f);
 }
 
-void intro_section_one::update()
+void intro_section_01::update()
 {
     scene::update();
 
     ++m_frames_counter;
 
     if (m_frames_counter == 3 * m_game.get_frame_rate()) {
-        m_game.set_next_scene(new level_one());
+        m_game.set_next_scene(new level_01());
     }
 }
