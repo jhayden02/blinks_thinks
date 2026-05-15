@@ -17,7 +17,7 @@ git submodule update --init --recursive
 #### 4. Enable Git Symlinks
 ```bash
 git config core.symlinks true
-git checkout HEAD -- include/raylib.h include/raymath.h include/rlgl.h
+git checkout HEAD -- src/raylib.h src/raymath.h src/rlgl.h
 ```
 
 #### 5. Install Python

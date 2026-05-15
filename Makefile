@@ -11,8 +11,10 @@ D_SRC := src
 
 STD := -std=c++23
 WARNINGS := -Wall -Wextra -Werror -Wshadow -Wnon-virtual-dtor -Wold-style-cast
-INCLUDES := -I. -Iinclude
-SOURCES := $(wildcard $(D_SRC)/*.cpp)
+INCLUDES := -I. -I$(D_SRC) -I$(D_SRC)/engine -I$(D_SRC)/levels
+SOURCES := $(wildcard $(D_SRC)/*.cpp) \
+           $(wildcard $(D_SRC)/engine/*.cpp) \
+           $(wildcard $(D_SRC)/levels/*.cpp)
 EXE_NAME := blinks_thinks
 
 RL_SRC := external/raylib/src
@@ -54,37 +56,43 @@ windows: build/windows/debug/$(EXE_NAME).exe build/windows/release/$(EXE_NAME).e
 
 web: build/web/debug/index.html build/web/release/index.html 
 
-build/linux/debug/%.o: $(D_SRC)/%.cpp | build/linux/debug
+build/linux/debug/%.o: $(D_SRC)/%.cpp
+	@mkdir -p $(@D)
 	$(LINUX_CXX) $(LINUX_CXXFLAGS_DEBUG) -c $< -o $@
 
 build/linux/debug/$(EXE_NAME): lib/linux/$(RL_LIB_NAME) $(patsubst $(D_SRC)/%.cpp,build/linux/debug/%.o,$(SOURCES))
 	$(LINUX_CXX) $(filter %.o,$^) $(LINUX_LINK_FLAGS) -o $@
 
-build/linux/release/%.o: $(D_SRC)/%.cpp | build/linux/release
+build/linux/release/%.o: $(D_SRC)/%.cpp
+	@mkdir -p $(@D)
 	$(LINUX_CXX) $(LINUX_CXXFLAGS_RELEASE) -c $< -o $@
 
 build/linux/release/$(EXE_NAME): lib/linux/$(RL_LIB_NAME) $(patsubst $(D_SRC)/%.cpp,build/linux/release/%.o,$(SOURCES))
 	$(LINUX_CXX) $(filter %.o,$^) $(LINUX_LINK_FLAGS) -o $@
 
-build/windows/debug/%.o: $(D_SRC)/%.cpp | build/windows/debug
+build/windows/debug/%.o: $(D_SRC)/%.cpp
+	@mkdir -p $(@D)
 	$(WINDOWS_CXX) $(WINDOWS_CXXFLAGS_DEBUG) -c $< -o $@
 
 build/windows/debug/$(EXE_NAME).exe: lib/windows/$(RL_LIB_NAME) $(patsubst $(D_SRC)/%.cpp,build/windows/debug/%.o,$(SOURCES))
 	$(WINDOWS_CXX) $(filter %.o,$^) $(WINDOWS_LINK_FLAGS) -o $@
 
-build/windows/release/%.o: $(D_SRC)/%.cpp | build/windows/release
+build/windows/release/%.o: $(D_SRC)/%.cpp
+	@mkdir -p $(@D)
 	$(WINDOWS_CXX) $(WINDOWS_CXXFLAGS_RELEASE) -c $< -o $@
 
 build/windows/release/$(EXE_NAME).exe: lib/windows/$(RL_LIB_NAME) $(patsubst $(D_SRC)/%.cpp,build/windows/release/%.o,$(SOURCES))
 	$(WINDOWS_CXX) $(filter %.o,$^) $(WINDOWS_LINK_FLAGS) -o $@
 
-build/web/debug/%.o: $(D_SRC)/%.cpp | build/web/debug
+build/web/debug/%.o: $(D_SRC)/%.cpp
+	@mkdir -p $(@D)
 	$(WEB_CXX) $(WEB_CXXFLAGS_DEBUG) -c $< -o $@
 
 build/web/debug/index.html: lib/web/$(RL_LIB_NAME) $(patsubst $(D_SRC)/%.cpp,build/web/debug/%.o,$(SOURCES))
 	$(WEB_CXX) $^ $(WEB_LINK_FLAGS) -o $@
 
-build/web/release/%.o: $(D_SRC)/%.cpp | build/web/release
+build/web/release/%.o: $(D_SRC)/%.cpp
+	@mkdir -p $(@D)
 	$(WEB_CXX) $(WEB_CXXFLAGS_RELEASE) -c $< -o $@
 
 build/web/release/index.html: lib/web/$(RL_LIB_NAME) $(patsubst $(D_SRC)/%.cpp,build/web/release/%.o,$(SOURCES))
@@ -112,7 +120,7 @@ lib/web/$(RL_LIB_NAME): | lib/web
 		RAYLIB_LIBTYPE=STATIC >/dev/null 2>&1
 	@mv $(RL_SRC)/$(RL_LIB_NAME) $@
 
-build/linux/debug build/linux/release build/windows/debug build/windows/release build/web/debug build/web/release lib/linux lib/windows lib/web:
+lib/linux lib/windows lib/web:
 	mkdir -p $@
 
 clean:
