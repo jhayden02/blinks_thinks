@@ -69,7 +69,7 @@ level_six::level_six()
 
 void level_six::update()
 {
-    level::update();
+    scene::update();
 
 
     if (m_correct_button->get_position().x >= m_game.get_cw() && m_frames_counter < 60) {
@@ -84,17 +84,17 @@ void level_six::update()
     for (button* btn : get_buttons()) {
         if (btn->is_pressed()) {
             if (btn == m_correct_button) {
-                m_game.set_next_level(new level_seven());
+                m_game.set_next_scene(new level_seven());
             }
             else {
-                m_game.set_next_level(new level_lose());
+                m_game.set_next_scene(new level_lose());
             }
         }
     }
 
     // Check if the number '3' has gone off of the screen to the right. If so, the player loses.
     if (m_correct_button->get_position().x > m_game.get_w() + 80) {
-        m_game.set_next_level(new level_lose());
+        m_game.set_next_scene(new level_lose());
     }
 
 }

@@ -30,12 +30,12 @@ intro_raylib::intro_raylib()
 
 void intro_raylib::update()
 {
-    level::update();
+    scene::update();
 
     if (m_animation->is_finished()) {
-        m_game.set_next_level(new intro_self_credit());
+        m_game.set_next_scene(new intro_self_credit());
     }
     else if (IsKeyPressed(KEY_ENTER)) {
-        m_game.set_next_level(new level_title());
+        m_game.set_next_scene(new level_title());
     }
 }

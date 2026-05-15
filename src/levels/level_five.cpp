@@ -174,7 +174,7 @@ level_five::level_five(string duration)
 
 void level_five::update()
 {
-    level::update();
+    scene::update();
 
     bool level_lost = false;
 
@@ -190,7 +190,7 @@ void level_five::update()
             m_timer->get_text_obj()->set_text_str(m_duration);
         }
         else {
-            m_game.set_next_level(new level_six());
+            m_game.set_next_scene(new level_six());
         }
     }
 
@@ -206,6 +206,6 @@ void level_five::update()
     }
 
     if (level_lost) {
-        m_game.set_next_level(new level_lose());
+        m_game.set_next_scene(new level_lose());
     }
 }

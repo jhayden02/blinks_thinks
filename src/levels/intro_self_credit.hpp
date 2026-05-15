@@ -19,12 +19,12 @@
 #pragma once
 
 // Source.
-#include "level.hpp"
+#include "scene.hpp"
 
-using engine::level;
+using engine::scene;
 using engine::anim_self_credit;
 
-class intro_self_credit : public engine::level
+class intro_self_credit : public engine::scene
 {
     public:
         intro_self_credit();

@@ -1,18 +1,18 @@
 /***********************************************************************************************
 *
-*   level.cpp - The library for creating and drawing formatted text.
+*   scene.cpp - The library for creating and drawing formatted text.
 *
 *   Copyright (c) 2026 Josh Hayden (@jhayden02)
 *
 *   Blink's Thinks is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License v3.0 as published
 *   by the Free Software Foundation.
-*  
+*
 *   Blink's Thinks is distributed in the hope that it will be useful,
 *   but WITHOUT ANY WARRANTY; without even the implied warranty of
 *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 *   GNU General Public License for more details.
-*  
+*
 *   You should have received a copy of the GNU General Public License
 *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 *
@@ -20,20 +20,20 @@
 
 // Source.
 #include "game.hpp"
-#include "level.hpp"
+#include "scene.hpp"
 #include "text.hpp"
 #include "button.hpp"
 #include "overlay.hpp"
 
 using engine::game;
-using engine::level;
+using engine::scene;
 using engine::text;
 using engine::button;
 using engine::overlay;
 
-const Vector2 level::m_grouped_buttons_center = {game::get_cw(), game::get_ch() + 75.0f};
+const Vector2 scene::m_grouped_buttons_center = {game::get_cw(), game::get_ch() + 75.0f};
 
-level::level()
+scene::scene()
     :
     m_game(game::get_instance()),
     m_entities{},
@@ -49,7 +49,7 @@ level::level()
     );
 }
 
-level::~level()
+scene::~scene()
 {
     for (entity* ent : m_entities) {
         delete ent;
@@ -59,14 +59,14 @@ level::~level()
     m_grouped_buttons.clear();
 }
 
-void level::update()
+void scene::update()
 {
     for (const auto& ent : m_entities) {
         ent->update();
     }
 }
 
-void level::draw()
+void scene::draw()
 {
     for (const auto& ent : m_entities) {
         ent->draw();
@@ -74,7 +74,7 @@ void level::draw()
 }
 
 // Create a simple text with a black outline.
-text* level::add_simple_text(
+text* scene::add_simple_text(
 	string text_str,
 	float font_size,
 	Color text_color,
@@ -87,7 +87,7 @@ text* level::add_simple_text(
 }
 
 // Make a clickable UI button with dynamic text and background color at a fixed location.
-button* level::add_ui_button(string text_str)
+button* scene::add_ui_button(string text_str)
 {
     constexpr Vector2 position = {
         game::get_cw(),
@@ -108,24 +108,24 @@ button* level::add_ui_button(string text_str)
 }
 
 // Make clickable text by creating an invisible button in the shape and size of the text.
-button* level::add_text_button(string text_str, int font_size, Color text_color, Vector2 position)
+button* scene::add_text_button(string text_str, int font_size, Color text_color, Vector2 position)
 {
     constexpr int layer = 1;
     text* const text_obj = new text(text_str, font_size, text_color, position, layer);
-    const Rectangle btn_rec = text_obj->get_rec(); 
+    const Rectangle btn_rec = text_obj->get_rec();
     button* const btn = new button(text_obj, {0, 0, 0, 0}, btn_rec, layer, {0, 0, 0, 0}, 0);
     btn->add_trait(new sfx_press(m_game.audio->get_sound_effect("click")));
     add_entity(btn);
     return btn;
 }
 
-button* level::add_level_num_button(int num)
+button* scene::add_level_num_button(int num)
 {
     const Vector2 position = {m_game.get_cw() + 118.0f, m_game.get_ch() - 250.0f};
     return add_text_button(std::to_string(num), 80, ORANGE, position);
 }
 
-vector<button*> level::add_grouped_buttons(
+vector<button*> scene::add_grouped_buttons(
     size_t count,
     int min_value,
     int max_value,
@@ -167,7 +167,7 @@ vector<button*> level::add_grouped_buttons(
     return created;
 }
 
-void level::add_to_group(button* btn)
+void scene::add_to_group(button* btn)
 {
     GAME_ASSERT(btn != nullptr, "add_to_group called with nullptr.");
     GAME_ASSERT(
@@ -178,7 +178,7 @@ void level::add_to_group(button* btn)
     rearrange_group();
 }
 
-void level::rearrange_group()
+void scene::rearrange_group()
 {
     const size_t n = m_grouped_buttons.size();
     if (n == 0) {

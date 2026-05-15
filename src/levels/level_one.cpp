@@ -65,15 +65,15 @@ level_one::level_one()
 
 void level_one::update()
 {
-    level::update();
+    scene::update();
 
     if (m_correct_button->is_pressed()) {
-        m_game.set_next_level(new level_two());
+        m_game.set_next_scene(new level_two());
     }
     else {
         for (button* btn : get_buttons()) {
             if (btn->is_pressed()) {
-                m_game.set_next_level(new level_lose());
+                m_game.set_next_scene(new level_lose());
             }
         }
     }

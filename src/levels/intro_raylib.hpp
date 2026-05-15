@@ -19,12 +19,12 @@
 #pragma once
 
 // Source.
-#include "level.hpp"
+#include "scene.hpp"
 
-using engine::level;
+using engine::scene;
 using engine::anim_raylib;
 
-class intro_raylib : public engine::level
+class intro_raylib : public engine::scene
 {
     public:
         intro_raylib();

@@ -61,15 +61,15 @@ level_three::level_three()
 
 void level_three::update()
 {
-    level::update();
+    scene::update();
 
     if (m_correct_button->is_pressed()) {
-        m_game.set_next_level(new level_four());
+        m_game.set_next_scene(new level_four());
     }
     else {
         for (button* btn : get_buttons()) {
             if (btn->is_pressed()) {
-                m_game.set_next_level(new level_lose());
+                m_game.set_next_scene(new level_lose());
             }
         }
     }

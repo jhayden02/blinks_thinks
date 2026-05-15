@@ -64,9 +64,9 @@ level_title::level_title()
 
 void level_title::update()
 {
-    level::update();
+    scene::update();
 
     if (m_play_button->is_pressed()) {
-        m_game.set_next_level(new intro_section_one());
+        m_game.set_next_scene(new intro_section_one());
     }
 }

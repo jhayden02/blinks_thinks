@@ -40,11 +40,11 @@ intro_section_one::intro_section_one()
 
 void intro_section_one::update()
 {
-    level::update();
+    scene::update();
 
     ++m_frames_counter;
 
     if (m_frames_counter == 3 * m_game.get_frame_rate()) {
-        m_game.set_next_level(new level_one());
+        m_game.set_next_scene(new level_one());
     }
 }

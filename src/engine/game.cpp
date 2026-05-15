@@ -1,5 +1,5 @@
 /***********************************************************************************************
-* 
+*
 *   game.cpp - The library for creating the monolithic game managing object.
 *
 *   Copyright (c) 2026 Josh Hayden (@jhayden02)
@@ -7,12 +7,12 @@
 *   Blink's Thinks is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License v3.0 as published
 *   by the Free Software Foundation.
-*  
+*
 *   Blink's Thinks is distributed in the hope that it will be useful,
 *   but WITHOUT ANY WARRANTY; without even the implied warranty of
 *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 *   GNU General Public License for more details.
-*  
+*
 *   You should have received a copy of the GNU General Public License
 *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 *
@@ -69,15 +69,15 @@ void game::run()
         // ---------------------------------------------------------------------------------- //
         //                                      Update.                                       //
         // ---------------------------------------------------------------------------------- //
-        if (m_next_level != nullptr) {
-            if (m_current_level != nullptr) {
-                delete m_current_level;
+        if (m_next_scene != nullptr) {
+            if (m_current_scene != nullptr) {
+                delete m_current_scene;
             }
-            m_current_level = m_next_level;
-            m_next_level = nullptr;
+            m_current_scene = m_next_scene;
+            m_next_scene = nullptr;
         }
-        if (m_current_level != nullptr) {
-            m_current_level->update();
+        if (m_current_scene != nullptr) {
+            m_current_scene->update();
         }
 
         audio->update();
@@ -88,8 +88,8 @@ void game::run()
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        if (m_current_level != nullptr) {
-            m_current_level->draw();
+        if (m_current_scene != nullptr) {
+            m_current_scene->draw();
         }
 
         EndDrawing();
@@ -111,7 +111,7 @@ vector<int> game::get_random_sequence(size_t count, int min, int max, vector<int
             return count <= range_size;
         }(),
         "Requested more unique numbers than available range."
-    ); 
+    );
 
     std::unordered_set<int> exclusion_set(exclude.begin(), exclude.end());
 
@@ -120,7 +120,7 @@ vector<int> game::get_random_sequence(size_t count, int min, int max, vector<int
         if (exclusion_set.find(num) == exclusion_set.end()) {
             pool.push_back(num);
         }
-    } 
+    }
 
     std::shuffle(pool.begin(), pool.end(), m_random_generator);
     return {pool.begin(), pool.begin() + static_cast<long>(count)};
@@ -133,7 +133,7 @@ Color game::get_random_color()
 
 vector<Color> game::get_random_color_sequence(size_t count)
 {
-    GAME_ASSERT(count <= m_bright_colors.size() ,"Requested more unique colors than available maximum."); 
+    GAME_ASSERT(count <= m_bright_colors.size() ,"Requested more unique colors than available maximum.");
 
     // Copy game defined constant vector, shuffle it, then return the count asked for.
     vector<Color> palate = m_bright_colors;

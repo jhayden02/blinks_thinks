@@ -28,9 +28,9 @@ intro_self_credit::intro_self_credit()
 
 void intro_self_credit::update()
 {
-    level::update();
+    scene::update();
 
     if (m_animation->is_finished() || IsKeyPressed(KEY_ENTER)) {
-        m_game.set_next_level(new level_title());
+        m_game.set_next_scene(new level_title());
     }
 }

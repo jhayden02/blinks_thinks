@@ -58,12 +58,12 @@ level_four::level_four()
 
 void level_four::update()
 {
-    level::update();
+    scene::update();
 
     for (button* btn : get_buttons()) {
         if (btn->is_pressed()) {
             string chosen_time = btn->get_text();
-            m_game.set_next_level(new level_five(chosen_time));
+            m_game.set_next_scene(new level_five(chosen_time));
         }
     }
 }

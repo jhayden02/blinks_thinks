@@ -19,13 +19,13 @@
 #pragma once
 
 // Source.
-#include "level.hpp"
+#include "scene.hpp"
 
-using engine::level;
+using engine::scene;
 using engine::button;
 using engine::box;
 
-class level_nine : public engine::level
+class level_nine : public engine::scene
 {
     public:
         level_nine();

@@ -28,7 +28,7 @@
 int main(void)
 {
     engine::game& game_inst = engine::game::get_instance();
-    game_inst.set_next_level(new intro_raylib());
+    game_inst.set_next_scene(new intro_raylib());
     game_inst.run();
     return 0;
 }

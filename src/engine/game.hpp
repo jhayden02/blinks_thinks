@@ -1,5 +1,5 @@
 /***********************************************************************************************
-* 
+*
 *   game.hpp - The library for creating the monolithic game managing object.
 *
 *   Copyright (c) 2026 Josh Hayden (@jhayden02)
@@ -7,12 +7,12 @@
 *   Blink's Thinks is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License v3.0 as published
 *   by the Free Software Foundation.
-*  
+*
 *   Blink's Thinks is distributed in the hope that it will be useful,
 *   but WITHOUT ANY WARRANTY; without even the implied warranty of
 *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 *   GNU General Public License for more details.
-*  
+*
 *   You should have received a copy of the GNU General Public License
 *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 *
@@ -21,7 +21,7 @@
 #pragma once
 
 // Source.
-#include "level.hpp"
+#include "scene.hpp"
 #include "shader_manager.hpp"
 #include "audio_manager.hpp"
 
@@ -47,7 +47,7 @@
     #define GAME_ASSERT(cond, msg) ((void)0)
 #endif
 
-using engine::level;
+using engine::scene;
 
 using std::string;
 using std::unordered_map;
@@ -99,8 +99,8 @@ class game
 
         static constexpr size_t get_frame_rate() { return m_frame_rate; }
 
-        level* get_current_level() { return m_current_level; }
-        void set_next_level(level* next_level) { m_next_level = next_level; }
+        scene* get_current_scene() { return m_current_scene; }
+        void set_next_scene(scene* next_scene) { m_next_scene = next_scene; }
 
         button* get_button_in_hand() { return m_button_in_hand; }
         void set_button_in_hand(button* btn) { m_button_in_hand = btn; }
@@ -118,8 +118,8 @@ class game
         static constexpr float m_ch = m_h / 2.0f;
         static constexpr size_t m_frame_rate = 60;
 
-        level* m_current_level;
-        level* m_next_level;
+        scene* m_current_scene;
+        scene* m_next_scene;
 
         button* m_button_in_hand;
 

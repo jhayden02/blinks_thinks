@@ -119,7 +119,7 @@ level_ten::level_ten()
 
 void level_ten::update()
 {
-    level::update();
+    scene::update();
 
     //
     // On submission, add every button inside of the submission box to a vector, then organize
@@ -145,10 +145,10 @@ void level_ten::update()
         }
 
         if (numbers_in_box == m_correct_button_layout) {
-            m_game.set_next_level(new level_win());
+            m_game.set_next_scene(new level_win());
         }
         else {
-            m_game.set_next_level(new level_lose());
+            m_game.set_next_scene(new level_lose());
         }
     }
 }

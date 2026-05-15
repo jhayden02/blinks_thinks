@@ -40,9 +40,9 @@ level_win::level_win()
 
 void level_win::update()
 {
-    level::update();
+    scene::update();
 
     if (m_title_screen_button->is_pressed()) {
-        m_game.set_next_level(new level_title());
+        m_game.set_next_scene(new level_title());
     }
 }

@@ -1,18 +1,18 @@
 /***********************************************************************************************
-* 
-*   level.hpp - The library for creating, loading, and unloading levels. 
+*
+*   scene.hpp - The library for creating, loading, and unloading scenes.
 *
 *   Copyright (c) 2026 Josh Hayden (@jhayden02)
 *
 *   Blink's Thinks is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License v3.0 as published
 *   by the Free Software Foundation.
-*  
+*
 *   Blink's Thinks is distributed in the hope that it will be useful,
 *   but WITHOUT ANY WARRANTY; without even the implied warranty of
 *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 *   GNU General Public License for more details.
-*  
+*
 *   You should have received a copy of the GNU General Public License
 *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 *
@@ -45,12 +45,12 @@ namespace engine
 
 class game;
 
-class level
+class scene
 {
     public:
-        level();
+        scene();
 
-        virtual ~level();
+        virtual ~scene();
 
         virtual void update();
 

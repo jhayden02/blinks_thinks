@@ -62,7 +62,7 @@ level_seven::level_seven()
 
 void level_seven::update()
 {
-    level::update();
+    scene::update();
 
     button* button_in_hand = m_game.get_button_in_hand();
 
@@ -80,10 +80,10 @@ void level_seven::update()
                 );
 
                 if (seven_and_nine_collided) {
-                    m_game.set_next_level(new level_eight());
+                    m_game.set_next_scene(new level_eight());
                 }
                 else {
-                    m_game.set_next_level(new level_lose());
+                    m_game.set_next_scene(new level_lose());
                 }
             }
         }

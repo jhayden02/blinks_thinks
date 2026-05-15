@@ -41,9 +41,9 @@ level_lose::level_lose()
 
 void level_lose::update()
 {
-    level::update();
+    scene::update();
 
     if (m_restart_button->is_pressed()) {
-        m_game.set_next_level(new intro_section_one());
+        m_game.set_next_scene(new intro_section_one());
     }
 }

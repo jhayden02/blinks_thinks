@@ -117,15 +117,15 @@ level_eight::level_eight()
 
 void level_eight::update()
 {
-    level::update();
+    scene::update();
 
     if (m_correct_button->is_pressed()) {
-        m_game.set_next_level(new level_nine());
+        m_game.set_next_scene(new level_nine());
     }
     else {
         for (button* btn : get_buttons()) {
             if (btn->is_pressed()) {
-                m_game.set_next_level(new level_lose());
+                m_game.set_next_scene(new level_lose());
             }
         }
     }

@@ -19,12 +19,12 @@
 #pragma once
 
 // Source.
-#include "level.hpp"
+#include "scene.hpp"
 
-using engine::level;
+using engine::scene;
 using engine::button;
 
-class level_five : public engine::level
+class level_five : public engine::scene
 {
     public:
         level_five(string duration);

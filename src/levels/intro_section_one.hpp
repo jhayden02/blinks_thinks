@@ -19,11 +19,11 @@
 #pragma once
 
 // Source.
-#include "level.hpp"
+#include "scene.hpp"
 
-using engine::level;
+using engine::scene;
 
-class intro_section_one : public engine::level
+class intro_section_one : public engine::scene
 {
     public:
         intro_section_one();
