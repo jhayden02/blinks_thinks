@@ -149,10 +149,10 @@ vector<button*> scene::add_grouped_buttons(
         "add_grouped_buttons: adding count would exceed m_grouped_buttons_max."
     );
 
-    const vector<int> values = m_game.get_random_sequence(
+    const vector<int> values = m_game.random->get_int_sequence(
         count, min_value, max_value, excluded_values
     );
-    const vector<Color> colors = m_game.get_random_color_sequence(count);
+    const vector<Color> colors = m_game.random->get_color_sequence(count);
 
     vector<button*> created;
     created.reserve(count);

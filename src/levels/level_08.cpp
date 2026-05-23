@@ -66,8 +66,8 @@ level_08::level_08()
     )
     ->add_trait(new rotation_sin(4.0f, 1.5f));
 
-    int const fib_seq_num_one = m_game.get_random_value(1, 4);
-    int const fib_seq_num_two = m_game.get_random_value(5, 9);
+    int const fib_seq_num_one = m_game.random->get_int(1, 4);
+    int const fib_seq_num_two = m_game.random->get_int(5, 9);
     vector<int> const fib_seq = get_fib_seq(fib_seq_num_one, fib_seq_num_two);
 
     string fib_seq_question_str;
@@ -104,7 +104,7 @@ level_08::level_08()
     m_correct_button = add_text_button(
         to_string(correct_value),
         80,
-        m_game.get_random_color(),
+        m_game.random->get_color(),
         {0, 0}
     );
     add_to_group(m_correct_button);

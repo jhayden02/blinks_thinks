@@ -24,11 +24,11 @@
 #include "scene.hpp"
 #include "shader_manager.hpp"
 #include "audio_manager.hpp"
+#include "random_manager.hpp"
 
 // Standard library.
 #include <string>
 #include <unordered_map>
-#include <random>
 #include <cassert>
 #include <iostream>
 #include <cmath>
@@ -71,16 +71,9 @@ class game
 
         audio_manager* audio;
         shader_manager* shaders;
+        random_manager* random;
 
         void run();
-
-        int get_random_value(int min, int max);
-        vector<int> get_random_sequence(size_t count, int min, int max, vector<int> exclude = {});
-
-        Color get_random_color();
-        vector<Color> get_random_color_sequence(size_t count);
-
-		std::default_random_engine get_random_generator() { return m_random_generator; }
 
         bool mouse_in_canvas();
 
@@ -122,13 +115,6 @@ class game
         scene* m_next_scene;
 
         button* m_button_in_hand;
-
-        std::default_random_engine m_random_generator;
-
-        inline static const vector<Color> m_bright_colors =
-        {
-            GOLD, ORANGE, PINK, RED, LIME, SKYBLUE, PURPLE, VIOLET
-        };
 };
 
 } // NAMESPACE ENGINE.

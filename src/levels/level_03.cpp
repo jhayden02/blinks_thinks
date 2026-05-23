@@ -47,7 +47,7 @@ level_03::level_03()
     m_choices = add_grouped_buttons(m_choice_count - 1, m_min_choice, m_max_choice, {3});
     m_choices.push_back(add_level_num_button(3));
 
-    int const correct_index = m_game.get_random_value(0, m_choice_count - 1);
+    int const correct_index = m_game.random->get_int(0, m_choice_count - 1);
     for (size_t i = 0; i < m_choices.size(); ++i) {
         if (static_cast<int>(i) == correct_index) {
             m_correct_button = m_choices[i];

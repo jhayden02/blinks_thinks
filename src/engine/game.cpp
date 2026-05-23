@@ -21,10 +21,6 @@
 // Source.
 #include "game.hpp"
 
-// Standard library.
-#include <unordered_set>
-#include <algorithm>
-
 #ifdef PLATFORM_WEB
 #include <emscripten.h>
 namespace web
@@ -36,12 +32,10 @@ namespace web
 using engine::game;
 using engine::audio_manager;
 using engine::shader_manager;
+using engine::random_manager;
 
 game::game()
 {
-    std::random_device random_generator_seed;
-    m_random_generator.seed(random_generator_seed());
-
     this->m_button_in_hand = nullptr;
 
     InitWindow(m_w, m_h, m_game_name);
@@ -53,10 +47,12 @@ game::game()
     // Initialize managers after window creation.
     audio = new audio_manager();
     shaders = new shader_manager();
+    random = new random_manager();
 }
 
 game::~game()
 {
+    delete random;
     delete shaders;
     delete audio;
     CloseWindow();
@@ -94,51 +90,6 @@ void game::run()
 
         EndDrawing();
     }
-}
-
-int game::get_random_value(int min, int max)
-{
-    GAME_ASSERT(max - min > 0, "Invalid range supplied.");
-    std::uniform_int_distribution<int> distribution(min, max);
-    return distribution(m_random_generator);
-}
-
-vector<int> game::get_random_sequence(size_t count, int min, int max, vector<int> exclude)
-{
-    GAME_ASSERT(
-        [&]{
-            const size_t range_size = max - min + 1;
-            return count <= range_size;
-        }(),
-        "Requested more unique numbers than available range."
-    );
-
-    std::unordered_set<int> exclusion_set(exclude.begin(), exclude.end());
-
-    vector<int> pool;
-    for (int num = min; num <= max; ++num) {
-        if (exclusion_set.find(num) == exclusion_set.end()) {
-            pool.push_back(num);
-        }
-    }
-
-    std::shuffle(pool.begin(), pool.end(), m_random_generator);
-    return {pool.begin(), pool.begin() + static_cast<long>(count)};
-}
-
-Color game::get_random_color()
-{
-    return m_bright_colors.at(get_random_value(0, m_bright_colors.size() - 1));
-}
-
-vector<Color> game::get_random_color_sequence(size_t count)
-{
-    GAME_ASSERT(count <= m_bright_colors.size() ,"Requested more unique colors than available maximum.");
-
-    // Copy game defined constant vector, shuffle it, then return the count asked for.
-    vector<Color> palate = m_bright_colors;
-    std::shuffle(palate.begin(), palate.end(), m_random_generator);
-    return {palate.begin(), palate.begin() + static_cast<long>(count)};
 }
 
 bool game::mouse_in_canvas() {

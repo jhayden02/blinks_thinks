@@ -50,7 +50,7 @@ level_07::level_07()
     m_button_seven = add_level_num_button(7);
     grouped.push_back(m_button_seven);
 
-    m_button_nine = add_text_button("9", 80, m_game.get_random_color(), {0, 0});
+    m_button_nine = add_text_button("9", 80, m_game.random->get_color(), {0, 0});
     add_to_group(m_button_nine);
     grouped.push_back(m_button_nine);
 

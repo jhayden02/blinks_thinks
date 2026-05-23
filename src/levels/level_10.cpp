@@ -76,7 +76,7 @@ level_10::level_10()
         }
     );
 
-    m_holdable_number = grouped[m_game.get_random_value(0, grouped.size() - 1)];
+    m_holdable_number = grouped[m_game.random->get_int(0, grouped.size() - 1)];
     m_holdable_number->add_trait(new grows_when_hovered());
     m_holdable_number->add_trait(new grabbable());
 

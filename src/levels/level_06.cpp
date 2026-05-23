@@ -32,7 +32,7 @@ level_06::level_06()
     this->m_correct_button = add_text_button(
         "3",
         80,
-        m_game.get_random_color(),
+        m_game.random->get_color(),
         {-200, m_game.get_ch() + 85}
     );
     m_correct_button->set_speed({20, 0});
