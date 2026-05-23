@@ -27,8 +27,8 @@
 
 int main(void)
 {
-    engine::game& game_inst = engine::game::get_instance();
-    game_inst.set_next_scene(new intro_raylib());
-    game_inst.run();
+    engine::game& blinks_thinks = engine::game::get_instance();
+    blinks_thinks.set_next_scene(new intro_raylib());
+    blinks_thinks.run();
     return 0;
 }
