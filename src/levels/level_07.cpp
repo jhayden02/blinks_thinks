@@ -18,8 +18,6 @@
 
 // Source.
 #include "level_07.hpp"
-#include "level_08.hpp"
-#include "level_lose.hpp"
 #include "game.hpp"
 
 using engine::rotation_sin;
@@ -80,10 +78,10 @@ void level_07::update()
                 );
 
                 if (seven_and_nine_collided) {
-                    m_game.set_next_scene(new level_08());
+                    m_game.scenes->advance();
                 }
                 else {
-                    m_game.set_next_scene(new level_lose());
+                    m_game.scenes->lose();
                 }
             }
         }

@@ -18,8 +18,6 @@
 
 // Source.
 #include "level_08.hpp"
-#include "level_09.hpp"
-#include "level_lose.hpp"
 #include "game.hpp"
 
 using engine::rotation_sin;
@@ -120,12 +118,12 @@ void level_08::update()
     scene::update();
 
     if (m_correct_button->is_pressed()) {
-        m_game.set_next_scene(new level_09());
+        m_game.scenes->advance();
     }
     else {
         for (button* btn : get_buttons()) {
             if (btn->is_pressed()) {
-                m_game.set_next_scene(new level_lose());
+                m_game.scenes->lose();
             }
         }
     }

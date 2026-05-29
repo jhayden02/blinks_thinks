@@ -20,15 +20,9 @@
 
 // Source.
 #include "game.hpp"
-#include "intro_raylib.hpp"
-
-// Standard library.
-#include <cmath>
 
 int main(void)
 {
-    engine::game& blinks_thinks = engine::game::get_instance();
-    blinks_thinks.set_next_scene(new intro_raylib());
-    blinks_thinks.run();
+    engine::game::get_instance().run();
     return 0;
 }

@@ -20,6 +20,7 @@
 
 // Source.
 #include "button_traits.hpp"
+#include "button.hpp"
 #include "game.hpp"
 
 using engine::game;

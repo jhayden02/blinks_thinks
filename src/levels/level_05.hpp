@@ -27,7 +27,7 @@ using engine::button;
 class level_05 : public engine::scene
 {
     public:
-        level_05(string duration);
+        level_05(string duration = "5");
         void update() override;
 
     private:

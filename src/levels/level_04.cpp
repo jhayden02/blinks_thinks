@@ -18,7 +18,6 @@
 
 // Source.
 #include "level_04.hpp"
-#include "level_05.hpp"
 #include "game.hpp"
 
 using engine::rotation_sin;
@@ -62,8 +61,7 @@ void level_04::update()
 
     for (button* btn : get_buttons()) {
         if (btn->is_pressed()) {
-            string chosen_time = btn->get_text();
-            m_game.set_next_scene(new level_05(chosen_time));
+            m_game.scenes->advance();
         }
     }
 }

@@ -18,8 +18,6 @@
 
 // Source.
 #include "level_06.hpp"
-#include "level_07.hpp"
-#include "level_lose.hpp"
 #include "game.hpp"
 
 using engine::rotation_sin;
@@ -84,17 +82,17 @@ void level_06::update()
     for (button* btn : get_buttons()) {
         if (btn->is_pressed()) {
             if (btn == m_correct_button) {
-                m_game.set_next_scene(new level_07());
+                m_game.scenes->advance();
             }
             else {
-                m_game.set_next_scene(new level_lose());
+                m_game.scenes->lose();
             }
         }
     }
 
     // Check if the number '3' has gone off of the screen to the right. If so, the player loses.
     if (m_correct_button->get_position().x > m_game.get_w() + 80) {
-        m_game.set_next_scene(new level_lose());
+        m_game.scenes->lose();
     }
 
 }

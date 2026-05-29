@@ -18,7 +18,6 @@
 
 // Source.
 #include "intro_section_01.hpp"
-#include "level_01.hpp"
 #include "game.hpp"
 
 intro_section_01::intro_section_01()
@@ -45,6 +44,6 @@ void intro_section_01::update()
     ++m_frames_counter;
 
     if (m_frames_counter == 3 * m_game.get_frame_rate()) {
-        m_game.set_next_scene(new level_01());
+        m_game.scenes->advance();
     }
 }

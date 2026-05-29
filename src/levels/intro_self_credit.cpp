@@ -18,7 +18,6 @@
 
 // Source.
 #include "intro_self_credit.hpp"
-#include "level_title.hpp"
 #include "game.hpp"
 
 intro_self_credit::intro_self_credit()
@@ -31,6 +30,6 @@ void intro_self_credit::update()
     scene::update();
 
     if (m_animation->is_finished() || IsKeyPressed(KEY_ENTER)) {
-        m_game.set_next_scene(new level_title());
+        m_game.scenes->advance();
     }
 }

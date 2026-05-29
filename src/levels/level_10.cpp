@@ -18,8 +18,6 @@
 
 // Source.
 #include "level_10.hpp"
-#include "level_win.hpp"
-#include "level_lose.hpp"
 #include "game.hpp"
 
 using engine::box;
@@ -145,10 +143,10 @@ void level_10::update()
         }
 
         if (numbers_in_box == m_correct_button_layout) {
-            m_game.set_next_scene(new level_win());
+            m_game.scenes->advance();
         }
         else {
-            m_game.set_next_scene(new level_lose());
+            m_game.scenes->lose();
         }
     }
 }

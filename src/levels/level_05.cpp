@@ -18,8 +18,6 @@
 
 // Source.
 #include "level_05.hpp"
-#include "level_06.hpp"
-#include "level_lose.hpp"
 #include "game.hpp"
 
 using engine::rotation_sin;
@@ -190,7 +188,7 @@ void level_05::update()
             m_timer->get_text_obj()->set_text_str(m_duration);
         }
         else {
-            m_game.set_next_scene(new level_06());
+            m_game.scenes->advance();
         }
     }
 
@@ -206,6 +204,6 @@ void level_05::update()
     }
 
     if (level_lost) {
-        m_game.set_next_scene(new level_lose());
+        m_game.scenes->lose();
     }
 }

@@ -33,6 +33,7 @@ using engine::game;
 using engine::audio_manager;
 using engine::shader_manager;
 using engine::random_manager;
+using engine::scene_manager;
 
 game::game()
 {
@@ -48,10 +49,12 @@ game::game()
     audio = new audio_manager();
     shaders = new shader_manager();
     random = new random_manager();
+    scenes = new scene_manager();
 }
 
 game::~game()
 {
+    delete scenes;
     delete random;
     delete shaders;
     delete audio;
@@ -65,17 +68,7 @@ void game::run()
         // ---------------------------------------------------------------------------------- //
         //                                      Update.                                       //
         // ---------------------------------------------------------------------------------- //
-        if (m_next_scene != nullptr) {
-            if (m_current_scene != nullptr) {
-                delete m_current_scene;
-            }
-            m_current_scene = m_next_scene;
-            m_next_scene = nullptr;
-        }
-        if (m_current_scene != nullptr) {
-            m_current_scene->update();
-        }
-
+        scenes->update();
         audio->update();
 
         // ---------------------------------------------------------------------------------- //
@@ -84,9 +77,7 @@ void game::run()
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        if (m_current_scene != nullptr) {
-            m_current_scene->draw();
-        }
+        scenes->draw();
 
         EndDrawing();
     }

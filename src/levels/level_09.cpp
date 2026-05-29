@@ -18,8 +18,6 @@
 
 // Source.
 #include "level_09.hpp"
-#include "level_10.hpp"
-#include "level_lose.hpp"
 #include "game.hpp"
 
 using engine::rotation_sin;
@@ -127,10 +125,10 @@ void level_09::update()
         }
 
         if (answer_was_chosen) {
-            m_game.set_next_scene(new level_10());
+            m_game.scenes->advance();
         }
         else {
-            m_game.set_next_scene(new level_lose());
+            m_game.scenes->lose();
         }
     }
 }

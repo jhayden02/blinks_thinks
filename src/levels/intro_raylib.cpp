@@ -18,8 +18,6 @@
 
 // Source.
 #include "intro_raylib.hpp"
-#include "intro_self_credit.hpp"
-#include "level_title.hpp"
 #include "game.hpp"
 
 intro_raylib::intro_raylib()
@@ -33,9 +31,9 @@ void intro_raylib::update()
     scene::update();
 
     if (m_animation->is_finished()) {
-        m_game.set_next_scene(new intro_self_credit());
+        m_game.scenes->advance();
     }
     else if (IsKeyPressed(KEY_ENTER)) {
-        m_game.set_next_scene(new level_title());
+        m_game.scenes->goto_title();
     }
 }

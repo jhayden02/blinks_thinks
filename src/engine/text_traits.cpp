@@ -20,6 +20,7 @@
 
 // Source.
 #include "text_traits.hpp"
+#include "text.hpp"
 #include "game.hpp"
 
 using engine::game;

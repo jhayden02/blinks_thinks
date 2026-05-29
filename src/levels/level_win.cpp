@@ -18,7 +18,6 @@
 
 // Source.
 #include "level_win.hpp"
-#include "level_title.hpp"
 #include "game.hpp"
 
 using engine::rotation_sin;
@@ -43,6 +42,6 @@ void level_win::update()
     scene::update();
 
     if (m_title_screen_button->is_pressed()) {
-        m_game.set_next_scene(new level_title());
+        m_game.scenes->goto_title();
     }
 }
