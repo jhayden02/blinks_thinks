@@ -59,7 +59,7 @@ void level_04::update()
 {
     scene::update();
 
-    for (button* btn : get_buttons()) {
+    for (button* btn : get_entities<button>()) {
         if (btn->is_pressed()) {
             m_game.scenes->advance();
         }

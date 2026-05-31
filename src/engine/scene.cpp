@@ -37,7 +37,6 @@ scene::scene()
     :
     m_game(game::get_instance()),
     m_entities{},
-    m_buttons{},
     m_grouped_buttons{}
 {
     add_entity(
@@ -55,7 +54,6 @@ scene::~scene()
         delete ent;
     }
     m_entities.clear();
-    m_buttons.clear();
     m_grouped_buttons.clear();
 }
 

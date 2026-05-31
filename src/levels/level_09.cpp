@@ -97,7 +97,7 @@ void level_09::update()
         vector<button*> numbers_in_box; // For buttons that are inside of the submission box.
         numbers_in_box.reserve(m_choice_count);
 
-        for (button* btn : get_buttons()) {
+        for (button* btn : get_entities<button>()) {
             if (CheckCollisionRecs(btn->get_rectangle(), m_submit_box->get_rectangle())) {
                 vector<button*>::iterator it = numbers_in_box.begin();
                 while (it != numbers_in_box.end() && (*it)->get_position().x <= btn->get_position().x) {

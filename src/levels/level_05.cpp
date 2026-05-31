@@ -193,7 +193,7 @@ void level_05::update()
     }
 
     // The player will lose if any button is hovered, or if the window (game) becomes unfocused.
-    for (button* btn : get_buttons()) {
+    for (button* btn : get_entities<button>()) {
         if (btn->is_hovered()) {
             level_lost = true;
         }

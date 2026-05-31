@@ -56,8 +56,6 @@ class scene
 
         virtual void draw();
 
-        vector<button*> get_buttons() { return m_buttons; }
-
         template <typename T>
         T* add_entity(T* ent)
         {
@@ -69,11 +67,21 @@ class scene
             }
             m_entities.insert(it, ent);
 
-            if constexpr (is_base_of<button, T>::value) {
-                m_buttons.push_back(static_cast<button*>(ent));
-            }
-
             return ent;
+        }
+
+        template <typename T>
+        vector<T*> get_entities()
+        {
+            static_assert(is_base_of<entity, T>::value, "T must derive from entity.");
+
+            vector<T*> result;
+            for (entity* ent : m_entities) {
+                if (T* casted = dynamic_cast<T*>(ent)) {
+                    result.push_back(casted);
+                }
+            }
+            return result;
         }
 
         text* add_simple_text(string text, float font_size, Color text_color, Vector2 position,
@@ -107,8 +115,6 @@ class scene
 
     private:
         vector<entity*> m_entities;
-
-        vector<button*> m_buttons;
 
         // Buttons whose positions are auto-managed. Members are arranged in a single
         // horizontal row centered on m_grouped_buttons_center; membership changes trigger

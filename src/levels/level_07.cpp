@@ -65,7 +65,7 @@ void level_07::update()
     button* button_in_hand = m_game.get_button_in_hand();
 
     if (button_in_hand != nullptr) {
-        for (button* btn : get_buttons()) {
+        for (button* btn : get_entities<button>()) {
             const bool two_buttons_collided = (
                 btn != button_in_hand &&
                 CheckCollisionRecs(button_in_hand->get_rectangle(), btn->get_rectangle())

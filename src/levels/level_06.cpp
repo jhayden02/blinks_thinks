@@ -79,7 +79,7 @@ void level_06::update()
         m_correct_button->set_speed({20, 0});
     }
 
-    for (button* btn : get_buttons()) {
+    for (button* btn : get_entities<button>()) {
         if (btn->is_pressed()) {
             if (btn == m_correct_button) {
                 m_game.scenes->advance();

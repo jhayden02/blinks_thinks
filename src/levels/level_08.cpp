@@ -121,7 +121,7 @@ void level_08::update()
         m_game.scenes->advance();
     }
     else {
-        for (button* btn : get_buttons()) {
+        for (button* btn : get_entities<button>()) {
             if (btn->is_pressed()) {
                 m_game.scenes->lose();
             }

@@ -129,7 +129,7 @@ void level_10::update()
         vector<button*> numbers_in_box; // For buttons that are inside of the submission box.
         numbers_in_box.reserve(m_max_submit_box_numbers);
 
-        for (button* btn : get_buttons()) {
+        for (button* btn : get_entities<button>()) {
             if (btn == m_submit_button || btn == m_submit_box) {
                 continue;
             }
