@@ -84,8 +84,13 @@ class scene
             return result;
         }
 
-        text* add_simple_text(string text, float font_size, Color text_color, Vector2 position,
-                            int layer);
+        text* add_simple_text(
+            string text,
+            float font_size,
+            Color text_color,
+            Vector2 position,
+            int layer
+        );
 
         button* add_ui_button(string text);
 
