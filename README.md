@@ -2,13 +2,14 @@
 
 ### A self-hosting point-and-click puzzle game.
 
+#### [Play Now!](https://jhayden02.github.io/blinks-thinks/)
+
 Blink's Thinks is a simple C++ video game that uses a small custom raylib engine. It is
 currently compilable on Windows and Linux, with web compilation (Emscripten) being possible
 on both. The project uses GitHub Pages to host the web-compiled game in a separate branch,
 [gh-pages](https://github.com/jhayden02/blinks-thinks/tree/gh-pages). GitHub Workflows
 re-compiles the game to this branch on each push in the event source files are changed.
 
-To play the most recent commit of the game hosted on GitHub Pages, go [here](https://jhayden02.github.io/blinks-thinks/).
 
 I was inspired to start this project when I saw [tsoding](https://github.com/tsoding)
 making web assembly games with raylib and hosting them on GitHub pages. I wanted to make
