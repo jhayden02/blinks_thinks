@@ -32,7 +32,7 @@ level_05::level_05(string duration)
         m_duration,
         80,
         RED,
-        {m_game.get_cw(), m_game.get_ch() - 65}
+        {m_game.get_x_center(), m_game.get_y_center() - 65}
     );
 
     //
@@ -42,7 +42,7 @@ level_05::level_05(string duration)
         "level",
         80,
         ORANGE,
-        {m_game.get_cw() - 30, m_game.get_ch() - 250},
+        {m_game.get_x_center() - 30, m_game.get_y_center() - 250},
         0
     );
 
@@ -52,7 +52,7 @@ level_05::level_05(string duration)
         "Don't touch any numbers for",
         40,
         RAYWHITE,
-        {m_game.get_cw(), m_game.get_ch() - 150},
+        {m_game.get_x_center(), m_game.get_y_center() - 150},
         0
     )
     ->add_trait(new rotation_sin(4.0f, 1.5f));
@@ -61,7 +61,7 @@ level_05::level_05(string duration)
         "more seconds",
         40,
         RAYWHITE,
-        {m_game.get_cw(), m_game.get_ch()},
+        {m_game.get_x_center(), m_game.get_y_center()},
         0
     )
     ->add_trait(new rotation_sin(4.0f, 1.5f));
@@ -77,7 +77,7 @@ level_05::level_05(string duration)
         "68",
         120,
         RED,
-        {m_game.get_cw() - 270, m_game.get_ch() - 500}
+        {m_game.get_x_center() - 270, m_game.get_y_center() - 500}
     )
     ->set_speed({0, 12});
 
@@ -85,7 +85,7 @@ level_05::level_05(string duration)
         long_num_one,
         160,
         RED,
-        {m_game.get_cw() - 3050, m_game.get_ch() + 250}
+        {m_game.get_x_center() - 3050, m_game.get_y_center() + 250}
     )
     ->set_speed({3, -1});
 
@@ -93,7 +93,7 @@ level_05::level_05(string duration)
         long_num_two,
         160,
         RED,
-        {m_game.get_cw() + 3050, m_game.get_ch() - 230}
+        {m_game.get_x_center() + 3050, m_game.get_y_center() - 230}
     )
     ->set_speed({-3, 1});
 
@@ -101,7 +101,7 @@ level_05::level_05(string duration)
         "8043001",
         120,
         RED,
-        {m_game.get_cw() - 200, m_game.get_ch() + 1200}
+        {m_game.get_x_center() - 200, m_game.get_y_center() + 1200}
     )
     ->set_speed({0, -5});
 
@@ -109,7 +109,7 @@ level_05::level_05(string duration)
         "3",
         120,
         RED,
-        {m_game.get_cw() + 600, m_game.get_ch()}
+        {m_game.get_x_center() + 600, m_game.get_y_center()}
     )
     ->set_speed({-1, 0});
 
@@ -117,7 +117,7 @@ level_05::level_05(string duration)
         "762",
         160,
         RED,
-        {m_game.get_cw() - 1300, m_game.get_ch()}
+        {m_game.get_x_center() - 1300, m_game.get_y_center()}
     )
     ->set_speed({2, 0});
 
@@ -125,7 +125,7 @@ level_05::level_05(string duration)
         "12",
         120,
         RED,
-        {m_game.get_cw() + 1800, m_game.get_ch() - 600}
+        {m_game.get_x_center() + 1800, m_game.get_y_center() - 600}
     )
     ->set_speed({-8, 4});
 
@@ -133,7 +133,7 @@ level_05::level_05(string duration)
         "5000006",
         120,
         RED,
-        {m_game.get_cw() + 200, m_game.get_ch() - 3000}
+        {m_game.get_x_center() + 200, m_game.get_y_center() - 3000}
     )
     ->set_speed({0, 7});
 
@@ -141,7 +141,7 @@ level_05::level_05(string duration)
         "3078",
         80,
         RED,
-        {m_game.get_cw() - 250, m_game.get_ch() - 3100}
+        {m_game.get_x_center() - 250, m_game.get_y_center() - 3100}
     )
     ->set_speed({0, 7});
 
@@ -149,7 +149,7 @@ level_05::level_05(string duration)
         long_num_three,
         150,
         RED,
-        {m_game.get_cw() + 4550, m_game.get_ch() - 150}
+        {m_game.get_x_center() + 4550, m_game.get_y_center() - 150}
     )
     ->set_speed({-4, 0});
 
@@ -157,7 +157,7 @@ level_05::level_05(string duration)
         "7877878447232634",
         150,
         RED,
-        {m_game.get_cw(), m_game.get_ch() + 800}
+        {m_game.get_x_center(), m_game.get_y_center() + 800}
     )
     ->set_speed({0, -1});
 
@@ -165,7 +165,7 @@ level_05::level_05(string duration)
         "64",
         120,
         RED,
-        {m_game.get_cw() + 3000, m_game.get_ch() + 700}
+        {m_game.get_x_center() + 3000, m_game.get_y_center() + 700}
     )
     ->set_speed({-5, -1});
 }

@@ -32,7 +32,7 @@ level_01::level_01()
         "level",
         80,
         ORANGE,
-        {m_game.get_cw() - 30, m_game.get_ch() - 250},
+        {m_game.get_x_center() - 30, m_game.get_y_center() - 250},
         0
     );
 
@@ -40,7 +40,7 @@ level_01::level_01()
         "What is the largest number?",
         40,
         RAYWHITE,
-        {m_game.get_cw(), m_game.get_ch() - 150},
+        {m_game.get_x_center(), m_game.get_y_center() - 150},
         0
     )
     ->add_trait(new rotation_sin(4.0f, 1.5f));

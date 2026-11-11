@@ -29,13 +29,13 @@ level_title::level_title()
         "Blink's Thinks",
         100,
         m_game_title_text.text_color,
-        {m_game.get_cw(), m_game.get_ch() - 100},
+        {m_game.get_x_center(), m_game.get_y_center() - 100},
         0
     );
     this->m_play_button = add_ui_button("Play");
     this->m_game_title_text.text_obj->add_trait(new rotation_sin(5.0f, 2.5f));
 
-    string version_and_build_display_str  = ("v" + game::get_game_version());
+    string version_and_build_display_str  = ("v" + game::get_version());
     float version_and_build_display_spacing;
     #ifndef NDEBUG
         version_and_build_display_str += " debug";
@@ -51,7 +51,7 @@ level_title::level_title()
             version_and_build_display_str,
             20,
             RAYWHITE,
-            {game::get_w() - version_and_build_display_spacing, 20},
+            {game::get_width() - version_and_build_display_spacing, 20},
             1000,
             {0, 0, 0, 0},
             0.0f

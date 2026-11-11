@@ -36,5 +36,5 @@ void overlay::update()
 
 void overlay::draw()
 {
-    DrawRectangle(m_position.x, m_position.y, game::get_w(), game::get_h(), m_color);
+    DrawRectangle(m_position.x, m_position.y, game::get_width(), game::get_height(), m_color);
 }

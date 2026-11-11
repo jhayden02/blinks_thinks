@@ -83,13 +83,13 @@ class game
             return std::fabs(a - b) < epsilon;
         }
 
-        static const string get_game_version() { return m_game_version; }
-        static const string get_game_name() { return m_game_name; }
+        static const string get_version() { return m_version; }
+        static const string get_name() { return m_name; }
 
-        static constexpr int get_w() { return m_w; }
-        static constexpr int get_h() { return m_h; }
-        static constexpr float get_cw() { return m_cw; }
-        static constexpr float get_ch() { return m_ch; }
+        static constexpr int get_width() { return m_width; }
+        static constexpr int get_height() { return m_height; }
+        static constexpr float get_x_center() { return m_x_center; }
+        static constexpr float get_y_center() { return m_y_center; }
 
         static constexpr size_t get_frame_rate() { return m_frame_rate; }
 
@@ -100,13 +100,13 @@ class game
         game();
         ~game();
 
-        static constexpr const char* m_game_version = "0.0.9";
-        static constexpr const char* m_game_name = "Blink's Thinks";
+        static constexpr const char* m_version = "0.0.9";
+        static constexpr const char* m_name = "Blink's Thinks";
 
-        static constexpr int m_w = 900;
-        static constexpr int m_h = 600;
-        static constexpr float m_cw = m_w / 2.0f;
-        static constexpr float m_ch = m_h / 2.0f;
+        static constexpr int m_width = 900;
+        static constexpr int m_height = 600;
+        static constexpr float m_x_center = m_width / 2.0f;
+        static constexpr float m_y_center = m_height / 2.0f;
         static constexpr size_t m_frame_rate = 60;
 
         button* m_button_in_hand;

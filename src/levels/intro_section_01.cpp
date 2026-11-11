@@ -28,7 +28,7 @@ intro_section_01::intro_section_01()
         "Levels 1-10: Numbers",
         60,
         GREEN,
-        {m_game.get_cw(), m_game.get_ch() - 100},
+        {m_game.get_x_center(), m_game.get_y_center() - 100},
         0
     );
 

@@ -31,7 +31,7 @@ using engine::text;
 using engine::button;
 using engine::overlay;
 
-const Vector2 scene::m_grouped_buttons_center = {game::get_cw(), game::get_ch() + 75.0f};
+const Vector2 scene::m_grouped_buttons_center = {game::get_x_center(), game::get_y_center() + 75.0f};
 
 scene::scene()
     :
@@ -88,8 +88,8 @@ text* scene::add_simple_text(
 button* scene::add_ui_button(string text_str)
 {
     constexpr Vector2 position = {
-        game::get_cw(),
-        game::get_ch() + 100
+        game::get_x_center(),
+        game::get_y_center() + 100
     };
     constexpr int layer = 1;
     text* const text_obj = new text(text_str, 40, WHITE, position, layer, BLACK, 2.0f);
@@ -119,7 +119,7 @@ button* scene::add_text_button(string text_str, int font_size, Color text_color,
 
 button* scene::add_level_num_button(int num)
 {
-    const Vector2 position = {m_game.get_cw() + 118.0f, m_game.get_ch() - 250.0f};
+    const Vector2 position = {m_game.get_x_center() + 118.0f, m_game.get_y_center() - 250.0f};
     return add_text_button(std::to_string(num), 80, ORANGE, position);
 }
 

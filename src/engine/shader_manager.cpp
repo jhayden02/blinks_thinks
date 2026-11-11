@@ -30,14 +30,14 @@ using engine::shader_manager;
 
 shader_manager::shader_manager()
 {
-    m_target_a = LoadRenderTexture(game::get_w(), game::get_h());
-    m_target_b = LoadRenderTexture(game::get_w(), game::get_h());
+    m_target_a = LoadRenderTexture(game::get_width(), game::get_height());
+    m_target_b = LoadRenderTexture(game::get_width(), game::get_height());
 
     m_shaders.emplace("blur", LoadShader(0, "res/shaders/blur.frag"));
     m_shaders.emplace("vignette", LoadShader(0, "res/shaders/vignette.frag"));
 
     int resolution_loc = GetShaderLocation(m_shaders.at("vignette"), "resolution");
-    float resolution[2] = {static_cast<float>(game::get_w()), static_cast<float>(game::get_h())};
+    float resolution[2] = {static_cast<float>(game::get_width()), static_cast<float>(game::get_height())};
     SetShaderValue(m_shaders.at("vignette"), resolution_loc, resolution, SHADER_UNIFORM_VEC2);
 
     m_in_texture_mode = false;

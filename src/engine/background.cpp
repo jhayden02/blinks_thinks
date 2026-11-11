@@ -52,8 +52,8 @@ void background::update()
 
 void background::draw()
 {
-    const int cols = (game::get_w() / m_square_size) + 2;
-    const int rows = (game::get_h() / m_square_size) + 2;
+    const int cols = (game::get_width() / m_square_size) + 2;
+    const int rows = (game::get_height() / m_square_size) + 2;
 
     const float effective_offset = std::fmod(get_scroll_offset(), 2 * m_square_size);
 

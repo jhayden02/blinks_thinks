@@ -31,7 +31,7 @@ level_06::level_06()
         "3",
         80,
         m_game.random->get_color(),
-        {-200, m_game.get_ch() + 85}
+        {-200, m_game.get_y_center() + 85}
     );
     m_correct_button->set_speed({20, 0});
 
@@ -39,7 +39,7 @@ level_06::level_06()
         "level",
         80,
         ORANGE,
-        {m_game.get_cw() - 30, m_game.get_ch() - 250},
+        {m_game.get_x_center() - 30, m_game.get_y_center() - 250},
         0
     );
 
@@ -47,7 +47,7 @@ level_06::level_06()
         "Click the number 3",
         40,
         RAYWHITE,
-        {m_game.get_cw(), m_game.get_ch() - 150},
+        {m_game.get_x_center(), m_game.get_y_center() - 150},
         0
     )
     ->add_trait(new rotation_sin(4.0f, 1.5f));
@@ -70,7 +70,7 @@ void level_06::update()
     scene::update();
 
 
-    if (m_correct_button->get_position().x >= m_game.get_cw() && m_frames_counter < 60) {
+    if (m_correct_button->get_position().x >= m_game.get_x_center() && m_frames_counter < 60) {
         m_correct_button->set_speed({0, 0});
         ++m_frames_counter;
     }
@@ -91,7 +91,7 @@ void level_06::update()
     }
 
     // Check if the number '3' has gone off of the screen to the right. If so, the player loses.
-    if (m_correct_button->get_position().x > m_game.get_w() + 80) {
+    if (m_correct_button->get_position().x > m_game.get_width() + 80) {
         m_game.scenes->lose();
     }
 

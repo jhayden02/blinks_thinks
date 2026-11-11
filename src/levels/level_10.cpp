@@ -34,7 +34,7 @@ level_10::level_10()
         "level",
         80,
         ORANGE,
-        {m_game.get_cw() - 30, m_game.get_ch() - 250},
+        {m_game.get_x_center() - 30, m_game.get_y_center() - 250},
         0
     );
 
@@ -42,12 +42,12 @@ level_10::level_10()
         "Put the largest number in the box",
         40,
         RAYWHITE,
-        {m_game.get_cw(), m_game.get_ch() - 150},
+        {m_game.get_x_center(), m_game.get_y_center() - 150},
         0
     )
     ->add_trait(new rotation_sin(4.0f, 1.5f));
 
-    Vector2 const submit_box_position = {m_game.get_cw(), m_game.get_ch() - 50};
+    Vector2 const submit_box_position = {m_game.get_x_center(), m_game.get_y_center() - 50};
     this->m_submit_box = add_entity(
         new button(
             new text("", 80, BLACK, submit_box_position, 0, {0, 0, 0, 0}, 0.0f),

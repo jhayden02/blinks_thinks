@@ -29,7 +29,7 @@ level_lose::level_lose()
         "game over!",
         100,
         RED,
-        {m_game.get_cw(), m_game.get_ch() - 100},
+        {m_game.get_x_center(), m_game.get_y_center() - 100},
         0
     )
     ->add_trait(new rotation_sin(5.0f, 2.5f));

@@ -39,8 +39,8 @@ game::game()
 {
     this->m_button_in_hand = nullptr;
 
-    InitWindow(m_w, m_h, m_game_name);
-    SetWindowSize(m_w, m_h);
+    InitWindow(m_width, m_height, m_name);
+    SetWindowSize(m_width, m_height);
     SetTargetFPS(m_frame_rate);
     SetExitKey(KEY_NULL);
     SetTraceLogLevel(LOG_DEBUG);
@@ -65,20 +65,12 @@ void game::run()
 {
     while (!WindowShouldClose())
     {
-        // ---------------------------------------------------------------------------------- //
-        //                                      Update.                                       //
-        // ---------------------------------------------------------------------------------- //
         scenes->update();
         audio->update();
 
-        // ---------------------------------------------------------------------------------- //
-        //                                       Draw.                                        //
-        // ---------------------------------------------------------------------------------- //
         BeginDrawing();
-        ClearBackground(RAYWHITE);
-
-        scenes->draw();
-
+            ClearBackground(RAYWHITE);
+            scenes->draw();
         EndDrawing();
     }
 }

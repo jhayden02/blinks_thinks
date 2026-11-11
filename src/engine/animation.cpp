@@ -32,8 +32,8 @@ using engine::anim_self_credit;
 anim_raylib::anim_raylib()
     :
     entity({0, 0}, 0), // Both of these are unused. Set default values of 0.
-    m_logo_position_x((game::get_cw()) - 128),
-    m_logo_position_y((game::get_ch()) - 128),
+    m_logo_position_x((game::get_x_center()) - 128),
+    m_logo_position_y((game::get_y_center()) - 128),
     m_top_side_rec_width(16),
     m_left_side_rec_height(16),
     m_bottom_side_rec_width(16),
@@ -194,8 +194,8 @@ void anim_raylib::draw()
 
             DrawText(
                 TextSubtext("raylib", 0, m_letters_count),
-                game::get_cw() - 44,
-                game::get_ch() + 48,
+                game::get_x_center() - 44,
+                game::get_y_center() + 48,
                 50,
                 Fade(BLACK, m_alpha));
 
@@ -222,8 +222,8 @@ anim_self_credit::anim_self_credit()
     m_font(GetFontDefault()),
 
     m_text_position({ 
-        static_cast<float>(game::get_cw() - 240), 
-        static_cast<float>(game::get_ch())
+        static_cast<float>(game::get_x_center() - 240), 
+        static_cast<float>(game::get_y_center())
     }),
 
     m_bg_color({ 30, 30, 30, 255})
@@ -284,7 +284,7 @@ void anim_self_credit::update()
 void anim_self_credit::draw()
 { 
     // draw a background rectangle.
-    DrawRectangle(game::get_cw() - 300, game::get_ch() - 30, 600, 100, m_bg_color);
+    DrawRectangle(game::get_x_center() - 300, game::get_y_center() - 30, 600, 100, m_bg_color);
     switch (m_state)
     {
         // Letters being added on every 2 frames.
