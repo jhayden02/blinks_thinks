@@ -29,13 +29,20 @@
 #include "box.hpp"
 #include "button.hpp"
 
-using engine::text;
-
 // Standard library.
 #include <string>
 #include <vector>
 #include <type_traits>
+#include <functional>
+#include <cstddef>
 
+// Source.
+using engine::text;
+
+// Standard library.
+using std::function;
+using std::vector;
+using std::size_t;
 using std::string;
 using std::vector;
 using std::is_base_of;
@@ -45,6 +52,9 @@ namespace engine
 
 class game;
 
+// ------------------------------------------------------------------------------------------ //
+//                                           scene                                            //
+// ------------------------------------------------------------------------------------------ //
 class scene
 {
     public:
@@ -115,11 +125,16 @@ class scene
         // triggers a rearrangement.
         void add_to_group(button* btn);
 
+        button* get_button_in_hand() { return m_button_in_hand; }
+        void set_button_in_hand(button* btn) { m_button_in_hand = btn; }
+
     protected:
         game& m_game;
 
     private:
         vector<entity*> m_entities;
+
+        button* m_button_in_hand;
 
         // Buttons whose positions are auto-managed. Members are arranged in a single
         // horizontal row centered on m_grouped_buttons_center; membership changes trigger
@@ -138,6 +153,50 @@ class scene
         // Recomputes the position of every button in m_grouped_buttons based on its
         // current size. Snap-instant; no animation.
         void rearrange_group();
+};
+
+// ------------------------------------------------------------------------------------------ //
+//                                       scene_manager                                        //
+// ------------------------------------------------------------------------------------------ //
+class scene_manager
+{
+    public:
+        scene_manager();
+        ~scene_manager();
+
+        scene_manager(const scene_manager&) = delete;
+        scene_manager& operator=(const scene_manager&) = delete;
+        scene_manager(scene_manager&&) = delete;
+        scene_manager& operator=(scene_manager&&) = delete;
+
+        // Performs the queued scene swap and ticks the current scene.
+        void update();
+
+        // Draws the current scene.
+        void draw();
+
+        // Advances to the next scene in m_advance.
+        void advance();
+
+        // Queues the lose scene without changing the advance index.
+        void lose();
+
+        // Jumps to the title scene in m_advance.
+        void goto_title();
+
+        // Jumps to the restart-point scene in m_advance.
+        void goto_restart_point();
+
+        scene* get_current_scene() { return m_current_scene; }
+
+    private:
+        vector<function<scene*()>> m_advance;
+        function<scene*()> m_lose;
+        size_t m_index;
+        size_t m_title_index;
+        size_t m_restart_point_index;
+        scene* m_current_scene;
+        scene* m_next_scene;
 };
 
 } // NAMESPACE ENGINE.

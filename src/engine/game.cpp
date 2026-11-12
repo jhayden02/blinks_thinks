@@ -37,8 +37,6 @@ using engine::scene_manager;
 
 game::game()
 {
-    this->m_button_in_hand = nullptr;
-
     InitWindow(m_width, m_height, m_name);
     SetWindowSize(m_width, m_height);
     SetTargetFPS(m_frame_rate);

@@ -62,7 +62,7 @@ void level_07::update()
 {
     scene::update();
 
-    button* button_in_hand = m_game.get_button_in_hand();
+    button* button_in_hand = m_game.scenes->get_current_scene()->get_button_in_hand();
 
     if (button_in_hand != nullptr) {
         for (button* btn : get_entities<button>()) {

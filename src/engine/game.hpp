@@ -21,7 +21,7 @@
 #pragma once
 
 // Source.
-#include "scene_manager.hpp"
+#include "scene.hpp"
 #include "shader_manager.hpp"
 #include "audio_manager.hpp"
 #include "random_manager.hpp"
@@ -52,8 +52,6 @@ using std::unordered_map;
 
 namespace engine
 {
-
-class button;
 
 class game
 {
@@ -92,10 +90,7 @@ class game
         static constexpr float get_y_center() { return m_y_center; }
 
         static constexpr size_t get_frame_rate() { return m_frame_rate; }
-
-        button* get_button_in_hand() { return m_button_in_hand; }
-        void set_button_in_hand(button* btn) { m_button_in_hand = btn; }
-
+ 
     private:
         game();
         ~game();
@@ -108,8 +103,6 @@ class game
         static constexpr float m_x_center = m_width / 2.0f;
         static constexpr float m_y_center = m_height / 2.0f;
         static constexpr size_t m_frame_rate = 60;
-
-        button* m_button_in_hand;
 };
 
 } // NAMESPACE ENGINE.

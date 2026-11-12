@@ -94,7 +94,7 @@ void grabbable::update(button& btn)
         Vector2 button_pos = btn.get_position();
         m_grab_offset = {mouse_pos.x - button_pos.x, mouse_pos.y - button_pos.y};
 
-        game::get_instance().set_button_in_hand(&btn);
+        game::get_instance().scenes->get_current_scene()->set_button_in_hand(&btn);
         btn.set_layer(100);
     }
 
@@ -110,7 +110,7 @@ void grabbable::update(button& btn)
 
     if (!IsMouseButtonDown(0) && m_is_grabbed) {
         m_is_grabbed = false;
-        game::get_instance().set_button_in_hand(nullptr);
+        game::get_instance().scenes->get_current_scene()->set_button_in_hand(nullptr);
         btn.set_layer(0);
 
         if (m_sfx_hold != nullptr) {
